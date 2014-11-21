@@ -4,9 +4,11 @@
 ##
 ## Description: Single bucket, scale invariant noise, no evaporation yet
 ##              dS(t)/dt = r(t) - S(t)/k + sqrt(gamma/k) S(t) eta(t)
+## The {q} variable set is used for slow (long-range) components. 
+## The {u} variable set is used for fast (short-range) components.
 ## 
 ##              
-## GitHub repository: https://github.com/ulzegasi/Julia_1.git
+## GitHub repository: https://github.com/ulzegasi/Julia_ParInf.git
 ##
 ## Authors: Simone Ulzega, Carlo Albert
 ##
@@ -23,8 +25,8 @@
 ##
 ##
 
-dir = "C:/Users/ulzegasi/Julia_files/Julia_1"           # Main project directory
-dir2 = "C:/Users/ulzegasi/Julia_files/Julia_1"          # Files could be saved in a different directory
+dir = "C:/Users/ulzegasi/Julia_files/ParInf_HMC"           # Main project directory
+dir2 = "C:/Users/ulzegasi/Julia_files/ParInf_HMC"          # Files could be saved in a different directory
 
 range = 2:5002
 
@@ -84,7 +86,7 @@ fname= string("_K$true_K","_G$true_gamma","_S$sigma","_Rsin")          # This wi
 
 using PyPlot, Winston, ForwardDiff, Distributions, KernelDensity
 pygui(true)
-require("$dir/1D_functions2_2.jl")
+require("$dir/ParInf_Fun_1.jl")
 
 ##
 ##
@@ -188,7 +190,7 @@ plt.savefig("$dir2/figure4$fname.png",transparent=true)
 ## Containers for HMC:
 ## -------------------
 
-nsample         = 20000
+nsample         = 30
 theta_sample    = Array(Float64,nsample,s)
 u_sample        = Array(Float64,nsample,N)
 energies        = Array(Float64,nsample)
@@ -240,12 +242,13 @@ plt.plot(t,S/true_K,"g",label="system realization")
 plt.legend(loc="lower right",fancybox="true")
 plt.savefig("$dir2/figure5$fname.png",transparent=true)
 
-## Transformations q -> u 
-## (eqs 2.16-17 in Tuckerman et al., JCP 99 (4), 2796, 1993):
-## -------------------
 
 q = Array(Float64,N)
 q = log(S_init./(K*r))
+
+## Transformations q -> u 
+## (eqs 2.16-17 in Tuckerman et al., JCP 99 (4), 2796, 1993):
+## -------------------
 
 u = Array(Float64,N)
 for i=0:(n-1)
@@ -280,7 +283,7 @@ for counter = 1:nsample
     # Calculate energy:
     # -------------------
 
-    H_old = V_fast(theta,u) + V_slow(theta,u) + sum((p .* p) ./ (2*mp))
+    H_old = V_fast(theta,u) + V_slow(theta,q) + sum((p .* p) ./ (2*mp))
     energies[counter] = H_old
     
     # Save current state:
@@ -293,13 +296,13 @@ for counter = 1:nsample
     # -------------------
 
     for counter_respa = 1:n_respa 
-        RESPA(theta,u,p,mp,dtau,nn) 
+        RESPA(theta,u,q,p,mp,dtau,nn) 
     end 
 
     # Calculate energy of proposal state:
     # -------------------
 
-    H_new = V_fast(theta,u) + V_slow(theta,u) + sum(p .* p ./ (2*mp))
+    H_new = V_fast(theta,u) + V_slow(theta,q) + sum(p .* p ./ (2*mp))
 
     # Metropolis step:
     # -------------------
@@ -314,14 +317,14 @@ for counter = 1:nsample
     theta_sample[counter,:] = theta
     u_sample[counter,:] = u 
    
-    if (counter%100 == 0)
+    if (counter%10 == 0)
         println(string(counter, " loops completed in ", round(time()-t1,1), " seconds \n"))
     end
 
 end
 
-#t2=time()
-#t_hmc = t2-t1
+t2=time()
+t_hmc = t2-t1
 
 ## End of HMC loop
 ## ------------------------------------------------------
@@ -401,17 +404,17 @@ plt.savefig("$dir2/figure6$fname.png",transparent=true,dpi=300)
 plt.figure(7)
 plt.subplots_adjust(hspace=0.5)
 plt.subplot(211)
-plt.xlabel("exp(u)")
+plt.xlabel("S / K = r Exp(q)")
 plt.ylabel("Probability density")
-plt.title("Final state")
-plt.hist(exp(u_sample[:,N]), 50, normed = 1, color = "y")
-kd = KernelDensity.kde(exp(u_sample[:,N]))
+plt.title("Final state S / K")
+plt.hist(r[n]*exp(qs[:,N]), 50, normed = 1, color = "y")
+kd = KernelDensity.kde(r[n]*exp(qs[:,N]))
 plt.plot(kd.x, kd.density, color = "r", linewidth = 3, label = "Kernel density kde(exp(u))")
-mu = mean(exp(u_sample[:,N]))
-sig = std(exp(u_sample[:,N]))
+mu = mean(r[n]*exp(qs[:,N]))
+sig = std(r[n]*exp(qs[:,N]))
 xx = linspace(mu-4sig, mu+4sig, 100)
 plt.plot(xx, pdf(Normal(mu,sig),xx), "b--", linewidth = 3, label = "Normal distribution")
-plt.legend(loc="upper right",fancybox="true")
+# plt.legend(loc="upper right",fancybox="true")
 
 
 
@@ -420,7 +423,7 @@ plt.subplot(212)
 plt.xlabel("exp(u)")
 plt.ylabel("Normal(mu,sig)")
 plt.title("Final state QQ plot")
-res = qqbuild(exp(u_sample[:,N]),Normal(mu,sig))
+res = qqbuild(r[n]*exp(qs[:,N]),Normal(mu,sig))
 plt.plot(res.qy, res.qx, linewidth = 3)
 xy = [x for x in linspace(minimum([res.qx,res.qy]),maximum([res.qx,res.qy]),4)]
 plt.plot(xy, xy, "r--", linewidth = 3)

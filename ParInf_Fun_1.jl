@@ -126,7 +126,7 @@ end
 ##
 ##
 
-function V_slow(theta,u) 
+function V_slow(theta,q) 
 
     # Variables:
     # ---------------------------
@@ -137,20 +137,6 @@ function V_slow(theta,u)
     K     = T*exp(beta)
     gamma = exp(tau)
     
-    # Recursive back transformations (Tuckerman et al., JCP 99 (1993), eq. 2.19):
-    # ---------------------------
-
-    ss = n-1
-    while ss>=0
-        k=j+1
-        q[ss*j+k] = u[ss*j+k]
-        while k>2
-           k -= 1
-           q[ss*j+k] = u[ss*j+k] + u[ss*j+1]/k + (k-1)*q[ss*j+k+1]/k
-         end
-        ss -= 1
-    end
-    q[1] = u[1]
 
     # Definition of rho:
     # ---------------------------
@@ -185,7 +171,7 @@ end
 # Calculate derivatives of V_slow w.r.t. theta:
 # ---------------------------
 
-V_slow_theta      = function(theta) V_slow(theta,u) end 
+V_slow_theta      = function(theta) V_slow(theta,q) end 
 V_slow_der_theta  = forwarddiff_gradient(V_slow_theta, Float64, fadtype=:dual, n=s)
 
 # Equivalent to:
@@ -201,7 +187,7 @@ V_slow_der_theta  = forwarddiff_gradient(V_slow_theta, Float64, fadtype=:dual, n
 ##
 ##
 
-function V_slow_der(theta,u)
+function V_slow_der(theta,q)
 
    # Variables:
    # ---------------------------
@@ -211,21 +197,6 @@ function V_slow_der(theta,u)
     
     K       = T*exp(beta)
     gamma   =   exp(tau)
-    
-    # Recursive back transformations (Tuckerman et al., JCP 99 (1993), eq. 2.19):
-    # ---------------------------
-
-    ss = n-1
-    while ss>=0
-        k=j+1
-        q[ss*j+k] = u[ss*j+k]
-        while k>2
-           k -= 1
-           q[ss*j+k] = u[ss*j+k] + u[ss*j+1]/k + (k-1)*q[ss*j+k+1]/k
-         end
-        ss -= 1
-    end
-    q[1] = u[1]
 
     
     # Definition of rho:
@@ -317,7 +288,7 @@ end
 ##
 ##
 
-function RESPA(theta, u, p, mp, dtau, nn)               # (Tuckerman et al., JCP 97(3), 1992 )
+function RESPA(theta, u, q, p, mp, dtau, nn)               # (Tuckerman et al., JCP 97(3), 1992 )
     
     # Define small time step:
     # ---------------------------
@@ -327,7 +298,7 @@ function RESPA(theta, u, p, mp, dtau, nn)               # (Tuckerman et al., JCP
     # First long-range step (dtau):
     # ---------------------------
 
-    force = -V_slow_der(theta,u)
+    force = -V_slow_der(theta,q)
     for i=1:(N+s) 
         p[i] = p[i]  + (dtau/2)* force[i]
     end
@@ -352,7 +323,7 @@ function RESPA(theta, u, p, mp, dtau, nn)               # (Tuckerman et al., JCP
     # Long-range step:
     # ---------------------------
 
-    force = -V_slow_der(theta,u)
+    force = -V_slow_der(theta,q)
     for i=1:(N+s) 
         p[i] = p[i]  + (dtau/2)* force[i]
     end
