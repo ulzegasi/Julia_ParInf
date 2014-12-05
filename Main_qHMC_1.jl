@@ -23,12 +23,7 @@
 ## ============================================================================================
 
 dir = "C:/Users/ulzegasi/Julia_files/ParInf_HMC"        # Main project directory   
-dir2 = "C:/Users/ulzegasi/Julia_files/ParInf_HMC/Data"  # Secondary directory
-
-using ForwardDiff
-# require("$dir/ParInf_Fun_1.jl")
-# OR
-require("$dir/ParInf_Fun_qAD_1.jl")
+dir2 = "C:/Users/ulzegasi/SWITCHdrive/JuliaTemp/Data"   # Secondary directory
 
 ##
 ##
@@ -64,6 +59,9 @@ ty  = iround(linspace(1, N, n+1))      # Indeces of "end point" beads (= "measur
 
 const s = 2                            # Number of system parameters (k, gamma)     
 
+using ForwardDiff
+require("$dir/ParInf_Fun_qAD_1.jl")
+
 ##
 ## ============================================================================================
 ## Parameters to be inferred:
@@ -87,7 +85,7 @@ true_theta = [log(true_K/T),log(true_gamma)]            # Parameters to be infer
 
 # fname= string("_K$true_K","_G$true_gamma","_S$sigma","_Rsin")        # This will be displayed 
                                                                        # in the saved file names
-fname= string("")                                                      # It can be an empty string                                       
+fname= string("_q")                                                      # It can be an empty string                                       
 
 ##
 ##
@@ -138,7 +136,7 @@ y  = max(0.01,(1/true_K)*S[ty] + sigma*randn(n+1))      # Generation of measurem
 ## --------------------------------------------------------------------------------------------
 
 nsample_burnin  = 200
-nsample_eff     = 100
+nsample_eff     = 9800
 nsample         = nsample_eff + nsample_burnin
 theta_sample    = Array(Float64,nsample+1,s)
 u_sample        = Array(Float64,nsample+1,N)
@@ -212,13 +210,6 @@ q_save     = Array(Float64,N)
 
 println(string("\nStarting HMC loops (burn-in)...\n---------------------------------\n"))
 t1=time()
-
-#####################################################
-## Functions required by ForwardDiff --------------##
-V_fast_theta = function(theta) V_fast(theta,u) end ##
-V_slow_theta = function(theta) V_slow(theta,q) end ##
-## ------------------------------------------------##
-#####################################################
 
 for counter = 1:nsample_burnin
 

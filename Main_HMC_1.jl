@@ -23,9 +23,6 @@
 dir = "C:/Users/ulzegasi/Julia_files/ParInf_HMC"        # Main project directory   
 dir2 = "C:/Users/ulzegasi/SWITCHdrive/JuliaTemp/Data"  # Secondary directory
 
-using ForwardDiff
-require("$dir/ParInf_Fun_1.jl")
-
 ##
 ##
 ## ============================================================================================
@@ -59,6 +56,11 @@ const n = int64((N-1)/j)               # n + 1 = number of "end point" beads (se
 ty  = iround(linspace(1, N, n+1))      # Indeces of "end point" beads (= "measurement" points)
 
 const s = 2                            # Number of system parameters (k, gamma)     
+
+using ForwardDiff
+# require("$dir/ParInf_Fun_1.jl")
+# OR
+require("$dir/ParInf_Fun_AD_1.jl")
 
 ##
 ## ============================================================================================
@@ -209,13 +211,6 @@ u_save     = Array(Float64,N)
 
 println(string("\nStarting HMC loops (burn-in)...\n---------------------------------\n"))
 t1=time()
-
-#####################################################
-## Functions required by ForwardDiff --------------##
-V_fast_theta = function(theta) V_fast(theta,u) end ##
-V_slow_theta = function(theta) V_slow(theta,q) end ##
-## ------------------------------------------------##
-#####################################################
 
 for counter = 1:nsample_burnin
 

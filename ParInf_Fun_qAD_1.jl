@@ -56,6 +56,7 @@ end
 ##
 ## Calculate derivatives of V_fast w.r.t. theta:
 ## ---------------------------
+V_fast_theta = function(theta) V_fast(theta,q) end
 V_fast_der_theta  = forwarddiff_gradient(V_fast_theta, Float64, fadtype=:dual, n=s)
 
 ##
@@ -158,6 +159,7 @@ end
 
 ## Calculate derivatives of V_slow w.r.t. theta:
 ## ---------------------------
+V_slow_theta = function(theta) V_slow(theta,q) end 
 V_slow_der_theta  = forwarddiff_gradient(V_slow_theta, Float64, fadtype=:dual, n=s)
 
 ##
