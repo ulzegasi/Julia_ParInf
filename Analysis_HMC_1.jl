@@ -23,7 +23,7 @@
 ##
 ##
 
-dir      = "C:/Users/ulzegasi/Julia_files/ParInf_HMC/Data"
+dir      = "C:/Users/ulzegasi/SWITCHdrive/JuliaTemp/Data"
 fname    = string("")
 
 ##

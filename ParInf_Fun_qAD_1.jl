@@ -1,8 +1,3 @@
-##
-##
-## ============================================================================================
-##
-##
 
 function V_fast(theta,q)                                # Fast dynamics (harmonic and data terms)
     
@@ -59,20 +54,9 @@ end
 ## ============================================================================================
 ##
 ##
-
-# Calculate derivatives of V_fast w.r.t. theta:
-# ---------------------------
-
-V_fast_theta      = function(theta) V_fast(theta,q) end
+## Calculate derivatives of V_fast w.r.t. theta:
+## ---------------------------
 V_fast_der_theta  = forwarddiff_gradient(V_fast_theta, Float64, fadtype=:dual, n=s)
-
-# Equivalent to:
-#
-# function V_fast_theta(theta) 
-#    V_fast(theta,u) 
-# end
-#
-# V_fast_der_theta = forwarddiff_gradient(V_fast_theta, Float64, fadtype=:dual, n=s)
 
 ##
 ##
@@ -80,7 +64,7 @@ V_fast_der_theta  = forwarddiff_gradient(V_fast_theta, Float64, fadtype=:dual, n
 ##
 ##
 
-function V_fast_der(theta,q)                            # Derivatives of V_fast w.r.t. u
+function V_fast_der(theta,q)                            # Derivatives of V_fast w.r.t. q
 
     # Variables:
     # ---------------------------
@@ -172,18 +156,9 @@ end
 ##
 ##
 
-# Calculate derivatives of V_slow w.r.t. theta:
-# ---------------------------
-
-V_slow_theta      = function(theta) V_slow(theta,q) end 
+## Calculate derivatives of V_slow w.r.t. theta:
+## ---------------------------
 V_slow_der_theta  = forwarddiff_gradient(V_slow_theta, Float64, fadtype=:dual, n=s)
-
-# Equivalent to:
-# function V_slow_theta(theta) 
-#     V_slow(theta,u) 
-# end
-# 
-# V_slow_der_theta = forwarddiff_gradient(V_slow_theta, Float64, fadtype=:dual, n=s)
 
 ##
 ##
@@ -265,7 +240,7 @@ function RESPA(theta, q, p, mp, dtau, nn)               # (Tuckerman et al., JCP
     # Short-range steps (nn*deltatau):
     # ---------------------------
 
-    for counter=1:nn                                    # Verlet integrator 
+    for counter = 1:nn                                  # Verlet integrator 
         force_old = -V_fast_der(theta,q)                # (Tuckerman et al., JCP 97(3), 1992, eq. 2.17)
         for i=1:s
             theta[i] = theta[i] + deltatau * ( p[i]  + (deltatau/2) * force_old[i] )/mp[i]
