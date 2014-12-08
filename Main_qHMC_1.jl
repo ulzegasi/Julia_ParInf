@@ -139,7 +139,7 @@ nsample_burnin  = 200
 nsample_eff     = 9800
 nsample         = nsample_eff + nsample_burnin
 theta_sample    = Array(Float64,nsample+1,s)
-u_sample        = Array(Float64,nsample+1,N)
+q_sample        = Array(Float64,nsample+1,N)
 energies        = Array(Float64,nsample)
 
 ## --------------------------------------------------------------------------------------------

@@ -20,8 +20,8 @@
 ## carlo.albert@eawag.ch
 ## ============================================================================================
 
-dir = "C:/Users/ulzegasi/Julia_files/ParInf_HMC"        # Main project directory   
-dir2 = "C:/Users/ulzegasi/SWITCHdrive/JuliaTemp/Data"  # Secondary directory
+dir  = "/local/ulzegasi/Julia4Server"                     # Main project directory   
+dir2 = "/domain/home/ulzegasi/Desktop/Julia4Server/Data"  # Secondary directory
 
 ##
 ##
@@ -58,9 +58,9 @@ ty  = iround(linspace(1, N, n+1))      # Indeces of "end point" beads (= "measur
 const s = 2                            # Number of system parameters (k, gamma)     
 
 using ForwardDiff
-# require("$dir/ParInf_Fun_1.jl")
+require("$dir/ParInf_Fun_1.jl")
 # OR
-require("$dir/ParInf_Fun_AD_1.jl")
+# require("$dir/ParInf_Fun_AD_1.jl")
 
 ##
 ## ============================================================================================
@@ -85,7 +85,9 @@ true_theta = [log(true_K/T),log(true_gamma)]            # Parameters to be infer
 
 # fname= string("_K$true_K","_G$true_gamma","_S$sigma","_Rsin")        # This will be displayed 
                                                                        # in the saved file names
-fname= string("")                                             		   # It can be an empty string                                       
+fname= string("_s2")                                             		   # It can be an empty string                                       
+
+f = open("$dir/out$fname","a")
 
 ##
 ##
@@ -209,7 +211,8 @@ p          = Array(Float64,s+N)
 theta_save = Array(Float64,s)
 u_save     = Array(Float64,N)
 
-println(string("\nStarting HMC loops (burn-in)...\n---------------------------------\n"))
+@printf(f,"%.70s\n",string("\nStarting HMC loops (burn-in)...\n---------------------------------\n"))
+flush(f)
 t1=time()
 
 for counter = 1:nsample_burnin
@@ -257,7 +260,8 @@ for counter = 1:nsample_burnin
     u_sample[counter+1,:] = u 
    
     if (counter%100 == 0)
-        println(string(counter, " loops completed in ", round(time()-t1,1), " seconds \n"))
+        @printf(f,"%.70s\n",string(counter, " loops completed in ", round(time()-t1,1), " seconds \n"))
+        flush(f)
     end
 
 end
@@ -286,7 +290,8 @@ mp[s+N] = M_bdy                                         # Last end point bead
 
 reject_counter = 0
 
-println(string("\nStarting effective HMC loops...\n---------------------------------\n"))
+@printf(f,"%.70s\n",string("\nStarting effective HMC loops...\n---------------------------------\n"))
+flush(f)
 
 for counter = (nsample_burnin + 1):nsample
 
@@ -333,7 +338,8 @@ for counter = (nsample_burnin + 1):nsample
     u_sample[counter+1,:] = u 
    
     if (counter%100 == 0)
-        println(string(counter, " loops completed in ", round(time()-t1,1), " seconds \n"))
+        @printf(f,"%.70s\n",string(counter, " loops completed in ", round(time()-t1,1), " seconds \n"))
+        flush(f)
     end
 
 end
@@ -371,8 +377,10 @@ for index = 1:(nsample+1)
     end
 end
 
-println(string("\nRun completed in ", time()-t1, " seconds"))
+@printf(f,"%.70s\n",string("\nRun completed in ", time()-t1, " seconds"))
+flush(f)
 
+close(f)
 ##
 ##
 ## ============================================================================================
