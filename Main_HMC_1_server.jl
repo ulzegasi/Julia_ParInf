@@ -36,14 +36,9 @@ range = 2:5002
 # Time points t.dat
 t  = float64(readdlm("$dir/t.dat")[range,2])
 
-t = linspace(t[1], t[end], 501)        # Numer of discretization points      
-
-
-N  = length(t)                         # Total number of discrete time points
-T  = t[end]-t[1]                       # Time interval
-dt = T/(N-1)                           # Time step
-
-const j = 10                           # j-1 = number of staging beads per segment (see Tuckerman '93)
+const N = 201                          # Total number of discrete time points
+const j = 20                           # j-1 = number of staging beads per segment
+                                       # IMPORTANT: (N-1)/j = integer = n (measurement points)
 
 if  ((N-1)%j) != 0 
     error("Be careful, the number of staging points j must fulfill (N-1)/j = integer !")
@@ -53,9 +48,15 @@ const n = int64((N-1)/j)               # n + 1 = number of "end point" beads (se
                                        # n = number of segments
                                        # n (j-1) = total number of staging beads
 
+t = linspace(t[1], t[end], N)          # Time points      
+
+T  = t[end]-t[1]                       # Time interval
+dt = T/(N-1)                           # Time step
+
+
 ty  = iround(linspace(1, N, n+1))      # Indeces of "end point" beads (= "measurement" points)
 
-const s = 2                            # Number of system parameters (k, gamma)     
+const s = 2                            # Number of system parameters (k, gamma)
 
 using ForwardDiff
 require("$dir/ParInf_Fun_1.jl")
@@ -275,7 +276,7 @@ M_theta_burnin = M_theta
 M_stage_burnin = M_stage
 
 M_bdy   = 1.*K*(N-1)/(gamma*T)
-M_theta = M_bdy*0.020
+M_theta = M_bdy*[0.03, 0.06]
 M_stage = M_bdy*0.0015
 
 mp = Array(Float64, s+N)
@@ -390,11 +391,11 @@ close(f)
 ##
 
 param_names  = vcat("N", "j", "n", "t[1]", "dt", "s", "true_K", "true_gamma", "sigma", "K", "gamma", 
-	"nsample_burnin", "nsample_eff", "M_bdy_burnin", "M_bdy", "M_theta_burnin", "M_theta", 
-	"M_stage_burnin", "M_stage", "dtau", "nn", "n_respa")
+    "nsample_burnin", "nsample_eff", "M_bdy_burnin", "M_bdy", "M_theta_burnin", "M_theta_K", 
+    "M_theta_gamma", "M_stage_burnin", "M_stage", "dtau", "nn", "n_respa")
 param_values = vcat(N, j, n, t[1], dt, s, true_K, true_gamma, sigma, K, gamma, 
-	nsample_burnin, nsample_eff, M_bdy_burnin, M_bdy, M_theta_burnin, M_theta, 
-	M_stage_burnin, M_stage, dtau, nn, n_respa)
+    nsample_burnin, nsample_eff, M_bdy_burnin, M_bdy, M_theta_burnin, M_theta, 
+    M_stage_burnin, M_stage, dtau, nn, n_respa)
 writedlm("$dir2/params$fname.dat", hcat(param_names, param_values))
 
 last_qs = qs[1:(nsample+1),N]          

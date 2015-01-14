@@ -38,14 +38,9 @@ range = 2:5002
 # Time points t.dat
 t  = float64(readdlm("$dir/t.dat")[range,2])
 
-t = linspace(t[1], t[end], 501)        # Numer of discretization points      
-
-
-N  = length(t)                         # Total number of discrete time points
-T  = t[end]-t[1]                       # Time interval
-dt = T/(N-1)                           # Time step
-
-const j = 10                           # j-1 = number of staging beads per segment (see Tuckerman '93)
+const N = 201                          # Total number of discrete time points
+const j = 20                           # j-1 = number of staging beads per segment
+                                       # IMPORTANT: (N-1)/j = integer = n (measurement points)
 
 if  ((N-1)%j) != 0 
     error("Be careful, the number of staging points j must fulfill (N-1)/j = integer !")
@@ -54,6 +49,12 @@ end
 const n = int64((N-1)/j)               # n + 1 = number of "end point" beads (see Tuckerman '93)
                                        # n = number of segments
                                        # n (j-1) = total number of staging beads
+
+t = linspace(t[1], t[end], N)          # Time points      
+
+T  = t[end]-t[1]                       # Time interval
+dt = T/(N-1)                           # Time step
+
 
 ty  = iround(linspace(1, N, n+1))      # Indeces of "end point" beads (= "measurement" points)
 

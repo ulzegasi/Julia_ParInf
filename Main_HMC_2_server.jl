@@ -20,8 +20,8 @@
 ## carlo.albert@eawag.ch
 ## ============================================================================================
 
-dir = "C:/Users/ulzegasi/Julia_files/ParInf_HMC"        # Main project directory   
-dir2 = "C:/Users/ulzegasi/SWITCHdrive/JuliaTemp/Testing_s5_n10_j20_k50"   # Secondary directory
+dir  = "/local/ulzegasi/Julia4Server"                     # Main project directory   
+dir2 = "/domain/home/ulzegasi/Desktop/Julia4Server/Data"  # Secondary directory
 
 ##
 ##
@@ -36,9 +36,9 @@ range = 2:5002
 # Time points t.dat
 t  = float64(readdlm("$dir/t.dat")[range,2])
 
-const N = 201						   # Total number of discrete time points
-const j = 20                           # j-1 = number of staging beads per segment
-									   # IMPORTANT: (N-1)/j = integer = n (measurement points)
+const N = 21                          # Total number of discrete time points
+const j = 2                           # j-1 = number of staging beads per segment
+                                       # IMPORTANT: (N-1)/j = integer = n (measurement points)
 
 if  ((N-1)%j) != 0 
     error("Be careful, the number of staging points j must fulfill (N-1)/j = integer !")
@@ -56,12 +56,12 @@ dt = T/(N-1)                           # Time step
 
 ty  = iround(linspace(1, N, n+1))      # Indeces of "end point" beads (= "measurement" points)
 
-const s = 2                            # Number of system parameters (k, gamma)     
+const s = 2                            # Number of system parameters (k, gamma)
 
 using ForwardDiff
 # require("$dir/ParInf_Fun_1.jl")
 # OR
-require("$dir/ParInf_Fun_AD_1.jl")
+require("$dir/ParInf_Fun_AD_2.jl")
 
 ##
 ## ============================================================================================
@@ -70,7 +70,7 @@ require("$dir/ParInf_Fun_AD_1.jl")
 ##
 ##
 
-true_K     = 50.                                        # Retention time
+true_K     = 20.                                       # Retention time
 true_gamma = 0.2                                        # Dimensionless noise parameter
 sigma      = 0.05                                       # Measurement noise
 
@@ -86,7 +86,9 @@ true_theta = [log(true_K/T),log(true_gamma)]            # Parameters to be infer
 
 # fname= string("_K$true_K","_G$true_gamma","_S$sigma","_Rsin")        # This will be displayed 
                                                                        # in the saved file names
-fname= string("_s5_n10_j20_k50")                                       # It can be an empty string                                       
+fname= string("_s5_n10_j2_k20_ln")                                             		   # It can be an empty string                                       
+
+f = open("$dir/out$fname","a")
 
 ##
 ##
@@ -137,7 +139,7 @@ y  = max(0.01,(1/true_K)*S[ty] + sigma*randn(n+1))      # Generation of measurem
 ## --------------------------------------------------------------------------------------------
 
 nsample_burnin  = 100
-nsample_eff     = 19900
+nsample_eff     = 49900
 nsample         = nsample_eff + nsample_burnin
 theta_sample    = Array(Float64,nsample+1,s)
 u_sample        = Array(Float64,nsample+1,N)
@@ -147,7 +149,7 @@ energies        = Array(Float64,nsample)
 ## Parameters for MD:
 ## --------------------------------------------------------------------------------------------
 
-dtau    = 0.02                                          # Long range MD time step
+dtau    = .02                                           # Long range MD time step
 nn      = 16		                                    # To define short-range time steps in RESPA
 n_respa = 10                                            # Number of large time steps
 
@@ -186,7 +188,7 @@ u_sample[1,:]     = u
 ## Masses (burn-in):
 ## --------------------------------------------------------------------------------------------
 
-M_bdy   = 6.0*K*N/(gamma*T)
+M_bdy   = 6.*K*N/(gamma*T)
 M_theta = M_bdy*0.02
 M_stage = M_bdy*0.01
 
@@ -210,7 +212,8 @@ p          = Array(Float64,s+N)
 theta_save = Array(Float64,s)
 u_save     = Array(Float64,N)
 
-println(string("\nStarting HMC loops (burn-in)...\n---------------------------------\n"))
+@printf(f,"%.70s\n",string("\nStarting HMC loops (burn-in)...\n---------------------------------\n"))
+flush(f)
 t1=time()
 
 for counter = 1:nsample_burnin
@@ -258,7 +261,8 @@ for counter = 1:nsample_burnin
     u_sample[counter+1,:] = u 
    
     if (counter%100 == 0)
-        println(string(counter, " loops completed in ", round(time()-t1,1), " seconds \n"))
+        @printf(f,"%.70s\n",string(counter, " loops completed in ", round(time()-t1,1), " seconds \n"))
+        flush(f)
     end
 
 end
@@ -271,9 +275,9 @@ M_bdy_burnin   = M_bdy
 M_theta_burnin = M_theta
 M_stage_burnin = M_stage
 
-M_bdy   = 6.0*K*N/(gamma*T)
-M_theta = M_bdy*[0.02, 0.02]						    # Masses for K and gamma
-M_stage = M_bdy*0.002
+M_bdy   = 6.*K*(N-1)/(gamma*T)
+M_theta = M_bdy*[0.03, 0.03]
+M_stage = M_bdy*0.02
 
 mp = Array(Float64, s+N)
 mp[1:s] = M_theta
@@ -287,7 +291,8 @@ mp[s+N] = M_bdy                                         # Last end point bead
 
 reject_counter = 0
 
-println(string("\nStarting effective HMC loops...\n---------------------------------\n"))
+@printf(f,"%.70s\n",string("\nStarting effective HMC loops...\n---------------------------------\n"))
+flush(f)
 
 for counter = (nsample_burnin + 1):nsample
 
@@ -334,7 +339,8 @@ for counter = (nsample_burnin + 1):nsample
     u_sample[counter+1,:] = u 
    
     if (counter%100 == 0)
-        println(string(counter, " loops completed in ", round(time()-t1,1), " seconds \n"))
+        @printf(f,"%.70s\n",string(counter, " loops completed in ", round(time()-t1,1), " seconds \n"))
+        flush(f)
     end
 
 end
@@ -372,8 +378,10 @@ for index = 1:(nsample+1)
     end
 end
 
-println(string("\nRun completed in ", time()-t1, " seconds"))
+@printf(f,"%.70s\n",string("\nRun completed in ", time()-t1, " seconds"))
+flush(f)
 
+close(f)
 ##
 ##
 ## ============================================================================================
@@ -383,11 +391,11 @@ println(string("\nRun completed in ", time()-t1, " seconds"))
 ##
 
 param_names  = vcat("N", "j", "n", "t[1]", "dt", "s", "true_K", "true_gamma", "sigma", "K", "gamma", 
-	"nsample_burnin", "nsample_eff", "M_bdy_burnin", "M_bdy", "M_theta_burnin", "M_theta_K", 
-	"M_theta_gamma", "M_stage_burnin", "M_stage", "dtau", "nn", "n_respa")
+    "nsample_burnin", "nsample_eff", "M_bdy_burnin", "M_bdy", "M_theta_burnin", "M_theta_K", 
+    "M_theta_gamma", "M_stage_burnin", "M_stage", "dtau", "nn", "n_respa")
 param_values = vcat(N, j, n, t[1], dt, s, true_K, true_gamma, sigma, K, gamma, 
-	nsample_burnin, nsample_eff, M_bdy_burnin, M_bdy, M_theta_burnin, M_theta, 
-	M_stage_burnin, M_stage, dtau, nn, n_respa)
+    nsample_burnin, nsample_eff, M_bdy_burnin, M_bdy, M_theta_burnin, M_theta, 
+    M_stage_burnin, M_stage, dtau, nn, n_respa)
 writedlm("$dir2/params$fname.dat", hcat(param_names, param_values))
 
 last_qs = qs[1:(nsample+1),N]          

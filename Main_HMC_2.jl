@@ -11,6 +11,9 @@
 ## or by automated differentiation (ForwardDiff package). 
 ## 
 ## Different masses are used for the burn-in phase.
+##
+## NEW IN VERSION 2. THE PRIOR FOR PARAMETER K IS A LOG-NORMAL DISTRIBUTION.
+## We use the tentative function f(K) = (3 Exp(-(Log(K)-4)^2/2))/K 
 ##             
 ## GitHub repository: https://github.com/ulzegasi/Julia_ParInf.git
 ##
@@ -20,8 +23,8 @@
 ## carlo.albert@eawag.ch
 ## ============================================================================================
 
-dir = "C:/Users/ulzegasi/Julia_files/ParInf_HMC"        # Main project directory   
-dir2 = "C:/Users/ulzegasi/SWITCHdrive/JuliaTemp/Testing_s5_n10_j20_k50"   # Secondary directory
+dir  = "C:/Users/ulzegasi/Julia_files/ParInf_HMC"                         # Main project directory   
+dir2 = "C:/Users/ulzegasi/SWITCHdrive/JuliaTemp/Testing_s5_n10_j40_k50"   # Secondary directory
 
 ##
 ##
@@ -36,8 +39,8 @@ range = 2:5002
 # Time points t.dat
 t  = float64(readdlm("$dir/t.dat")[range,2])
 
-const N = 201						   # Total number of discrete time points
-const j = 20                           # j-1 = number of staging beads per segment
+const N = 401						   # Total number of discrete time points
+const j = 40                           # j-1 = number of staging beads per segment
 									   # IMPORTANT: (N-1)/j = integer = n (measurement points)
 
 if  ((N-1)%j) != 0 
@@ -61,7 +64,20 @@ const s = 2                            # Number of system parameters (k, gamma)
 using ForwardDiff
 # require("$dir/ParInf_Fun_1.jl")
 # OR
-require("$dir/ParInf_Fun_AD_1.jl")
+require("$dir/ParInf_Fun_AD_2.jl")
+
+##
+##
+## ============================================================================================
+## File names:
+## ============================================================================================
+##
+##
+
+fname= string("_s5_n10_j40_k50_ln")
+# This will be displayed 
+# in the saved file names
+# It can be an empty string                                       
 
 ##
 ## ============================================================================================
@@ -75,18 +91,6 @@ true_gamma = 0.2                                        # Dimensionless noise pa
 sigma      = 0.05                                       # Measurement noise
 
 true_theta = [log(true_K/T),log(true_gamma)]            # Parameters to be inferred (beta, tau)
-
-##
-##
-## ============================================================================================
-## File names:
-## ============================================================================================
-##
-##
-
-# fname= string("_K$true_K","_G$true_gamma","_S$sigma","_Rsin")        # This will be displayed 
-                                                                       # in the saved file names
-fname= string("_s5_n10_j20_k50")                                       # It can be an empty string                                       
 
 ##
 ##
@@ -272,8 +276,8 @@ M_theta_burnin = M_theta
 M_stage_burnin = M_stage
 
 M_bdy   = 6.0*K*N/(gamma*T)
-M_theta = M_bdy*[0.02, 0.02]						    # Masses for K and gamma
-M_stage = M_bdy*0.002
+M_theta = M_bdy*[0.03, 0.03]						    # Masses for K and gamma
+M_stage = M_bdy*0.02
 
 mp = Array(Float64, s+N)
 mp[1:s] = M_theta

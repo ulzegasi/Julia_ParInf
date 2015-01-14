@@ -159,7 +159,8 @@ function V_slow(theta,q)
                 dt * q[i] * ( (rho[i]-rho[i-1])/dt ) / gamma
     end
     
-    out -= T * (2.0+gamma) / (4.0*K) + (N/2.0) * (beta-tau) 
+    out -= T * (2.0+gamma) / (4.0*K) + (N/2.0) * (beta-tau) -
+            (0.5*beta^2+beta*(log(T)-5.0)) - (tau^2+tau)
     
     return out
 end
