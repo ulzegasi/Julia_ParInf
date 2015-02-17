@@ -326,8 +326,8 @@ function RESPA(theta, u, q, p, mp, dtau, nn)               # (Tuckerman et al., 
 
     # Short-range steps (nn*deltatau):
     # ---------------------------
-
-    for counter=1:nn                                    # Verlet integrator 
+    
+    for counter_fast_respa = 1:nn                       # Verlet integrator 
         
         force_old = -V_fast_der(theta,u)                # (Tuckerman et al., JCP 97(3), 1992, eq. 2.17)
         for i=1:s
@@ -341,7 +341,7 @@ function RESPA(theta, u, q, p, mp, dtau, nn)               # (Tuckerman et al., 
             p[i] = p[i]  + (deltatau/2)*( force_old[i] + force_new[i] )
         end
     end
-
+    
     # Back transformations (u -> q) to update the {q} variables :
     # (Tuckerman et al., JCP 99 (1993), eq. 2.19)
     # ---------------------------
