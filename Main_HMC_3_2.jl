@@ -1,6 +1,5 @@
 ## ============================================================================================
 ## Project: Parameter Inference for a Simple Stochastic Hydrological Model
-## File: Main_HMC_1.jl
 ##
 ## Description: Single bucket, scale invariant noise, no evaporation yet
 ##              dS(t)/dt = r(t) - S(t)/k + sqrt(gamma/k) S(t) eta(t)
@@ -14,7 +13,9 @@
 ##
 ## NEW IN VERSION 2. THE PRIOR FOR PARAMETER K IS A LOG-NORMAL DISTRIBUTION.
 ##                   We use the tentative function f(K) = (3 Exp(-(Log(K)-4)^2/2))/K 
-## NEW IN VERSION 3. We use the reverse diff package 
+## NEW IN VERSION 3. We use the reverse diff package for automated differentiation w.r.t. 
+##                   both parameters and coordinates.
+##                   Both fast and slow potentials (and their derivatives) are fnctions of {u} only. 
 ##             
 ## GitHub repository: https://github.com/ulzegasi/Julia_ParInf.git
 ##
@@ -150,7 +151,7 @@ reload("$dir/ParInf_Fun_AD_3_2.jl")
 ## --------------------------------------------------------------------------------------------
 
 M_bdy   = 6.0*K*N/(gamma*T)
-M_theta = M_bdy*0.02
+M_theta = M_bdy/N
 M_stage = M_bdy*0.01
 
 mp[1:s] = M_theta
@@ -230,7 +231,7 @@ M_theta_burnin = M_theta
 M_stage_burnin = M_stage
 
 M_bdy   = 6.0*K*N/(gamma*T)
-M_theta = M_bdy*[0.03, 0.03]						    # Masses for K and gamma
+M_theta = M_bdy./[1.0*N, 1.0*N]						    # Masses for K and gamma
 M_stage = M_bdy*0.02
 
 mp = zeros(Float64, s+N)
@@ -249,6 +250,9 @@ reject_counter = 0
 
 time_Hold       = Array(Float64,nsample_eff)
 time_respa      = Array(Float64,nsample_eff)
+time_respa_s    = zeros(nsample_eff)
+time_respa_f_u  = zeros(nsample_eff)
+time_respa_f_d  = zeros(nsample_eff)
 time_Hnew       = Array(Float64,nsample_eff)
 time_metropolis = Array(Float64,nsample_eff) 
 
@@ -281,7 +285,7 @@ for counter = (nsample_burnin + 1):nsample
     t1=time()
     
     for counter_respa = 1:n_respa 
-        RESPA(theta, u, p, mp, dtau, nn, deltatau)  
+        RESPA(theta, u, p, mp, dtau, nn, deltatau, counter)  
     end 
     time_respa[counter-nsample_burnin] = time()-t1
 
@@ -352,6 +356,9 @@ end
 println(string("\nRun completed in ", round(time()-tinit,6), " seconds \n"))
 println(string("Calculation of H_old in ", round(sum(time_Hold),6), " seconds \n"))
 println(string("RESPA cycles in ", round(sum(time_respa),6), " seconds \n"))
+println(string("Slow RESPA in ", round(sum(time_respa_s),6), " seconds \n"))
+println(string("Fast RESPA, derivatives, in ", round(sum(time_respa_f_d),6), " seconds \n"))
+println(string("Fast RESPA, updates of the {u}, in ", round(sum(time_respa_f_u),6), " seconds \n"))
 println(string("Calculation of H_new in ", round(sum(time_Hnew),6), " seconds \n"))
 println(string("Metropolis steps in ", round(sum(time_metropolis),6), " seconds \n"))
 

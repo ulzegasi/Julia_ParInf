@@ -220,24 +220,25 @@ V_slow_der_u     = rdiff(V_slow, outsym=:out_slow, u = ones(Float64, N) )
 ## RESPA
 ##########################################################################
 
-function RESPA(theta, u, p, mp, dtau, nn, deltatau)     # (Tuckerman et al., JCP 97(3), 1992 )
+function RESPA(theta, u, p, mp, dtau, nn, deltatau, counter)     # (Tuckerman et al., JCP 97(3), 1992 )
     
 
     # First long-range step (dtau):
     # ---------------------------
-    
+    time1 = time()
     force = -V_slow_der(theta,u)
     for i=1:(N+s) 
         p[i] = p[i]  + (dtau/2)* force[i]
     end
-
+    time_respa_s[counter-nsample_burnin] += (time()-time1) 
     # Short-range steps (nn*deltatau):
     # ---------------------------
     
     for counter_fast_respa = 1:nn                       # Verlet integrator 
-        
+        timefd = time()
         force_old = -V_fast_der(theta,u)                # (Tuckerman et al., JCP 97(3), 1992, eq. 2.17)
-
+        time_respa_f_d[counter-nsample_burnin] += (time()-timefd) 
+        timefu = time()
         for i=1:s
             theta[i] = theta[i] + deltatau * ( p[i]  + (deltatau/2) * force_old[i] )/mp[i]
         end
@@ -245,12 +246,15 @@ function RESPA(theta, u, p, mp, dtau, nn, deltatau)     # (Tuckerman et al., JCP
             u[i] = u[i]  + deltatau * ( p[i+s]  + (deltatau/2) * force_old[i+s] )/mp[i+s]
         end
         
+        time_respa_f_u[counter-nsample_burnin] += (time()-timefu)
+        timefd = time()
         force_new = -V_fast_der(theta,u)
-
+        time_respa_f_d[counter-nsample_burnin] += (time()-timefd)
         for i=1:(N+s) 
             p[i] = p[i]  + (deltatau/2)*( force_old[i] + force_new[i] )
         end
     end
+
     
     # Back transformations (u -> q) to update the {q} variables :
     # (Tuckerman et al., JCP 99 (1993), eq. 2.19)
@@ -270,9 +274,10 @@ function RESPA(theta, u, p, mp, dtau, nn, deltatau)     # (Tuckerman et al., JCP
 
     # Long-range step:
     # ---------------------------
+    time2 = time()
     force = -V_slow_der(theta,u)
     for i=1:(N+s) 
         p[i] = p[i]  + (dtau/2)* force[i]
     end
-
+    time_respa_s[counter-nsample_burnin] += (time()-time2) 
 end
