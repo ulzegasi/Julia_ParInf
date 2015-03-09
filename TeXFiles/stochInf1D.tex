@@ -82,7 +82,7 @@
 \title{Parameter Inference for a Simple Stochastic Hydrological Model}
 
 \author{C. Albert\thanks{\noindent Email: carlo.albert@eawag.ch} \,,
-S. Ulzega \,, P. Reichert}
+S. Ulzega}
 \affil{Eawag, Swiss Federal Institute of Aquatic Science and Technology, 8600 D\"ubendorf, Switzerland}
 \maketitle
 
@@ -97,26 +97,27 @@ where $r(t)$ describes the rain input and $\eta(t)$ denotes white noise, i.e.,
 \begin{equation}\label{whitenoise}
 \langle\eta(t)\eta(t')\rangle = \delta(t-t')\,.
 \end{equation}
-Given rainfall and runoff time-series, we want to infer the two system parameters $K$ and $\gamma$, measuring, respectively, the {\em retention time}, and the noise.
-The noise parameter is dimensionless, which renders the noise term scale-invariant.
+Given rainfall and runoff time-series, we want to infer the two system parameters $K$ and $\gamma$, measuring, respectively, the retention time and the noise.
+The scale-invariance of the noise term renders the noise parameter dimensionless.
 Due to the state-dependence of the noise term, eq. (\ref{sde}) is ill-defined unless we specify the discretization convention.
 For computational reasons, we work with the {\em Stratonovich} convention.
-Our parametrization is such that, for constant rain input $r(t)=r$, the mean of $S$ converges to $Kr$, in the long-time limit (see below).
+Our parametrization is such that, for constant rain input $r(t)=r$ and in the long-time limit, the mean of $S$ converges to the limit of the unperturbed ($\gamma=0$) system $Kr$ (see below).
 
-According to \cite{lau_2007_StateDepDiff}, the probability $P(S)$ of finding the system in a state $S$ at time $t = T$ given that it was in an initial state $S_0$ at time $t = 0$, can be expressed in the form of a path integral as,
-
+According to \cite{lau_2007_StateDepDiff}, the probability, $P(S,T|S_0,t_0)$, of finding the system in a state $S$ at time $t = T$ given that it was in an initial state $S_0$ at time $t = 0$, can be expressed in the form of a path integral as
 \begin{equation}\label{pathint}
-P(S) = \int_{S_0}^{S} e^{-\tilde{\mathcal S}[\dot{S}(t),S(t)]} \mathcal{D}S \,,
+P(S,T|S_0,t_0) = \int_{S_0}^{S} e^{-\tilde{\mathcal S}[\dot{S}(t),S(t)]} \mathcal{D}S \,,
 \end{equation}
 where the integral extends over all paths starting at $S_0$ and ending at $S$.
-The path-measure $\mathcal DS$ is the formal limit $\Delta t\rightarrow 0$ of the discretized measure
+The path-measure $\mathcal DS$ is the formal limit
 \begin{equation}\label{pathmeasure}
 {\mathcal D}S
 =
+\lim_{\Delta t\rightarrow 0}
 \prod_{i}
-\frac{dS_i}{\sqrt{2\pi \mathit{\Delta t} \gamma/K }S_i}\,.
+\frac{dS_i}{\sqrt{2\pi \mathit{\Delta t} \gamma/K }S_i}\,,
 \end{equation}
-The {\em action} is a functional defined on paths $\tilde{\mathcal S}:[0,T]\longrightarrow \mathbb R_+$ and reads as
+for a discretization $S_i = S(t_i)$ with $t_i-t_{i-1}=\Delta t$.
+The {\em action} is a functional defined on paths $S:[0,T]\longrightarrow \mathbb R_+$ and reads as
 \begin{equation}\label{action}
   \tilde{\mathcal S}[\dot{S}(t),S(t)]
   =
@@ -136,27 +137,30 @@ The {\em action} is a functional defined on paths $\tilde{\mathcal S}:[0,T]\long
   \right\}
  \,.
 \end{equation}
-Note that the action includes the Jacobian that arises when changing coordinates from ${\eta(t)}$ to $S(t)$ and ensures the normalization condition $\int{ P(S) \mathit{dS}}=1$.
+Note that the action includes the Jacobian that arises when changing coordinates from ${\eta(t)}$ to $S(t)$ and ensures the normalization condition $\int{ P(S,T|S_0,t_0) \mathit{dS}}=1$.
 
-It is possible to calculate the equilibrium distribution $P_{\text{eq}}(S) = \lim_{T\rightarrow\infty} P(S(T))$ in the simple case of a constant rain input $r_{0}$. Systems at thermal equilibrium must fulfill detailed balance, i.e.,
+It is possible to calculate the equilibrium distribution $P_{\text{eq}}(S) = \lim_{T\rightarrow\infty} P(S,T|S_0,t_0)$ in the simple case of a constant rain input $r_{0}$. Systems at thermal equilibrium must fulfill detailed balance, i.e.,
 \begin{equation}\label{detailed_balance}
-P(S_1 t_1 | S_0 t_0 ) P_{\text{eq}}(S_0) = P(S_0 t_1 | S_1 t_0 ) P_{\text{eq}}(S_1) \,,
+P(S_1 t_1 | S_0 t_0 ) P_{\text{eq}}(S_0) = P(S_0 t_1 | S_1 t_0 ) P_{\text{eq}}(S_1) \,.
 \end{equation}
-where $P(S_1 t_1 | S_0 t_0 )$ is the conditional probability for the state $S_1$ at time $t_1$ given the initial state $S_0$ at time $t_0$ and $P(S_0 t_1 | S_1 t_0 )$ is the conditional probability for the reverse path $\overline{S}(t) = S(-t)$. Assuming a solution in the form
+Assuming a solution of the form
 
 \begin{equation}\label{Peq}
   P_{\text{eq}}(S)
   \propto
   e^{-\mathcal{H}(S)}\,,
 \end{equation}
-
-equation (\ref{detailed_balance}) can be rewritten as
+equation (\ref{detailed_balance}) is rewritten as
 
 \begin{equation}\label{detailed_balance_2}
-P(S_1 t_1 | S_0 t_0 ) = P(S_0 t_1 | S_1 t_0 ) \exp^{-\int_{t_0}^{t_1} dt \frac{dS}{dt}\frac{\mathcal{H}}{S}}\,.
+P(S_1 t_1 | S_0 t_0 ) = P(S_0 t_1 | S_1 t_0 )
+\exp\left\{
+        -\int_{t_0}^{t_1} dt \frac{dS}{dt}\frac{d\mathcal{H}}{dS}
+    \right\}
+\,,
 \end{equation}
-
-After plugging in (\ref{pathint}) for the conditional probabilities, and using the action (\ref{action}), equation (\ref{detailed_balance_2}) yields
+where $S(t)$ is an arbitrary path connecting $S_0$ with $S_1$.
+After plugging in (\ref{pathint}) and (\ref{action}), and using the Stratonovich property, which allows us to transform a path from $S_0$ to $S_1$ into a path from $S_1$ to $S_0$ through the transformation $S(t) \rightarrow S(-t)$, we get
 
 \begin{equation}\label{constant_rain_H}
 -r_{0}+\frac{1+\gamma}{K}S
@@ -164,56 +168,43 @@ After plugging in (\ref{pathint}) for the conditional probabilities, and using t
 \frac{\gamma S^2}{2K}
 \frac{d \mathcal{H}(S)}{dS}\,.
 \end{equation}
-
-In order to go from (\ref{detailed_balance_2}) to (\ref{constant_rain_H}) we have exploited the property of the Stratonovich convention that the backward path is evaluated at the same points as the forward path. The solution to (\ref{constant_rain_H}) is, up to an additive constant,
-
+The solution to (\ref{constant_rain_H}) is, up to an additive constant, given by eq.
 \begin{equation}\label{solution_const_rain}
 \mathcal{H}(S)=\frac{2 K r_0}{\gamma S}+\frac{2(1+\gamma)}{\gamma}\ln(S)\,.
 \end{equation}
-
 %\begin{figure}
 %    \centering
 %    \includegraphics[width=0.6\textwidth]{Figs/InvGamma.png}
 %    \caption{Inverse gamma distributions with scale parameter $\beta = 5$ and shape parameters $\alpha = 3,4,5,6$.}
 %    \label{fig:inv_gamma}
 %\end{figure}
-
-Thus, it turns out that $P_{\text{eq}}(S)$ is described by an inverse gamma distribution, $\Gamma^{-1}(\alpha,\beta)$ with scale parameter $\beta=2Kr_{0}/\gamma$ and shape parameter $\alpha=(2+\gamma)/\gamma$, i.e.,
+Thus, it turns out that $P_{\text{eq}}(S)$ is described by an inverse gamma distribution with scale parameter $2Kr_{0}/\gamma$ and shape parameter $(2+\gamma)/\gamma$, i.e.,
 
 \begin{equation}\label{inverse_gamma}
   P_{\text{eq}}(S)
   \propto
   S^{-2(1+\gamma)/\gamma}e^{-2Kr_{0}/(\gamma S)}\,,
 \end{equation}
-
-whose mean equals the equilibrium solution of the unperturbed system,
-
+whose mean equals the equilibrium solution of the unperturbed system ($\gamma=0$),
 \begin{equation}
   \langle S\rangle_{\eq}=Kr_{0},
 \end{equation}
-
 and whose variance, for $\gamma< 2$, is given by
-
 \begin{equation}
   \langle (S - \langle S\rangle_{\eq})^2\rangle_{\eq}
   =
   K^2r_{0}^2
   \frac{\gamma}{2-\gamma}\,.
 \end{equation}
-
-Note that the variance diverges for $\gamma\geq 2$.
-
-\vspace{\baselineskip}
+Note that the variance diverges, for $\gamma\geq 2$.
+The power-law decay of the inverse gamma distribution is reminiscent of the scale-invariance of the error model.
 
 Let us consider now the general case of a time dependent rain input $r(t)$ with the following time-series of {\em observed} outputs,
-
 \begin{equation}\label{data}
-  y_i=\frac{1}{K}S(t_i)+\sigma\epsilon_i\,,\quad i=1,\dots,n\,,
+  y_i=\frac{1}{K}S(t_i)+\sigma\epsilon_i\,,\quad i=1,\dots,n+1\,,
 \end{equation}
-
-where the times $t_i$ are chosen so that $0=t_1<t_2<\dots < t_n=T$ and the $\epsilon_i$ are uncorrelated standard normal random variables.
+where the times $t_i$ are chosen so that $0=t_1<t_2<\dots < t_{n+1}=T$ and the $\epsilon_i$ are uncorrelated standard normal random variables.
 The {\em likelihood} function for the data (\ref{data}) is, up to a factor that doesn't depend on the model parameters, given by the path-integral
-
 \begin{equation}\label{likelihood}
   f(\vc y | \bt)
   \propto
@@ -221,15 +212,15 @@ The {\em likelihood} function for the data (\ref{data}) is, up to a factor that 
   \exp\bigg[
     -{\tilde{\mathcal S}}[\dot{S},S]
     -\frac{1}{2}
-    \sum_{i=1}^n
+    \sum_{i=1}^{n+1}
     \frac
     {(y_i-S(t_i)/K)^2}
     {\sigma^2}
   \bigg]
   {\mathcal D} S(\bt)\,,
 \end{equation}
-
-with the parameter vector $\bt=(K,\gamma)^T$. Choosing for the parameters $K$ and $\gamma$ the improper prior given by
+with the parameter vector $\bt=(K,\gamma)^T$.
+Choosing for the parameters $K$ and $\gamma$ the improper prior given by
 
 \begin{equation}\label{prior}
   f(\bt)
@@ -252,9 +243,9 @@ In terms of these dimensionless variables and parameters the posterior reads (wi
   \propto
   \int
   \exp\bigg[
-    -{\tilde{\mathcal S}}[\dot{q}(t),q(t)]
+    -{{\mathcal S}}[\dot{q},q]
     -\frac{1}{2}
-    \sum_{i=1}^n
+    \sum_{i=1}^{n+1}
     \frac
     {(y_i-r_ie^{\beta q_i})^2}
     {\sigma^2}
@@ -274,20 +265,22 @@ where $r_i$ and $q_i$ represent $r(t)$ and $q(t)$, respectively, at time $t_i$. 
 dq(t)\,,
 \end{equation}
 
-while the action can be rewritten in the compact form,
+while the action is rewritten in the compact form,
 
 \begin{equation}\label{action_new}
-\tilde {\mathcal S}[\dot{q},q]
+{\mathcal S}[\dot{q},q]
 =
-\frac{1}{2T}
-\int_0^T \dt \left\{\left(
+\frac{1}{T}
+\int_0^T \dt \left\{
+\frac{1}{2}
+\left(
     T\dot q(t)
     +
     \rho(t)
     -
     \frac{\beta}{\gamma}e^{-\beta q(t)}\right)^2
     -
-    \frac{(2+\gamma)\beta^2}{2\gamma}
+    \frac{(2+\gamma)\beta^2}{4\gamma}
 \right\} \,,
 \end{equation}
 
@@ -298,7 +291,7 @@ with
 \frac{T}{\beta}\frac{d \left[\ln r(t)\right]}{dt}+\frac{\beta(\gamma+1)}{\gamma}\,.
 \end{equation}
 
-In order to ease the numerical computations, it is useful to introduce a generalized time-dependent Hamiltonian,
+In order to ease the numerical computations, it is useful to introduce the time-dependent Hamiltonian,
 
 \begin{equation}\label{H}
   \mathcal{H}_q(q,t)
@@ -311,22 +304,26 @@ and rewrite the action (\ref{action_new}) as,
 \begin{multline}\label{action_final}
 {\mathcal S}[\dot{q},q]
 =
-\frac{1}{2T}
+\frac{1}{T}
 \int_0^T dt\left\{
+    \frac{1}{2}
     T^2\dot q^2(t) +
+    \frac{1}{2}
     \left(\rho(t)-\frac{\beta}{\gamma}e^{-\beta q(t)}\right)^2 -
-    2T\frac{\partial \mathcal{H}_q(q,t)}{\partial t} -
-     \frac{(2+\gamma)\beta^2}{2\gamma}
+    T\frac{\partial \mathcal{H}_q(q,t)}{\partial t} -
+     \frac{(2+\gamma)\beta^2}{4\gamma}
 \right\}
 \\
 + \mathcal{H}_q(q(T),T) - \mathcal{H}_q(q(0),0)
 \\
-= \frac{1}{2T}
+= \frac{1}{T}
 \int_0^T dt\left\{
+    \frac{1}{2}
     T^2\dot q^2(t) +
+    \frac{1}{2}
     \left(\rho(t)-\frac{\beta}{\gamma}e^{-\beta q(t)}\right)^2 -
-    2Tq(t)\dot\rho(t) -
-    \frac{(2+\gamma)\beta^2}{2\gamma}
+    Tq(t)\dot\rho(t) -
+    \frac{(2+\gamma)\beta^2}{4\gamma}
 \right\}
 \\
 +
@@ -350,11 +347,11 @@ where
 \begin{equation}\label{K}
    K( p,{\pmb\pi})
    =
-   \int \frac{ p^2(t)}{2m_q}dt
-   + \sum_{\alpha=1}^s\frac{\pi_\alpha^2}{2m_\alpha}\,,
+   \int_0^T \frac{ p^2(t)}{2m_q}dt
+   + \sum_{\alpha=1}^2\frac{\pi_\alpha^2}{2m_\alpha}\,,
 \end{equation}
 
-where in our case $s=2$, and $V( q,\bt)$ is the logarithm of the kernel of (\ref{posterior_pathint}).
+where $V( q,\bt)$ is the negative logarithm of the kernel of (\ref{posterior_pathint}).
 The HMC method, which is a combination of the {\em Metropolis algorithm} by \cite{metropolis_1953_MRT2} and {\em molecular dynamics} methods \textbf{[ref?]}, iterates the following steps
 
 \begin{enumerate}
@@ -368,35 +365,68 @@ The HMC method, which is a combination of the {\em Metropolis algorithm} by \cit
 
 The last step is the standard Metropolis algorithm, while the first two steps allow to make relatively large jumps in phase space while maintaining a relatively large acceptance rate.
 
-In particular, step 2 requires the calculation of the gradient of (\ref{Hamiltonian}), which is a somewhat tedious manual labour.
-Before we set out to do so, let us first write down the proper discretization of the path-integral (\ref{posterior_pathint}), with the action (\ref{action_final}).
-Therefore, let us assume that the measurement time points $\left\{ y_i \right\}_{i=1,\dots, n}$ of the time series (\ref{data}) are equidistantly distributed on the time interval $[0,T]$.
-We further partition this interval into $N$ bins, with $N >> 1$, according to the time series $0=t_1<t_2,\dots<t_N=T$, such that the time points $t_{a_{\kappa}}$ with indexes $a_{\kappa} = \kappa (N-1)/n + 1$, where $\kappa = 1,\dots, n$, coincide with the data points $y_i$.
-Under these assumptions the discretized versions of $K( p,{\pmb\pi})$ and $V( q,\bt)$ read
+Let us first write down the proper discretization of the path-integral (\ref{posterior_pathint}), with the action (\ref{action_final}).
+Therefore, let us assume that the measurement time points $\left\{ y_i \right\}_{i=1,\dots, n+1}$ of the time series (\ref{data}) are equidistantly distributed on the time interval $[0,T]$, with $t_1=0$ and $t_{n+1}=T$.
+Each interval between two consecutive data points is further partitioned into $j$ bins, such that we have a total of $nj+1=N>>1$ discretization points.
+The discretized versions of $K( p,{\pmb\pi})$ and $V( q,\bt)$ read
 
 \begin{align}
    K( p,{\pmb\pi})
-   &=
-   \sum_{i=1}^N \frac{ p_i^2}{2m_q}\Delta t
-   + \sum_{\alpha=1}^s\frac{\pi_\alpha^2}{2m_\alpha}\,,\label{Kdisc}
+   &\approx
+   \sum_{i=1}^N
+   \frac{ p_i^2}{2m_q}\Delta t
+   +
+   \sum_{\alpha=1}^s\frac{\pi_\alpha^2}{2m_\alpha}\,,\label{Kdisc}
    \\
    V(q,\bt)
    &\approx
+   \frac{\Delta t}{T}
    \sum_{i=2}^{N}
-  \frac{K}{2\gamma\Delta t}
-  (q_i-q_{i-1})^2+\sum_{i=2}^{N-1} \frac{\Delta t}{\gamma} \left\{\frac{(\rho_i-e^{-q_i})^2}{2 K}  - q_i \frac{(\rho_i-\rho_{i-1})}{\Delta t} \right\}
+   \left\{
+    \frac{1}{2} T^2 \dot q_i^2
+    +
+   \left(
+        \frac{1}{2}
+        \left(
+            \rho_i-\frac{\beta}{\gamma}e^{-\beta \bar q_i}
+        \right)^2
+        -
+        T\bar q_i\dot\rho_i
+    \right)
+   \right\}
   \\
-  &- \frac{T (\gamma + 2)}{4 K}+\frac{\left(e^{-q_N}+q_N \rho_{N-1}- e^{-q_1}-q_1 \rho_{1} \right)}{\gamma} \nonumber
+  &-
+  \frac{(2+\gamma)\beta^2}{4\gamma}
+  +
+  \frac{1}{\gamma}
+  e^{-\beta q_N}
+  +
+  q_N \rho_{N-1}
+  -
+  \frac{1}{\gamma}
+  e^{-\beta q_1}
+  -
+  q_1 \rho_{1}
+  \nonumber
   \\
-  & + \sum_{\kappa=1}^n \frac{(y_\kappa-r_{a_{\kappa}} e^{q_{a_{\kappa}}})^2}{2\sigma^2} +\ln \left(K^{1-N/2} \gamma^{1+N/2}\right)\nonumber
+  & +
+  \sum_{s=1}^{n+1}
+  \frac{(y_s-r_{(s-1)j+1} e^{\beta q_{(s-1)j+1}})^2}{2\sigma^2}
+  % +\ln \left(K^{1-N/2} \gamma^{1+N/2}\right)\nonumber
    \,,\label{Vdisc}
 \end{align}
-
-where the last term comes from the path measure (\ref{pathmeasure_q}) and
-
-\begin{equation}\label{rhodisc}
-\rho_i = K \frac{\ln(r_{i+1}/r_i)}{\Delta t}+\gamma+1\,.
+with
+\begin{equation}
+  \dot q_i = \frac{q_i-q_{i-1}}{\Delta t}\,,\quad
+  \bar q_i = \frac{q_i+q_{i-1}}{2}\,,
 \end{equation}
+and
+\begin{equation}\label{rhodisc}
+\rho_i = K \frac{\ln(r_{i+1}/r_i)}{\Delta t}+\gamma+1\,,\quad
+\dot\rho_i = \frac{\rho_i-\rho_{i-1}}{\Delta t}\,.
+\end{equation}
+
+Note that we've neglected terms of order $\mathcal O(1/N)$ in the action (\ref{Vdisc}) and that we've assumed $r(t)$ to be at least twice differentiable.
 
 %\begin{equation}
 %  \dot{q}_i:=\frac{ q_i -  q_{i-1}}{\Delta t}\,,\quad
@@ -406,19 +436,21 @@ where the last term comes from the path measure (\ref{pathmeasure_q}) and
 
 For strongly varying rain input or high-frequency output data, $\Delta t$ needs to be chosen small. Thus, the harmonic part of the Hamiltonian becomes stiff and, consequently, the time-step of MD needs to be chosen small, which leads to slow convergence.
 To solve this problem, we change coordinates, such that the harmonic part of the Hamiltonian becomes (partly) diagonal and the particle interaction moves to the potential.
-One option would be to use the Fourier modes of ${\eta}(t)$ as configurational variables. Calculating the potential requires then an inversion of a Toeplitz matrix. This approach is interesting because, in our case, it allows for an approximate analytical integration of high-frequency modes.
+One option would be to use the Fourier modes of ${\eta}(t)$ as configurational variables. Calculating the potential requires then an inversion of a Toeplitz matrix. This approach is interesting because, in our case, it allows for an approximate analytical integration of high-frequency modes (see \cite{doll_1985_fourier}).
 
-Another approach is the so-called \emph{staging}, described in Tuckerman et al. (1993). This approach is interesting if different time-scales are involved.
-We first note that the Hamiltonian $\mathcal{H}_{\text{HMC}}(q,\bt; p,{\pmb\pi})$ (\ref{Hamiltonian}) can be seen as the classical Hamiltonian of a polymer chain with harmonic bonds between neighbouring beads, described by the first harmonic term of $V(q,\bt)$, in an external field described by the other non-harmonic terms of $V(q,\bt)$. Sampling system realizations, each defined by a set of coordinates $\left\{ q_i\right\}$ and parameters $\bt$, is equivalent to sampling states in the polymer dynamics. Thus, let us place $n+1$ equidistant (data) beads on the time domain, the first sitting on $t=0$ and the last on $t=T$. In between, we place $n(j-1)$ equidistant staging beads. So that, in total, we have $nj+1=N$ equidistant beads.
+We choose another approach, the so-called \emph{staging} as described in Tuckerman et al. (1993), and diagonalize the harmonic part only in between the measurement points.
+We first note that the Hamiltonian $\mathcal{H}_{\text{HMC}}(q,\bt; p,{\pmb\pi})$ (\ref{Hamiltonian}) can be seen as the classical Hamiltonian of a polymer chain with harmonic bonds between neighbouring beads, described by the first harmonic term of $V(q,\bt)$, in an external field described by the other non-harmonic terms of $V(q,\bt)$. 
+Furthermore, the model parameters are viewed as additional degrees of freedom that couple with all other degrees of freedom. 
+Sampling system realizations, each defined by a set of coordinates $\left\{ q_i\right\}$ and parameters $\bt$, is equivalent to sampling states in the polymer dynamics.
 
-The discretized harmonic part of the action can be rewritten as
+The discretized harmonic part of the action is rewritten as
 
 \begin{multline}
   \sum_{i=2}^{N}
-  \frac{K}{2\gamma\Delta t}
+  \frac{T}{2\Delta t}
   (q_i-q_{i-1})^2
   \\ =
-  \frac{K}{2\gamma}
+  \frac{T}{2}
   \sum_{s=1}^{n}\left\{
     \frac{(q_{(s-1)j+1} - q_{sj+1})^2}{j\Delta t}
     +
@@ -458,81 +490,198 @@ or equivalently by the recursive relation
   q_{sj+k} = u_{sj+k} + \frac{k-1}{k} q_{s+k+1}+ \frac{1}{k}q_{sj+1} \,.
 \end{equation}
 
-Moreover, we introduce the following transformation for the parameters,
-
-\begin{equation}\label{params_transform}
-\beta = \ln(K/T) \,,\quad \tau=\ln(\gamma)
+%Moreover, we introduce the following transformation for the parameters,
+%
+%\begin{equation}\label{params_transform}
+%\beta = \ln(K/T) \,,\quad \tau=\ln(\gamma)
+%\end{equation}
+%
+%and the corresponding transformed vector $\tilde{\bt}=(\beta,\tau)^T$. This transformation ensures that the system parameters $K$ and $\gamma$ will be kept positive during the HMC algorithm.
+%
+This transformation decouples fast degrees of freedom from slow ones and allows us to split the Hamiltonian $\mathcal H_{HMC}$ into components with different scaling behaviour in the potentially large numbers $n$ and $N$.
+We write
+\begin{equation}
+  \mathcal H_{HMC}= \mathcal H_N+\mathcal H_n+\mathcal H_1\,,
 \end{equation}
-
-and the corresponding transformed vector $\tilde{\bt}=(\beta,\tau)^T$. This transformation ensures that the system parameters $K$ and $\gamma$ will be kept positive during the HMC algorithm.
-
-The potential $V(q,\tilde{\bt})$ can now be split into a fast component that scales linearly or quadratically with $N$ or $n$,
-
-\begin{multline}
-  {\mathcal V}_f(\vc u,\tilde{\bt})
-  =
-  \frac{N e^{\beta-\tau}}{2}
-  \sum_{s=1}^n\left\{
-    \frac{(u_{(s-1)j+1} - u_{sj+1})^2}{j}
+where
+\begin{align}
+  \mathcal H_N
+  &=
+  \frac{1}{2}
+  \sum_{s=1}^{n}
+  \sum_{k=2}^j
+  \left\{
+    \frac{\Delta t}{m_q}p_{(s-1)j+k}^2
     +
-    \sum_{k=2}^j
-    \frac{k}{(k-1)}
+    \frac{Tk}{\Delta t(k-1)}
     u_{(s-1)j+k}^2
-  \right\}
+  \right\}\,,\label{H_N}
   \\
-  +
-  \frac{N}{2}(\beta-\tau)
-      -
-    \sum_{s=0}^{n}
+  \mathcal H_n
+  &=
+  \frac{1}{2}
+  \sum_{s=1}^{n+1}
+  \left\{
+   \frac{\Delta t }{m_q}p_{(s-1)j+1}^2
+    +
+    \frac{T}{j\Delta t}
+    (u_{(s-1)j+1} - u_{sj+1})^2
+    -
     \frac
-    {(y_s-r_{sj+1}e^{u_{sj+1}})^2}
-    {2 \sigma^2}
-  \,,
-\end{multline}
-
-where we have used $T = N \Delta t$, and a slow $N-$ and $n-$independent component,
-
-\begin{multline}
-{\mathcal V}_s(\vc q,\tilde{\bt})
-=
-    \sum_{i=2}^{N-1}
-        \left\{
-            \frac{e^{-(\beta+\tau)}}{2N}
-            (\rho_i-e^{-q_i})^2 - e^{-\tau}
-            q_i (\rho_i-\rho_{i-1})
-        \right\}-\frac{(2+e^\tau)e^{-\beta}}{4}
-        \\
-    + e^{-\tau} \left( e^{-q_N} + q_N\rho_{N-1}
-    - e^{-q_1} - q_1\rho_1\right)
+    {(y_s-r_{(s-1)j+1}e^{u_{(s-1)j+1}})^2}
+    {\sigma^2}
+   \right\}\,,\\
+  \mathcal H_1
+  &=
+   \sum_{\alpha=1}^2\frac{\pi_\alpha^2}{2m_\alpha}
+   +
+  \frac{\Delta t}{T}
+   \sum_{i=2}^{N}
+   \left\{
+       \frac{1}{2}
+        \left(
+            \rho_i-\frac{\beta}{\gamma}e^{-\beta \bar q_i}
+        \right)^2
+        -
+        T\bar q_i\dot\rho_i
+   \right\}
+  \\
+  &-
+  \frac{(2+\gamma)\beta^2}{4\gamma}
+  +
+  \frac{1}{\gamma}
+  e^{-\beta q_N}
+  +
+  q_N \rho_{N-1}
+  -
+  \frac{1}{\gamma}
+  e^{-\beta q_1}
+  -
+  q_1 \rho_{1}
 \,.
-\end{multline}
+\end{align}
+The harmonic part $\mathcal H_N$, for the staging beads, scales linearly with $N$.
+The harmonic term $\mathcal H_n$, for the boundary beads, as well as the measurement term scale linearly with $n$.
+Finally, the potential does not scale with neither $n$ nor $N$.
+Thus, depending on the values of $N$ and $n$, the dynamics happens on very different time scales.
+Therefore, we use the Trotter formula according to \cite{tuckerman1992reversible} in order to design a reversible molecular dynamics integrator that takes these different time scales into account.
+In order to design an appropriate partition of the Hamiltonian, we need to distinguish different regimes.
+\begin{enumerate}
+  \item[i]
+  $\mathcal H_N \sim \mathcal H_n >> \mathcal H_1$
+  \item[ii]
+  $\mathcal H_N >> \mathcal H_n \sim \mathcal H_1$
+  \item[iii]
+  $\mathcal H_N >> \mathcal H_n >> \mathcal H_1$
+\end{enumerate}
 
-In the expressions above we have included the Jacobian associated with (\ref{params_transform}).
+In regime ($ii$) we simply separate the harmonic part of the action, for the staging beads, from the rest and write
+\begin{equation}
+  \mathcal H_{HMC}=\mathcal H_N + \mathcal H'\,.
+\end{equation}
+In order to design a reversible integrator, for the associated Hamiltonian equations, we define the Liouville operators
+\begin{equation}
+  iL_N=\{\cdot\,,\,\mathcal H_N\}\,,\quad
+  iL'=\{\cdot\,,\,\mathcal H'\}\,,
+\end{equation}
+where $\{\cdot\,,\,\cdot\}$ denotes the Poisson brackets that are defined on functions on the phase space.
+Trotter's formula allows us to write the Hamiltonian propagator as
+\begin{equation}
+  e^{i(L_N+L')\tau}
+  =
+  (e^{iL_N(\Delta\tau/2)}e^{iL'\Delta\tau}e^{iL_N(\Delta\tau/2)})^P
+  +
+  \mathcal O(P^{-2})\,,
+\end{equation}
+for $\tau =P\Delta \tau$.
+In regime (ii) the outer propagator $\exp[iL_N(\Delta \tau/2)]$ describes a much faster dynamics than the inner one.
+However, it is the dynamics of uncoupled harmonic oscillators, which we can readily solve.
+Masses and frequencies of the oscillators are derived from (\ref{H_N}) as
+\begin{equation}
+  m=m_q/\Delta t\,,\quad
+  \omega_k=\sqrt{\frac{Nk}{(k-1)m}}\,.
+\end{equation}
+The fast outer propagator is then given by eqs.
+\begin{align}
+  u_{(s-1)j+k}(\Delta\tau/2)
+  &=
+  u_{(s-1)j+k}(0)\cos(\omega_k\Delta\tau/2)
+  +
+  \frac{p_{(s-1)j+k}(0)}{m\omega_k}\sin(\omega_k\Delta\tau/2)\,,\\
+  p_{(s-1)j+k}(\Delta\tau/2)
+  &=
+  p_{(s-1)j+k}(0)\cos(\omega_k\Delta\tau/2)
+  -
+  m\omega_k u_{(s-1)j+k}(0) \sin(\omega_k\Delta\tau/2)\,,
+\end{align}
+for $k=2,\dots,j$.
 
-\vspace{\baselineskip}
-
-We can now fully exploit the two different time-scales that are involved in the problem. First, the harmonic part of the fast component ${\mathcal V}_f[\dot{\vc u},\vc u]$ can be seen as describing the dynamics of heavy coupled \emph{boundary} data-point beads and lighter uncoupled \emph{staging} beads. The different weights of boundary and staging beads are defined by adjusting their \emph{effective masses}, $m_{\text{bdy}}$ and $m_{\text{st}}$, respectively. These values are used in (\ref{Kdisc}) for the masses $m_{q}$.
-Second, the two different ranges of the forces associated with ${\mathcal V}_f(\vc u,\tilde{\bt})$ and ${\mathcal V}_s(\vc q,\tilde{\bt})$ can be efficiently taken into account by applying a reversible reference system propagator algorithm (RESPA), as outlined in Tuckerman et al. (1992). The RESPA algorithm, based on appropriate reversible molecular dynamics integrators, can significantly accelerate simulations of systems that are simultaneously subject to short- and long-range forces by separating the two different time-scales.
-
-The basic idea of the RESPA algorithm is to apply a Trotter decomposition to the system Liouville propagator $\mathcal{L}$ to generate a discrete time propagator factorized into fast and slow contributions. Indeed, as shown in Tuckerman et al. (1992), the propagator $\exp[i \mathcal{L} \Delta \tau ]$ can be written as
-
-\begin{equation}\label{G}
-  \mathcal{G}(\Delta \tau)=\exp\left\{ \frac{\Delta \tau}{2} F_s(x) \frac{\partial}{\partial p} \right\} \exp\left\{ i \mathcal{L}_f \Delta \tau  \right\} \exp\left\{ \frac{\Delta \tau}{2} F_s(x) \frac{\partial}{\partial p} \right\}\,,
+For the inner, slow propagator, we employ the velocity Verlet algorithm.
+For the boundary beads, it reads
+\begin{align}
+  u_{(s-1)j+1}(\Delta\tau)
+  &=
+  u_{(s-1)j+1}(0)
+  +
+  \frac{\Delta\tau}{m} p_{(s-1)j+1}(0)
+  +
+  \frac{\Delta \tau^2}{2m}
+  F_{(s-1)j+1}[\vc u(0),{\pmb\theta}(0)]\,,\\
+  p_{(s-1)j+1}(\Delta\tau)
+  &=
+  p_{(s-1)j+1}(0)
+  +
+  \frac{\Delta\tau}{2}
+  (
+  F_{(s-1)j+1}[\vc u(0),{\pmb\theta}(0)]
+  +
+  F_{(s-1)j+1}[\vc u(\Delta\tau),{\pmb\theta}(\Delta\tau)]
+  )\,,
+\end{align}
+where $F_i[\vc u,{\pmb\theta}]$ denotes the partial derivative of $\mathcal H'[\vc u,{\pmb\theta}]$ w.r.t. $u_i$.
+For the model parameters, analogous equations apply.
+When it comes to the staging beads, however, only the momenta have to be updated, because the associated kinetic term is not part of $\mathcal H'$ but of $\mathcal H_N$.
+Thus,
+\begin{equation}
+  p_{(s-1)j+k}(\Delta\tau)
+  =
+  p_{(s-1)j+k}(0)
+  +
+  \frac{\Delta\tau}{2}
+  (
+  F_{(s-1)j+k}[\vc u(0),{\pmb\theta}(0)]
+  +
+  F_{(s-1)j+k}[\vc u(\Delta\tau),{\pmb\theta}(\Delta\tau)]
+  )
+  \,.
 \end{equation}
 
-where for the sake of clarity we have assumed a one-dimensional system. The argument can be easily extended to our multi-dimensional case. In (\ref{G}) $F_s$ is the force associated with the slowly varying long-range potential ${\mathcal V}_s$ and $\mathcal{L}_f = \dot{x}(\partial/\partial x) + F_f(x)(\partial/\partial p)$ is the Liouville operator of the fast short-range potential ${\mathcal V}_f$. The propagator of the slow force $F_s$ can be well approximated with a large time step $\Delta \tau$. On the other hand, in order to ensure stable dynamics, the short-range middle propagator is further factorized into $n_f$ smaller time steps of duration $\delta \tau = \Delta \tau / n_f$, according to the Trotter expansion
 
-\begin{equation}\label{G_fast}
-  \exp\left\{ i \mathcal{L}_f \Delta \tau  \right\}
-  =\left[
-  \exp\left\{ \frac{\delta \tau}{2} F_f(x) \frac{\partial}{\partial p} \right\}
-  \exp\left\{  \delta\tau \dot{x} \frac{\partial}{\partial x}  \right\}
-  \exp\left\{  \frac{\delta \tau}{2} F_f(x) \frac{\partial}{\partial p} \right\}
-  \right]^{n_f} \,.
-\end{equation}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-Coordinates and conjugate momenta, i.e., $(q,\bt; p,{\pmb\pi})$ in our case, are propagated using (\ref{G}) and (\ref{G_fast}) iteratively by applying a velocity Verlet algorithm.
 
+%We can now fully exploit the two different time-scales that are involved in the problem. First, the harmonic part of the fast component ${\mathcal V}_f[\dot{\vc u},\vc u]$ can be seen as describing the dynamics of heavy coupled \emph{boundary} data-point beads and lighter uncoupled \emph{staging} beads. The different weights of boundary and staging beads are defined by adjusting their \emph{effective masses}, $m_{\text{bdy}}$ and $m_{\text{st}}$, respectively. These values are used in (\ref{Kdisc}) for the masses $m_{q}$.
+%Second, the two different ranges of the forces associated with ${\mathcal V}_f(\vc u,\tilde{\bt})$ and ${\mathcal V}_s(\vc q,\tilde{\bt})$ can be efficiently taken into account by applying a reversible reference system propagator algorithm (RESPA), as outlined in Tuckerman et al. (1992). The RESPA algorithm, based on appropriate reversible molecular dynamics integrators, can significantly accelerate simulations of systems that are simultaneously subject to short- and long-range forces by separating the two different time-scales.
+
+%The basic idea of the RESPA algorithm is to apply a Trotter decomposition to the system Liouville propagator $\mathcal{L}$ to generate a discrete time propagator factorized into fast and slow contributions. Indeed, as shown in Tuckerman et al. (1992), the propagator $\exp[i \mathcal{L} \Delta \tau ]$ can be written as
+
+%\begin{equation}\label{G}
+%  \mathcal{G}(\Delta \tau)=\exp\left\{ \frac{\Delta \tau}{2} F_s(x) \frac{\partial}{\partial p} \right\} \exp\left\{ i \mathcal{L}_f \Delta \tau  \right\} \exp\left\{ \frac{\Delta \tau}{2} F_s(x) \frac{\partial}{\partial p} \right\}\,,
+%\end{equation}
+%
+%where for the sake of clarity we have assumed a one-dimensional system. The argument can be easily extended to our multi-dimensional case. In (\ref{G}) $F_s$ is the force associated with the slowly varying long-range potential ${\mathcal V}_s$ and $\mathcal{L}_f = \dot{x}(\partial/\partial x) + F_f(x)(\partial/\partial p)$ is the Liouville operator of the fast short-range potential ${\mathcal V}_f$. The propagator of the slow force $F_s$ can be well approximated with a large time step $\Delta \tau$. On the other hand, in order to ensure stable dynamics, the short-range middle propagator is further factorized into $n_f$ smaller time steps of duration $\delta \tau = \Delta \tau / n_f$, according to the Trotter expansion
+%
+%\begin{equation}\label{G_fast}
+%  \exp\left\{ i \mathcal{L}_f \Delta \tau  \right\}
+%  =\left[
+%  \exp\left\{ \frac{\delta \tau}{2} F_f(x) \frac{\partial}{\partial p} \right\}
+%  \exp\left\{  \delta\tau \dot{x} \frac{\partial}{\partial x}  \right\}
+%  \exp\left\{  \frac{\delta \tau}{2} F_f(x) \frac{\partial}{\partial p} \right\}
+%  \right]^{n_f} \,.
+%\end{equation}
+%
+%Coordinates and conjugate momenta, i.e., $(q,\bt; p,{\pmb\pi})$ in our case, are propagated using (\ref{G}) and (\ref{G_fast}) iteratively by applying a velocity Verlet algorithm.
+%
 \textbf{Some preliminary results}. The results shown in the figures refer to synthetic data obtained assuming a simple sinusoidal model for the rain input. The experimental data were then generated using the "true" parameter values $K=200$ and $\gamma = 0.2$. We considered $n=51$ data points, $j=10$ staging points, and therefore $N=501$ discretization points. The total time $T$ is $\approx 833$ [units of time], so that the discretization points are separated by a time interval $\Delta t \approx 1.6 $ [units of time]. Following the RESPA method described above, we used a long time step $\Delta \tau = 0.02$ [units of time] for the evolution of the slow (long-range) potential, further subdivided in 16 smaller steps for the evolution of the fast (short-range) potential.
 
 \begin{figure}
@@ -580,8 +729,7 @@ Coordinates and conjugate momenta, i.e., $(q,\bt; p,{\pmb\pi})$ in our case, are
 
 
 \bibliographystyle{apalike} % chicago \shortcite(N)
-\bibliography{C:/Users/ulzegasi/SWITCHdrive/refs}
-
+\bibliography{C:/Users/albertca/SWITCHdrive/refs}
 
 
 \end{document}
