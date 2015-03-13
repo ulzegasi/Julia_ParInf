@@ -97,89 +97,147 @@ where $r(t)$ describes the rain input and $\eta(t)$ denotes white noise, i.e.,
 \begin{equation}\label{whitenoise}
 \langle\eta(t)\eta(t')\rangle = \delta(t-t')\,.
 \end{equation}
-Given rainfall and runoff time-series, we want to infer the two system parameters $K$ and $\gamma$, measuring, respectively, the retention time and the noise.
-The scale-invariance of the noise term renders the noise parameter dimensionless.
 Due to the state-dependence of the noise term, eq. (\ref{sde}) is ill-defined unless we specify the discretization convention.
 For computational reasons, we work with the {\em Stratonovich} convention.
-Our parametrization is such that, for constant rain input $r(t)=r$ and in the long-time limit, the mean of $S$ converges to the limit of the unperturbed ($\gamma=0$) system $Kr$ (see below).
+Our parametrization is such that, for constant rain input $r(t)=r_0$ and in the long-time limit, the mean of $S$ converges to the equilibrium solution of the unperturbed ($\gamma=0$) system, $S_{eq}=Kr_0$ (see below).
 
-According to \cite{lau_2007_StateDepDiff}, the probability, $P(S,T|S_0,t_0)$, of finding the system in a state $S$ at time $t = T$ given that it was in an initial state $S_0$ at time $t = 0$, can be expressed in the form of a path integral as
-\begin{equation}\label{pathint}
-P(S,T|S_0,t_0) = \int_{S_0}^{S} e^{-\tilde{\mathcal S}[\dot{S}(t),S(t)]} \mathcal{D}S \,,
+The scale-invariance of the noise term renders the noise parameter $\gamma$ dimensionless.
+Before we proceed, we replace the state variable $S(t)$ and parameter $K$ by dimensionless quantities $q(t)$ and $\beta$, respectively, by means of the transformations
+\begin{equation}
+  \beta=\sqrt{\frac{T\gamma}{K}}\,,\quad
+  S(t)=\frac{T\gamma r(t)}{\beta^2}e^{\beta q(t)}\,.
 \end{equation}
-where the integral extends over all paths starting at $S_0$ and ending at $S$.
-The path-measure $\mathcal DS$ is the formal limit
-\begin{equation}\label{pathmeasure}
-{\mathcal D}S
-=
-\lim_{\Delta t\rightarrow 0}
-\prod_{i}
-\frac{dS_i}{\sqrt{2\pi \mathit{\Delta t} \gamma/K }S_i}\,,
-\end{equation}
-for a discretization $S_i = S(t_i)$ with $t_i-t_{i-1}=\Delta t$.
-The {\em action} is a functional defined on paths $S:[0,T]\longrightarrow \mathbb R_+$ and reads as
-\begin{equation}\label{action}
-  \tilde{\mathcal S}[\dot{S}(t),S(t)]
+W.r.t. these new  variables and parameters, model equation (\ref{sde}) becomes
+\begin{equation}
+  \dot q(t)
   =
-  \int_0^T
-  dt
-  \left\{
-    \frac{K}{2\gamma S^2(t)}
-    \left(
-        \dot S(t)
-        -
-        r(t)
-        +
-        \frac{1+\gamma}{K}S(t)
-    \right)^2
-    -
-    \frac{2+\gamma}{4K}
-  \right\}
- \,.
+  \frac{\beta}{T\gamma}e^{-\beta q(t)}
+  -
+  \frac{1}{T}\rho(t)
+  +
+  \frac{1}{\sqrt{T}}\eta(t)\,,
 \end{equation}
-Note that the action includes the Jacobian that arises when changing coordinates from ${\eta(t)}$ to $S(t)$ and ensures the normalization condition $\int{ P(S,T|S_0,t_0) \mathit{dS}}=1$.
-
-It is possible to calculate the equilibrium distribution $P_{\text{eq}}(S) = \lim_{T\rightarrow\infty} P(S,T|S_0,t_0)$ in the simple case of a constant rain input $r_{0}$. Systems at thermal equilibrium must fulfill detailed balance, i.e.,
-\begin{equation}\label{detailed_balance}
-P(S_1 t_1 | S_0 t_0 ) P_{\text{eq}}(S_0) = P(S_0 t_1 | S_1 t_0 ) P_{\text{eq}}(S_1) \,.
+with
+\begin{equation}
+  \rho(t)
+  =
+  \frac{T}{\beta}\frac{d}{dt}\ln r(t)
+  +
+  \frac{(2+\gamma)\beta}{2\gamma}\,.
 \end{equation}
-Assuming a solution of the form
 
-\begin{equation}\label{Peq}
-  P_{\text{eq}}(S)
-  \propto
-  e^{-\mathcal{H}(S)}\,,
+
+%Given rainfall and runoff time-series, we want to infer the two system parameters $K$ and $\gamma$, measuring, respectively, the retention time and the noise.
+
+
+According to \cite{lau_2007_StateDepDiff}, the probability, $P(q_1,T|q_0,0)$, of finding the system in a state $q$ at time $t = T$ given that it was in an initial state $q_0$ at time $t = 0$, can be expressed in the form of a path integral as
+\begin{equation}\label{pathint}
+P(q_1,T|q_0,0) 
+= 
+\frac{1}{Z}
+\int 
+e^{-{\mathcal S}[q,\dot q]} 
+\delta(q(T)-q_1)
+\delta(q(0)-q_0)
+\mathcal{D}q \,,
 \end{equation}
-equation (\ref{detailed_balance}) is rewritten as
-
-\begin{equation}\label{detailed_balance_2}
-P(S_1 t_1 | S_0 t_0 ) = P(S_0 t_1 | S_1 t_0 )
-\exp\left\{
-        -\int_{t_0}^{t_1} dt \frac{dS}{dt}\frac{d\mathcal{H}}{dS}
-    \right\}
-\,,
-\end{equation}
-where $S(t)$ is an arbitrary path connecting $S_0$ with $S_1$.
-After plugging in (\ref{pathint}) and (\ref{action}), and using the Stratonovich property, which allows us to transform a path from $S_0$ to $S_1$ into a path from $S_1$ to $S_0$ through the transformation $S(t) \rightarrow S(-t)$, we get
-
-\begin{equation}\label{constant_rain_H}
--r_{0}+\frac{1+\gamma}{K}S
+where the integral extends over all paths $q:[0,T]\rightarrow \mathbb R$.
+The path-measure $\mathcal Dq$ is formally written as an infinite product
+\begin{equation}\label{pathmeasure_q}
+{\mathcal Dq}
 =
-\frac{\gamma S^2}{2K}
-\frac{d \mathcal{H}(S)}{dS}\,.
+\prod_{t}
+dq(t)\,.
 \end{equation}
-The solution to (\ref{constant_rain_H}) is, up to an additive constant, given by eq.
-\begin{equation}\label{solution_const_rain}
-\mathcal{H}(S)=\frac{2 K r_0}{\gamma S}+\frac{2(1+\gamma)}{\gamma}\ln(S)\,.
+The {\em action} is a functional on the space of paths and reads as
+%\begin{equation}\label{action}
+%  \tilde{\mathcal S}[\dot{S}(t),S(t)]
+%  =
+%  \int_0^T
+%  dt
+%  \left\{
+%    \frac{K}{2\gamma S^2(t)}
+%    \left(
+%        \dot S(t)
+%        -
+%        r(t)
+%        +
+%        \frac{1+\gamma}{K}S(t)
+%    \right)^2
+%    -
+%    \frac{2+\gamma}{4K}
+%  \right\}
+% \,.
+%\end{equation}
+\begin{equation}
+{\mathcal S}[{q},\dot q]
+=
+\frac{1}{T}
+\int_0^T \dt \left\{
+\frac{1}{2}
+\left(
+    T\dot q(t)
+    +
+    \rho(t)
+    -
+    \frac{\beta}{\gamma}e^{-\beta q(t)}\right)^2
+    -
+    \frac{\beta^2}{2\gamma}e^{-\beta q(t)}
+\right\} \,.
 \end{equation}
-%\begin{figure}
-%    \centering
-%    \includegraphics[width=0.6\textwidth]{Figs/InvGamma.png}
-%    \caption{Inverse gamma distributions with scale parameter $\beta = 5$ and shape parameters $\alpha = 3,4,5,6$.}
-%    \label{fig:inv_gamma}
-%\end{figure}
-Thus, it turns out that $P_{\text{eq}}(S)$ is described by an inverse gamma distribution with scale parameter $2Kr_{0}/\gamma$ and shape parameter $(2+\gamma)/\gamma$, i.e.,
+Note that the action includes the Jacobian that arises when changing coordinates from ${\eta(t)}$ to $q(t)$.
 
+We introduce the time-dependent {\em Hamiltonian}
+\begin{equation}\label{H}
+  \mathcal{H}(q,t)
+  =
+  \frac{1}{\gamma}e^{-\beta q}+q\rho(t)\,,
+\end{equation}
+and rewrite action (\ref{action}) as,
+\begin{multline}\label{action}
+{\mathcal S}[{q},\dot q]
+=
+\frac{1}{T}
+\int_0^T dt\left\{
+    \frac{1}{2}
+    T^2\dot q^2(t) +
+    \frac{1}{2}
+    \left(\rho(t)-\frac{\beta}{\gamma}e^{-\beta q(t)}\right)^2 -
+    T\frac{\partial \mathcal{H}(q,t)}{\partial t} -
+    \frac{\beta^2}{2\gamma}e^{-\beta q(t)}
+     %\frac{(2+\gamma)\beta^2}{4\gamma}
+\right\}
+\\
++ \mathcal{H}(q(T),T) - \mathcal{H}(q(0),0)
+\\
+= \frac{1}{T}
+\int_0^T dt\left\{
+    \frac{1}{2}
+    T^2\dot q^2(t) +
+    \frac{1}{2}
+    \left(\rho(t)-\frac{\beta}{\gamma}e^{-\beta q(t)}\right)^2 -
+    Tq(t)\dot\rho(t) -
+     \frac{\beta^2}{2\gamma}e^{-\beta q(t)}
+%    \frac{(2+\gamma)\beta^2}{4\gamma}
+\right\}
+\\
++
+    \frac{1}{\gamma}e^{-\beta q(T)}+q(T)\rho(T)
+   -\frac{1}{\gamma}e^{-\beta q(0)}-q(0)\rho(0)
+\,.
+\end{multline}
+
+Next, we calculate the equilibrium distribution $P_{\text{eq}}(q) = \lim_{T\rightarrow\infty} P(q,T|q_0,0)$ in the simple case of a constant rain input $r(t)\equiv r_{0}$. Systems at thermal equilibrium must fulfill detailed balance, i.e.,
+\begin{equation}\label{detailed_balance}
+P(q_1 t_1 | q_0 t_0 ) P_{\text{eq}}(q_0) = P(q_0 t_1 | q_1 t_0 ) P_{\text{eq}}(q_1) \,.
+\end{equation}
+After plugging in (\ref{pathint}) and (\ref{action}), and using the transformation $q(t) \rightarrow q(-t)$, which maps paths from $q_0$ to $q_1$ to paths from $q_1$ to $q_0$, we get, since $\dot\rho(t)= 0$,
+\begin{equation}\label{Peq}
+  P_{\text{eq}}(q)
+  \propto
+  e^{-2\mathcal{H}(q)}\,.
+\end{equation}
+Transforming back to the original variables, it turns out that $P_{\text{eq}}(S)$ is described by an inverse gamma distribution with scale parameter $2Kr_{0}/\gamma$ and shape parameter $(2+\gamma)/\gamma$, i.e.,
 \begin{equation}\label{inverse_gamma}
   P_{\text{eq}}(S)
   \propto
@@ -199,209 +257,150 @@ and whose variance, for $\gamma< 2$, is given by
 Note that the variance diverges, for $\gamma\geq 2$.
 The power-law decay of the inverse gamma distribution is reminiscent of the scale-invariance of the error model.
 
-Let us consider now the general case of a time dependent rain input $r(t)$ with the following time-series of {\em observed} outputs,
+
+Let us now consider two time-series of {\em observed} rain inputs and discharge outputs, $r_s=r(t_s)$ and $y_s=S(t_s)/K$, respectively, measured at times $0=t_1<t_2<\dots < t_{n+1}=T$.
+For the measurement error model, we simply set
 \begin{equation}\label{data}
-  y_i=\frac{1}{K}S(t_i)+\sigma\epsilon_i\,,\quad i=1,\dots,n+1\,,
+  \ln\frac{y_s}{r_s}
+  =
+  \beta q_s
+  +
+  \sigma\epsilon_s\,,\quad s=1,\dots,n+1\,,
 \end{equation}
-where the times $t_i$ are chosen so that $0=t_1<t_2<\dots < t_{n+1}=T$ and the $\epsilon_i$ are uncorrelated standard normal random variables.
-The {\em likelihood} function for the data (\ref{data}) is, up to a factor that doesn't depend on the model parameters, given by the path-integral
-\begin{equation}\label{likelihood}
-  f(\vc y | \bt)
-  \propto
-  \int
-  \exp\bigg[
-    -{\tilde{\mathcal S}}[\dot{S},S]
-    -\frac{1}{2}
-    \sum_{i=1}^{n+1}
-    \frac
-    {(y_i-S(t_i)/K)^2}
-    {\sigma^2}
-  \bigg]
-  {\mathcal D} S(\bt)\,,
-\end{equation}
-with the parameter vector $\bt=(K,\gamma)^T$.
-Choosing for the parameters $K$ and $\gamma$ the improper prior given by
+where $\epsilon_s$ are uncorrelated standard normal random variables.
 
-\begin{equation}\label{prior}
-  f(\bt)
-  =  f(K) f(\gamma) = \frac{1}{K \gamma} \,,
-\end{equation}
 
-{\em parameter inference} means generating a sufficiently large sample of parameter vectors from the posterior
-\begin{equation}\label{posterior}
-  f(\bt|\vc y)\propto f(\vc y|\bt)f(\bt)\,.
-\end{equation}
+%The {\em likelihood} function for the data (\ref{data}) is, up to a factor that doesn't depend on the model parameters, given by the path-integral
+%\begin{equation}\label{likelihood}
+%  f(\vc y | \bt)
+%  \propto
+%  \int
+%  \exp\bigg[
+%    -{\tilde{\mathcal S}}[\dot{S},S]
+%    -\frac{1}{2}
+%    \sum_{i=1}^{n+1}
+%    \frac
+%    {(y_i-S(t_i)/K)^2}
+%    {\sigma^2}
+%  \bigg]
+%  {\mathcal D} S(\bt)\,,
+%\end{equation}
+%with the parameter vector $\bt=(K,\gamma)^T$.
+%Choosing for the parameters $K$ and $\gamma$ the improper prior given by
+%
+%\begin{equation}\label{prior}
+%  f(\bt)
+%  =  f(K) f(\gamma) = \frac{1}{K \gamma} \,,
+%\end{equation}
+%
+%{\em parameter inference} means generating a sufficiently large sample of parameter vectors from the posterior
+%\begin{equation}\label{posterior}
+%  f(\bt|\vc y)\propto f(\vc y|\bt)f(\bt)\,.
+%\end{equation}
 
-We replace the variable $S(t)$ and the parameter $K$ by the dimensionless quantities, $q(t)$ and $\beta$, respectively, by means of the transformations
-\begin{equation}
-  \beta=\sqrt{\frac{T\gamma}{K}}\,,\quad
-  S(t)=\frac{T\gamma r(t)}{\beta^2}e^{\beta q(t)}\,.
-\end{equation}
-In terms of these dimensionless variables and parameters the posterior reads (without prior)
+
+The goal is to infer the posterior parameter distribution, for the parameters $\bt=(\beta,\gamma)^T$, based on the measured time series $\vc r$ and $\vc y$.
+For the time being we assume constant priors.
+Then, the posterior reads as
 \begin{equation}\label{posterior_pathint}
-  f(\bt | \vc y)
+  f(\bt | \vc y, \vc r)
   \propto
   \int
   \exp\bigg[
-    -{{\mathcal S}}[\dot{q},q]
+    -{{\mathcal S}}[{q},\dot q]
     -\frac{1}{2}
-    \sum_{i=1}^{n+1}
+    \sum_{s=1}^{n+1}
     \frac
-    {(y_i-r_ie^{\beta q_i})^2}
+    {(\ln(y_s/r_s)-{\beta q_s})^2}
     {\sigma^2}
     %-\ln(K\gamma)
   \bigg]
   {\mathcal Dq}
-  \,,
+  \,.
 \end{equation}
-%\prod_{t}
-%\frac{dS(t)}{\sqrt{2\pi \mathit{\Delta t} \gamma/K }S(t)}\,,
-where $r_i$ and $q_i$ represent $r(t)$ and $q(t)$, respectively, at time $t_i$. In the transformed variables the path-measure takes the form, up to a parameter-independent multiplicative factor,
-
-\begin{equation}\label{pathmeasure_q}
-{\mathcal Dq}
-=
-\prod_{t}
-dq(t)\,,
-\end{equation}
-
-while the action is rewritten in the compact form,
-
-\begin{equation}\label{action_new}
-{\mathcal S}[\dot{q},q]
-=
-\frac{1}{T}
-\int_0^T \dt \left\{
-\frac{1}{2}
-\left(
-    T\dot q(t)
-    +
-    \rho(t)
-    -
-    \frac{\beta}{\gamma}e^{-\beta q(t)}\right)^2
-    -
-    \frac{(2+\gamma)\beta^2}{4\gamma}
-\right\} \,,
-\end{equation}
-
-with
-\begin{equation}\label{rho}
-\rho(t)=\frac{T\dot r(t)}{\beta r(t)}+\frac{\beta(\gamma+1)}{\gamma}
-=
-\frac{T}{\beta}\frac{d \left[\ln r(t)\right]}{dt}+\frac{\beta(\gamma+1)}{\gamma}\,.
-\end{equation}
-
-In order to ease the numerical computations, it is useful to introduce the time-dependent Hamiltonian,
-
-\begin{equation}\label{H}
-  \mathcal{H}_q(q,t)
-  =
-  \frac{1}{\gamma}e^{-\beta q}+q\rho(t)\,,
-\end{equation}
-
-and rewrite the action (\ref{action_new}) as,
-
-\begin{multline}\label{action_final}
-{\mathcal S}[\dot{q},q]
-=
-\frac{1}{T}
-\int_0^T dt\left\{
-    \frac{1}{2}
-    T^2\dot q^2(t) +
-    \frac{1}{2}
-    \left(\rho(t)-\frac{\beta}{\gamma}e^{-\beta q(t)}\right)^2 -
-    T\frac{\partial \mathcal{H}_q(q,t)}{\partial t} -
-     \frac{(2+\gamma)\beta^2}{4\gamma}
-\right\}
-\\
-+ \mathcal{H}_q(q(T),T) - \mathcal{H}_q(q(0),0)
-\\
-= \frac{1}{T}
-\int_0^T dt\left\{
-    \frac{1}{2}
-    T^2\dot q^2(t) +
-    \frac{1}{2}
-    \left(\rho(t)-\frac{\beta}{\gamma}e^{-\beta q(t)}\right)^2 -
-    Tq(t)\dot\rho(t) -
-    \frac{(2+\gamma)\beta^2}{4\gamma}
-\right\}
-\\
-+
-    \frac{1}{\gamma}e^{-\beta q(T)}+q(T)\rho(T)
-   -\frac{1}{\gamma}e^{-\beta q(0)}-q(0)\rho(0)
-\,.
-\end{multline}
-
-Since the integral on the r.h.s. of (\ref{posterior_pathint}) is very expensive to calculate, we will sample simultaneously parameter vectors $\bt$ and discretized system realizations $q(t)$ directly from an appropriate discretization of the kernel of (\ref{posterior_pathint}).
-Since this distribution is very high dimensional and strongly correlated, we employ the method called {\em Hamiltonian Monte Carlo} (HMC) introduced by \cite{duane_1987_HMC}.
+Since the integral on the r.h.s. of (\ref{posterior_pathint}) is very expensive to calculate, we will sample, simultaneously, parameter vectors $\bt$ and discretized system realizations $q(t)$ directly from an appropriate discretization of the kernel of (\ref{posterior_pathint}).
+Since the associated distribution is very high dimensional and strongly correlated, we employ the method called {\em Hamiltonian Monte Carlo} (HMC) introduced by \cite{duane_1987_HMC}.
 This method interprets the exponent of the kernel of the posterior as the potential of a one-dimensional statistical mechanical system. Each degree of freedom, $q(t)$ and $\bt$ in our case, is paired with a conjugate variable, $p(t)$ and ${\pmb\pi}$, respectively, and the system is defined by the  Hamiltonian
-
 \begin{equation}\label{Hamiltonian}
     \mathcal{H}_{\text{HMC}}(q,\bt; p,{\pmb\pi})
     =
     K( p,{\pmb\pi}) + V( q,\bt)\,,
 \end{equation}
-
-where
-
+with
 \begin{equation}\label{K}
    K( p,{\pmb\pi})
    =
    \int_0^T \frac{ p^2(t)}{2m_q}dt
    + \sum_{\alpha=1}^2\frac{\pi_\alpha^2}{2m_\alpha}\,,
 \end{equation}
-
 where $V( q,\bt)$ is the negative logarithm of the kernel of (\ref{posterior_pathint}).
-The HMC method, which is a combination of the {\em Metropolis algorithm} by \cite{metropolis_1953_MRT2} and {\em molecular dynamics} methods \textbf{[ref?]}, iterates the following steps
+The posterior (\ref{posterior_pathint}) is expressed by the phase space path integral
+\begin{equation}\label{phaseSpacePathInt}
+    f(\bt | \vc y, \vc r)
+  \propto
+  \int
+  e^{-\mathcal {H}_{\text{HMC}}(q,\bt; p,{\pmb\pi})}
+  {\mathcal Dp}
+  \wedge
+  {\mathcal Dq}
+  \wedge
+  d{\pmb\pi}
+  \,.
+\end{equation}
 
+The HMC method, which is a combination of the {\em Metropolis algorithm} by \cite{metropolis_1953_MRT2} and {\em molecular dynamics} methods \textbf{[ref?]}, iterates the following steps
 \begin{enumerate}
   \item
   Momenta are sampled from the Gaussian distribution defined by (\ref{K}).
   \item
-  A volume-preserving and time-reversible solution to a discretization of Hamilton's equations is calculated numerically (leap-frog algorithm).
+  A volume-preserving and time-reversible solution to a discretization of Hamilton's equations is calculated numerically.
   \item
   The discretization error on the energy preservation due to the previous step is corrected by a Metropolis acceptance/rejection step.
 \end{enumerate}
+The last step is the standard Metropolis algorithm, while the first two steps allow us to make relatively large jumps in phase space while maintaining a relatively large acceptance rate.
 
-The last step is the standard Metropolis algorithm, while the first two steps allow to make relatively large jumps in phase space while maintaining a relatively large acceptance rate.
-
-Let us first write down the proper discretization of the path-integral (\ref{posterior_pathint}), with the action (\ref{action_final}).
-Therefore, let us assume that the measurement time points $\left\{ y_i \right\}_{i=1,\dots, n+1}$ of the time series (\ref{data}) are equidistantly distributed on the time interval $[0,T]$, with $t_1=0$ and $t_{n+1}=T$.
+Let us first write down the discretization of the path-integral (\ref{phaseSpacePathInt}).
+Therefore, let us assume that the measurement time points $\left\{ y_s \right\}_{s=1,\dots, n+1}$ of the time series (\ref{data}) are equidistantly distributed on the time interval $[0,T]$, with $t_1=0$ and $t_{n+1}=T$.
 Each interval between two consecutive data points is further partitioned into $j$ bins, such that we have a total of $nj+1=N>>1$ discretization points.
-The discretized versions of $K( p,{\pmb\pi})$ and $V( q,\bt)$ read
-
+Path-integral (\ref{posterior_pathint}) is approximated by an ordinary integral, with the approximate path-measure 
+\begin{equation}
+  \mathcal Dp\wedge\mathcal Dq
+  \approx
+  \prod_i dp_i\wedge dq_i 
+\end{equation}
+and the discretized versions of $K( p,{\pmb\pi})$ and $V( q,\bt)$
 \begin{align}
    K( p,{\pmb\pi})
    &\approx
    \sum_{i=1}^N
    \frac{ p_i^2}{2m_q}\Delta t
    +
-   \sum_{\alpha=1}^s\frac{\pi_\alpha^2}{2m_\alpha}\,,\label{Kdisc}
+   \sum_{\alpha=1}^2\frac{\pi_\alpha^2}{2m_\alpha}\,,\label{Kdisc}
    \\
    V(q,\bt)
    &\approx
    \frac{\Delta t}{T}
    \sum_{i=2}^{N}
    \left\{
-    \frac{1}{2} T^2 \dot q_i^2
+    \frac{1}{2} 
+    T^2 \dot q_i^2
     +
-   \left(
-        \frac{1}{2}
-        \left(
-            \rho_i-\frac{\beta}{\gamma}e^{-\beta \bar q_i}
-        \right)^2
-        -
-        T\bar q_i\dot\rho_i
-    \right)
+    \frac{1}{2}
+     \left(
+        \rho_i-\frac{\beta}{\gamma}e^{-\beta q_i}
+     \right)^2
+    -
+    \frac{\beta^2}{2\gamma}
+    e^{-\beta q_i}
+   -
+    T q_i\dot\rho_i
    \right\}
   \\
-  &-
-  \frac{(2+\gamma)\beta^2}{4\gamma}
-  +
+  &+
   \frac{1}{\gamma}
   e^{-\beta q_N}
   +
-  q_N \rho_{N-1}
+  q_N \rho_{N}
   -
   \frac{1}{\gamma}
   e^{-\beta q_1}
@@ -411,22 +410,24 @@ The discretized versions of $K( p,{\pmb\pi})$ and $V( q,\bt)$ read
   \\
   & +
   \sum_{s=1}^{n+1}
-  \frac{(y_s-r_{(s-1)j+1} e^{\beta q_{(s-1)j+1}})^2}{2\sigma^2}
-  % +\ln \left(K^{1-N/2} \gamma^{1+N/2}\right)\nonumber
+  \frac{(\ln(y_s/r_{(s-1)j+1}) - {\beta q_{(s-1)j+1}})^2}{2\sigma^2}
    \,,\label{Vdisc}
 \end{align}
 with
 \begin{equation}
-  \dot q_i = \frac{q_i-q_{i-1}}{\Delta t}\,,\quad
-  \bar q_i = \frac{q_i+q_{i-1}}{2}\,,
+  \dot q_i = \frac{q_i-q_{i-1}}{\Delta t}\,,
+  %\quad
+%  \bar q_i = \frac{q_i+q_{i-1}}{2}\,,
 \end{equation}
 and
 \begin{equation}\label{rhodisc}
-\rho_i = K \frac{\ln(r_{i+1}/r_i)}{\Delta t}+\gamma+1\,,\quad
+\rho_i = \frac{T}{\beta} \frac{\ln(r_{i+1}/r_i)}{\Delta t}
++
+\frac{(2+\gamma)\beta}{2\gamma}
+\,,\quad
 \dot\rho_i = \frac{\rho_i-\rho_{i-1}}{\Delta t}\,.
 \end{equation}
-
-Note that we've neglected terms of order $\mathcal O(1/N)$ in the action (\ref{Vdisc}) and that we've assumed $r(t)$ to be at least twice differentiable.
+Note that we've neglected terms of order $\mathcal O(N^{-1/2})$ in the action (\ref{Vdisc}) and that we've assumed $r_i$ to be the discretization of an at least twice differentiable interpolation of the input measurements.
 
 %\begin{equation}
 %  \dot{q}_i:=\frac{ q_i -  q_{i-1}}{\Delta t}\,,\quad
@@ -438,13 +439,12 @@ For strongly varying rain input or high-frequency output data, $\Delta t$ needs 
 To solve this problem, we change coordinates, such that the harmonic part of the Hamiltonian becomes (partly) diagonal and the particle interaction moves to the potential.
 One option would be to use the Fourier modes of ${\eta}(t)$ as configurational variables. Calculating the potential requires then an inversion of a Toeplitz matrix. This approach is interesting because, in our case, it allows for an approximate analytical integration of high-frequency modes (see \cite{doll_1985_fourier}).
 
-We choose another approach, the so-called \emph{staging} as described in Tuckerman et al. (1993), and diagonalize the harmonic part only in between the measurement points.
-We first note that the Hamiltonian $\mathcal{H}_{\text{HMC}}(q,\bt; p,{\pmb\pi})$ (\ref{Hamiltonian}) can be seen as the classical Hamiltonian of a polymer chain with harmonic bonds between neighbouring beads, described by the first harmonic term of $V(q,\bt)$, in an external field described by the other non-harmonic terms of $V(q,\bt)$. 
-Furthermore, the model parameters are viewed as additional degrees of freedom that couple with all other degrees of freedom. 
+We choose another approach, the so-called \emph{staging} as described in \cite{tuckerman1992reversible}, and diagonalize the harmonic part only in between the measurement points.
+We first note that Hamiltonian (\ref{Hamiltonian}) can be seen as the classical Hamiltonian of a polymer chain with harmonic bonds between neighbouring beads, described by the first harmonic term of $V(q,\bt)$, in an external field described by the other non-harmonic terms of $V(q,\bt)$.
+Furthermore, the model parameters are viewed as additional degrees of freedom that couple with all other degrees of freedom.
 Sampling system realizations, each defined by a set of coordinates $\left\{ q_i\right\}$ and parameters $\bt$, is equivalent to sampling states in the polymer dynamics.
 
 The discretized harmonic part of the action is rewritten as
-
 \begin{multline}
   \sum_{i=2}^{N}
   \frac{T}{2\Delta t}
@@ -459,37 +459,28 @@ The discretized harmonic part of the action is rewritten as
     (q_{(s-1)j+k}-q^*_{(s-1)j+k})^2
   \right\}\,,
 \end{multline}
-
 with
-
 \begin{equation}
   q^*_{(s-1)j+k}
   =
   \frac{(k-1)q_{(s-1)j+k+1} + q_{(s-1)j+1} }{k}
   \,.
 \end{equation}
-
-Following Tuckerman et al. (1993) we apply the coordinate transformation
-
+Following \cite{tuckerman1993efficient} we apply the coordinate transformation
 \begin{equation}
   u_{sj+1} = q_{sj+1}\,,\quad
   u_{sj+k} = q_{sj+k} - q^*_{sj+k}\,,
 \end{equation}
-
 with its inverse given by
-
 \begin{equation}
   q_{sj+1} = u_{sj+1}\,,\quad
   q_{sj+k} = \sum_{l=k}^{j+1}\frac{k-1}{l-1}u_{sj+l}
   +\frac{j-k+1}{j}u_{sj+1}\,,
 \end{equation}
-
 or equivalently by the recursive relation
-
 \begin{equation}
   q_{sj+k} = u_{sj+k} + \frac{k-1}{k} q_{s+k+1}+ \frac{1}{k}q_{sj+1} \,.
 \end{equation}
-
 %Moreover, we introduce the following transformation for the parameters,
 %
 %\begin{equation}\label{params_transform}
@@ -498,6 +489,7 @@ or equivalently by the recursive relation
 %
 %and the corresponding transformed vector $\tilde{\bt}=(\beta,\tau)^T$. This transformation ensures that the system parameters $K$ and $\gamma$ will be kept positive during the HMC algorithm.
 %
+
 This transformation decouples fast degrees of freedom from slow ones and allows us to split the Hamiltonian $\mathcal H_{HMC}$ into components with different scaling behaviour in the potentially large numbers $n$ and $N$.
 We write
 \begin{equation}
@@ -527,9 +519,7 @@ where
     \frac{T}{j\Delta t}
     (u_{(s-1)j+1} - u_{sj+1})^2
     -
-    \frac
-    {(y_s-r_{(s-1)j+1}e^{u_{(s-1)j+1}})^2}
-    {\sigma^2}
+    \frac{(\ln(y_s/r_{(s-1)j+1}) - {\beta u_{(s-1)j+1}})^2}{2\sigma^2}
    \right\}\,,\\
   \mathcal H_1
   &=
@@ -538,21 +528,22 @@ where
   \frac{\Delta t}{T}
    \sum_{i=2}^{N}
    \left\{
-       \frac{1}{2}
-        \left(
-            \rho_i-\frac{\beta}{\gamma}e^{-\beta \bar q_i}
-        \right)^2
-        -
-        T\bar q_i\dot\rho_i
+    \frac{1}{2}
+     \left(
+        \rho_i-\frac{\beta}{\gamma}e^{-\beta q_i}
+     \right)^2
+    -
+    \frac{\beta^2}{2\gamma}
+    e^{-\beta q_i}
+   -
+    T q_i\dot\rho_i
    \right\}
   \\
-  &-
-  \frac{(2+\gamma)\beta^2}{4\gamma}
-  +
+  &+
   \frac{1}{\gamma}
   e^{-\beta q_N}
   +
-  q_N \rho_{N-1}
+  q_N \rho_{N}
   -
   \frac{1}{\gamma}
   e^{-\beta q_1}
@@ -567,11 +558,11 @@ Thus, depending on the values of $N$ and $n$, the dynamics happens on very diffe
 Therefore, we use the Trotter formula according to \cite{tuckerman1992reversible} in order to design a reversible molecular dynamics integrator that takes these different time scales into account.
 In order to design an appropriate partition of the Hamiltonian, we need to distinguish different regimes.
 \begin{enumerate}
-  \item[i]
+  \item[\it i.]
   $\mathcal H_N \sim \mathcal H_n >> \mathcal H_1$
-  \item[ii]
+  \item[\it ii.]
   $\mathcal H_N >> \mathcal H_n \sim \mathcal H_1$
-  \item[iii]
+  \item[\it iii.]
   $\mathcal H_N >> \mathcal H_n >> \mathcal H_1$
 \end{enumerate}
 
@@ -594,7 +585,7 @@ Trotter's formula allows us to write the Hamiltonian propagator as
   \mathcal O(P^{-2})\,,
 \end{equation}
 for $\tau =P\Delta \tau$.
-In regime (ii) the outer propagator $\exp[iL_N(\Delta \tau/2)]$ describes a much faster dynamics than the inner one.
+In regime ($ii$) the outer propagator $\exp[iL_N(\Delta \tau/2)]$ describes a much faster dynamics than the inner one.
 However, it is the dynamics of uncoupled harmonic oscillators, which we can readily solve.
 Masses and frequencies of the oscillators are derived from (\ref{H_N}) as
 \begin{equation}

@@ -27,4 +27,10 @@ Tuckerman, M., Berne, B.~J., and Martyna, G.~J. (1992).
 \newblock Reversible multiple time scale molecular dynamics.
 \newblock {\em The Journal of chemical physics}, 97(3):1990--2001.
 
+\bibitem[Tuckerman et~al., 1993]{tuckerman1993efficient}
+Tuckerman, M.~E., Berne, B.~J., Martyna, G.~J., and Klein, M.~L. (1993).
+\newblock Efficient molecular dynamics and hybrid monte carlo algorithms for
+  path integrals.
+\newblock {\em The Journal of Chemical Physics}, 99(4):2796--2808.
+
 \end{thebibliography}
