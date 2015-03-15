@@ -25,7 +25,7 @@
 ## simone.ulzega@eawag.ch
 ## carlo.albert@eawag.ch
 ## ============================================================================================
-addprocs(3)
+addprocs(2)
 num_workers  = nworkers()
 first_worker = workers()[1]
 last_worker  = workers()[end]
@@ -212,6 +212,10 @@ du = myDArray(I->[ext_u[i] for i in I[1]],(du_size,),workers(),[nworkers()],chk_
 dr = myDArray(I->[ext_r[i] for i in I[1]],(du_size,),workers(),[nworkers()],chk_indexes)
 dy = myDArray(I->[ext_y[i] for i in I[1]],(dy_size,),workers(),[nworkers()],chk_y_indexes)
 
+du_short = distribute(u)
+dr_short = distribute(r)
+dy_short = distribute(y)
+
 ## --------------------------------------------------------------------------------------------
 ## Share important stuff with all processes
 ## --------------------------------------------------------------------------------------------
@@ -227,13 +231,18 @@ for pid in workers()
     remotecall(pid, x->(global r; r = x; nothing), r)
     remotecall(pid, x->(global dt; dt = x; nothing), dt)
     remotecall(pid, x->(global sigma; sigma = x; nothing), sigma)
-    remotecall(pid, x->(global proc_indexes; proc_indexes = x; nothing), proc_indexes)
+    remotecall(pid, x->(global bdy_indexes; bdy_indexes = x; nothing), bdy_indexes)
     remotecall(pid, x->(global lnr_der; lnr_der = x; nothing), lnr_der)
     remotecall(pid, x->(global num_workers; num_workers = x; nothing), num_workers)
     remotecall(pid, x->(global first_worker; first_worker = x; nothing), first_worker)
     remotecall(pid, x->(global last_worker; last_worker = x; nothing), last_worker)
+    remotecall(pid, x->(global du_indexes; du_indexes = x; nothing), du_indexes)
 end
-
+for pid in workers()
+    remotecall(pid, x->(global du; du = x; nothing), du)
+    remotecall(pid, x->(global dy; dy = x; nothing), dy)
+    remotecall(pid, x->(global dr; dr = x; nothing), dr)
+end
 ## --------------------------------------------------------------------------------------------
 ## Loading...
 ## --------------------------------------------------------------------------------------------

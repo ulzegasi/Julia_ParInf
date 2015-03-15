@@ -40,6 +40,60 @@ end
 ##
 
 ##########################################################################
+## Fast potential as ... many functions
+##########################################################################
+
+@everywhere function V_fast_dat(u, i::Int64)      # i = 0:n
+
+    out = ( y[i+1] - r[i*j+1]*exp(u[i*j+1]) )^2/(2*sigma^2)
+    return out
+
+end
+
+
+@everywhere function V_fast_bdy(theta, u, i::Int64)    # i = 1:n
+
+    K = T*exp(theta[1])
+    g = exp(theta[2])
+    
+    out = K * ( u[(i-1)*j+1] - u[i*j+1] )^2/( j*dt ) / ( 2*g )
+    
+    return out
+end
+
+@everywhere function V_fast_stg(theta, u, i::Int64, k::Int64)  # i = 1:n, k = 2:j
+    
+    K = T*exp(theta[1])
+    g = exp(theta[2])
+
+    out = k*u[(i-1)*j+k]^2/( (k-1)*dt ) * K/(2*g)
+    
+    return out
+end
+
+@everywhere function V_fast(theta, u) 
+    V_fast_sum = V_fast_dat(u, y, r, 0)
+    for i = 1:n
+        V_fast_sum += V_fast_bdy(theta, u, i) + V_fast_dat(u, y, r, i)
+        for k = 2:j 
+            V_fast_sum += V_fast_stg(theta, u, i, k)
+        end
+    end
+    return V_fast_sum
+end
+
+out = dzeros(2)
+for p in workers()
+    @spawnat p localpart(out)[1] = sum([fix(localpart(d),i) for i = 1:3])
+end
+out
+
+@everywhere V_fast_der_dat = rdiff(V_fast_dat,(ones(N), 1            ))
+@everywhere V_fast_der_bdy = rdiff(V_fast_bdy,(ones(2), ones(N), 1   ))
+@everywhere V_fast_der_stg = rdiff(V_fast_stg,(ones(2), ones(N), 1, 1))
+
+
+##########################################################################
 ## Fast potential as an expression (-> array of expressions)
 ##########################################################################
 
@@ -52,23 +106,20 @@ V_fast_der_t_expr = DArray(I->[:($i) for i in I[1]],(nworkers(),),workers(),[nwo
     # firstind = bdy_indexes[1][1];
     # lastind  = bdy_indexes[1][end];
     lastind  = length(bdy_indexes[1]);
-    # du_local = dulocal;
-    # dr_local = drlocal;
-    # dy_local = dylocal;
 
     localpart(V_fast)[1] = quote
         K = T*exp(theta[1])
         g =   exp(theta[2])
 
-        out_fast = ( dylocal[1] - drlocal[1]*exp(dulocal[1]) )^2/(2*sigma^2)
+        out_fast = ( localpart(dy)[1] - localpart(dr)[1]*exp(localpart(du)[1]) )^2/(2*sigma^2)
         out_temp = 0.0
         for ii = 1:($lastind)
-            out_temp += K * ( dulocal[(ii-1)*j+1] - dulocal[ii*j+1] )^2/( j*dt ) / ( 2*g ) +
-                                ( dylocal[ii+1] - drlocal[ii*j+1]*exp(dulocal[ii*j+1]) )^2/(2*sigma^2)
+            out_temp += K * ( localpart(du)[(ii-1)*j+1] - localpart(du)[ii*j+1] )^2/( j*dt ) / ( 2*g ) +
+                                ( localpart(dy)[ii+1] - localpart(dr)[ii*j+1]*exp(localpart(du)[ii*j+1]) )^2/(2*sigma^2)
         end
         for ii = 1:($lastind)
             for k = 2:j
-                out_temp += k*dulocal[(ii-1)*j+k]^2/( (k-1)*dt )*K/(2*g)
+                out_temp += k*localpart(du)[(ii-1)*j+k]^2/( (k-1)*dt )*K/(2*g)
             end
         end
         out_fast += out_temp
@@ -109,9 +160,6 @@ V_fast
 ##########################################################################
 for i = 1:num_workers
     @spawnat workers()[i] (
-        dulocal = localpart(du);
-        drlocal = localpart(dr);
-        dylocal = localpart(dy);
         localpart(V_fast_der_t_expr)[1] = rdiff(localpart(V_fast)[1], outsym=:out_fast, theta = ones(Float64, s));
         localpart(V_fast_der_u_expr)[1] = rdiff(localpart(V_fast)[1], outsym=:out_fast, du = ones(Float64, du_indexes[i][end]));
     )
