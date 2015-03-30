@@ -3114,6 +3114,8 @@ out2
 
 @everywhere derfix2 = rdiff(fix2,(ones(10),1))
 
+derfix2(x,1)
+
 x2 = [1,2,3,4,5,6,5,6,7,8,9,10]
 dx2 = distribute(x2)
 dx2.indexes
@@ -3139,5 +3141,619 @@ vcat(arr2[1],arr2[2])
 ############################################################################################
 ############################################################################################
 
-i = 2
-( y[i+1] - r[i*j+1]*exp(u[i*j+1]) )^2/(2*sigma^2)
+###########################################################################################
+## Could we use expressions from Mathematica????
+###########################################################################################
+asa = readdlm("C:/Users/ulzegasi/Julia_files/ParInf_HMC/testdiff")
+asa[1,2]
+l1 = size(asa,1)
+l2 = size(asa,2)
+out = Array(String,l1)
+for jj = 1:l1
+	out[jj] = ""
+end
+for jj = 1:l1 
+	for ii = 1:l2
+		out[jj] = "$(out[jj])$(asa[jj,ii])"
+	end
+end
+out
+for jj = 1:l1 
+	out[jj] = replace(out[jj], "E^", "exp")
+end
+out
+
+################### EXAMPLE #######################
+const j = 4
+const n = 5
+dir   = "C:/Users/ulzegasi/Julia_files/ParInf_HMC"       # Main project directory, local repository   
+dir2  = "C:/Users/ulzegasi/SWITCHdrive/JuliaTemp/Data"   # Secondary directory (e.g., data storage)
+
+trange = 2:5002
+t  = float64(readdlm("$dir/t.dat")[trange,2]) # Time points t.dat
+
+const N = int64(n*j+1)   # Total number of discrete time points
+                         # IMPORTANT: (N-1)/j = integer = n (measurement points)
+if  ((N-1)%j) != 0 
+    error("Be careful, the number of staging points j must fulfill (N-1)/j = integer !")
+end
+
+t = linspace(t[1], t[end], N);                # Time points      
+T  = t[end]-t[1]                              # Total time interval
+
+dt = T/(N-1)                                  # Time step
+ty  = iround(linspace(1, N, n+1))             # Indeces of "end point" beads (= "measurement" points)
+
+const s = 2                                   # Number of system parameters (k, gamma)     
+
+true_K     = 50.                              # Retention time
+true_gamma = 0.2                              # Dimensionless noise parameter
+sigma      = 0.05                             # Measurement noise
+true_theta = [log(true_K/T),log(true_gamma)]  # Parameters to be inferred (beta, tau)
+
+K     = 200.0                                 # Initial state
+gamma = 0.5                                   
+theta = [log(K/T),log(gamma)]
+
+K = T*exp(theta[1])
+g = exp(theta[2])
+
+r = sin(t/100.).*sin(t/100.) + 0.1;      # Simple sinusoidal model
+lnrder      = zeros(N)             # Logarithmic derivative of rain input
+for i = 1:(N-1)                          # Calculate logarithmic derivative of rain input                
+    lnrder[i] = ( log(r[i+1]) - log(r[i]) ) / dt
+end
+
+S            = zeros(N)             # System realization (with true parameters, used to create measurements y)
+S_init       = zeros(N)
+srand(18072011)                 # Seeding the RNG provides reproducibility
+#srand(time())                  # Seeding the RNG with actual time provides randomness
+
+S[1] = true_K * r[1]            # Unperturbed steady state (with constant rain input)
+for i = 2 : N
+    S[i] = S[i-1] + dt * ( r[i-1] - S[i-1]/true_K ) +
+                   sqrt(dt) * sqrt(true_gamma/true_K) * S[i-1] * randn()
+end
+y  = max(0.01,(1/true_K)*S[ty] + sigma*randn(n+1))      # Generation of measurement points
+
+for a = 1:n
+    S_init[ty[a]:ty[a+1]] = K*linspace(y[a],y[a+1],ty[a+1]-ty[a]+1)
+end
+
+q            = zeros(N)             # Coordinates vector
+u            = zeros(N)             # Coordinates vector
+q = log(S_init./(K*r))
+
+## Transformations q -> u 
+## (eqs 2.16-17 in Tuckerman et al., JCP 99 (4), 2796, 1993)
+
+for i=0:(n-1)
+    u[i*j+1] = q[i*j+1]
+    for k=2:j
+        u[i*j+k] = q[i*j+k] - ( (k-1)*q[i*j+k+1] + q[i*j+1] )/k
+    end
+end;
+u[N] = q[N]
+u
+outparsed = Array(Expr,l1)
+for jj = 1:l1
+	outparsed[jj] = parse(out[jj])
+end
+outparsed
+
+sum([eval(outparsed[i]) for i = 1:l1])
+
+
+### AND WHAT IF WE PARALLELIZED?!?! ###############
+addprocs(2)
+
+@everywhere outparallel = Array(String,l1)
+for jj = 1:l1
+	outparallel[jj] = out[jj]
+end
+for jj = 1:l1 
+	outparallel[jj] = replace(outparallel[jj], "u", "localpart(du)")
+end
+outparallel
+
+outpp = Array(Expr,l1)
+for jj = 1:l1
+	outpp[jj] = parse(outparallel[jj])
+end
+outpp
+
+du = distribute(u)
+du.indexes
+
+for pid in workers()
+    remotecall(pid, x->(global K; K = x; nothing), K)
+    remotecall(pid, x->(global g; g = x; nothing), g)
+    remotecall(pid, x->(global lnrder; lnrder = x; nothing), lnrder)
+    remotecall(pid, x->(global dt; dt = x; nothing), dt)
+    remotecall(pid, x->(global du; du = x; nothing), du)
+end
+eval(outparsed[1])
+fetch(@spawnat 2 eval(outpp[1]))
+
+eval(outparsed[2])
+fetch(@spawnat 2 eval(outpp[2]))
+
+eval(outparsed[3])
+fetch(@spawnat 2 eval(outpp[3]))
+
+eval(outparsed[4])
+fetch(@spawnat 2 eval(outpp[4]))
+
+eval(outparsed[5])
+fetch(@spawnat 2 eval(outpp[5]))
+
+eval(outparsed[6])
+fetch(@spawnat 2 eval(outpp[6]))
+
+eval(outparsed[7])
+fetch(@spawnat 2 eval(outpp[7]))
+
+eval(outparsed[8])
+fetch(@spawnat 2 eval(outpp[8]))
+
+fetch(@spawnat 2 localpart(du))
+fetch(@spawnat 3 localpart(du))
+
+outpp[9]
+
+asa="E^2"
+asa=replace(asa,"E^","exp(")
+
+eval(parse(asa))
+
+##############################################################################
+##############################################################################
+
+V_fast_par     = DArray(I->[:($i) for i in I[1]],(nworkers(),),workers(),[nworkers()])
+V_fast_der_par = DArray(I->[:($i) for i in I[1]],(nworkers(),),workers(),[nworkers()])
+V_fast_par.indexes
+@spawnat 2 (
+localpart(V_fast_par)[1] = quote       # Fast dynamics (harmonic and data terms)
+	
+    	# Variables:
+    	# ---------------------------
+    	
+    	bet      = theta[1]
+    	tau      = theta[2]
+    	
+    	K        = T*exp(bet)
+    	gamm     = exp(tau)
+	
+    	# Harmonic term:
+    	# ---------------------------
+    	out_fast = 0.0
+    	out_temp = ( y[1] - r[1]*exp(u[1]) )^2/(2*sigma^2)
+    	for i=1:2
+    	    out_temp += K * ( u[(i-1)*j+1] - u[i*j+1] )^2/( j*dt )   / ( 2*gamm ) +
+    	                ( y[i+1] - r[i*j+1]*exp(u[i*j+1]) )^2/(2*sigma^2)
+    	end
+    	for i=1:2
+    	    for k=2:j
+    	        out_temp += k*u[(i-1)*j+k]^2/( (k-1)*dt )*K/(2*gamm)
+    	    end
+    	end
+    
+    	out_fast = out_temp
+    
+end;
+
+)           
+
+
+@spawnat 2 (
+	localpart(V_fast_der_par)[1] = rdiff(localpart(V_fast_par)[1], outsym=:out_fast, u = ones(21))
+)
+@spawnat 2 (begin
+	temp = string(localpart(V_fast_der_par)[1]);
+	temp = replace(temp, "u","localpart(du)");
+	localpart(V_fast_der_par)[1] = parse(temp);
+end)
+
+fetch(@spawnat 2 eval(localpart(V_fast_der_par)[1])[2][1])
+
+temp = string(V_fast_der_u)
+temp = replace(temp, "u","localpart(du)")
+V_fast_der_du = parse(temp)
+V_fast_der_du
+eval(V_fast_der_u)
+fetch(@spawnat 2 eval(V_fast_der_du))
+
+@eval V_fast_der(du) = ($V_fast_der_u)[2][1]
+@time(
+for jj = 1:1000
+    V_fast_der(theta,u)
+end
+)
+addprocs(3)
+asa = [i for i = 1:60000000]
+dasa = distribute(asa)
+
+@time(
+	begin
+		asa[:] = asa[:].*2+asa[:].*3
+		for p = 1:nworkers()
+			@spawnat workers()[p] (localpart(dasa)[:] = localpart(dasa)[:].*2+localpart(dasa)[:].*3)
+		end
+		#asa[1]+dasa[end]
+	end)
+dasa
+asa[:]=asa[:].*2+asa[:].*3
+
+asa2 = Array(Any,5)
+asa2 = [1,2,3,4,5]
+sqrt(asa2)
+
+procs()
+
+@fetchfrom 3 ((localpart(dpu)[:]).^2)./ (2*localpart(dmu)[:])
+
+capa = [i for i = 1:10]
+asanov = quote
+	out = capa[end]+capa[1]
+end
+eval(asanov)
+asanovic = rdiff(asanov, outsym=:out, capa = ones(Float64, 10))
+
+asato = [1,2,3,4,5]
+marat = [1,1,1,2,3]
+
+forbe = [6,7,8,9,10]
+
+mensh = [1,2,1,2,1]
+
+2*(asato+marat)
+
+
+
+asato[:] += 2*(forbe[:]+marat[:])./mensh[:]
+dpu
+
+asato[2:(end-1)]
+
+@time(begin
+	for jj = 1:1000
+		@spawnat 2 (begin
+    		# force_u = -V_slow_der_u()
+        	localpart(dpu)[:] += (dtau/2)*(-V_slow_der_u()[:])   # (dtau/2)*force_u[:] 
+    	end)
+	end
+end)
+@spawnat 2 (begin
+        force_u = -V_slow_der_u()
+        localpart(dpu)[:] += (dtau/2)*force_u[:] 
+    end)
+
+@spawnat 2 (@everywhere asani = 58)
+@fetchfrom 3 5+asani
+asani
+
+dasa = DArray(I->[i for i in I[1]],(10,))
+darat = DArray(I->[i^2 for i in I[1]],(10,))
+
+
+
+@everywhere function testfun(a::Array)
+	b = Array(Float64,size(a,1))
+	b[:] = a[:] + 1
+	return b
+end 
+@fetchfrom 2 (testfun(localpart(dasa)))
+
+@fetchfrom 2 localpart(dasa)[:] += 2*testfun(localpart(dasa))[:]
+
+ambasa = [i for i = 1:10]
+
+ambasa[[1:4, 6:10]]
+
+asa = [i for i = 1:10000000]
+dasa = distribute(asa)
+dasa.indexes
+
+@time(begin
+	for jj = 1:length(asa)
+		asa[jj] += asa[jj]^2+1
+	end
+end)
+
+@time(begin
+	for p = 1:num_workers
+		@spawnat workers()[p] (localpart(dasa)[:] += localpart(dasa)[:].^2+1)
+	end
+	dasa
+end)
+
+
+dpua = convert(Array,dpu)
+forcea = convert(Array,force)
+@time(begin
+	for i=1:(du_size) 
+    	dpua[i] += (dtau/2)*forcea[i]
+	end
+end)
+@time(begin for p = 1:num_workers
+    @spawnat workers()[p] (begin
+        localpart(dpu)[:] += (dtau/2)*localpart(force)[:]
+    end)
+end 
+end)
+@time(begin
+	compute_something(dpu, force)
+end)
+
+asa.fields
+@everywhere dtau = 0.02
+function compute_something(da::DArray, db::DArray)
+	DArray(size(da), procs(da)) do I
+		[da[i] + (dtau/2)*db[i] for i in I[1]]
+	end
+end
+force
+dpu_save = dpu
+
+compute_something(dasa,basa)
+
+
+asa = [i for i = 1:10]
+basa = distribute(asa*2)
+
+basa = slice(asa,1:5)
+
+2*basa[1:5]
+a = b = zeros(size(dpu))
+dasa = distribute(asa)
+dasa.indexes  
+@fetchfrom 2 typeof(dasa)
+
+##############################################################
+##############################################################
+#######   SERIAL VS PARALLEL: A MATCH WITHOUT WINNER   #######
+
+## TASK-BASED PROBLEM , very large number of iterations 
+#######################################################
+addprocs(2)
+
+@everywhere function count_heads(n)
+	c::Int = 0
+	for i = 1:n
+		c += randbool()
+	end
+	return c
+end
+
+niter = 1000000000
+piter = int64(niter/nworkers())
+@time(count_heads(niter)/niter*100)  # Serial version: 3.6 seconds
+
+@time(begin   # 3.6 seconds 
+	sum([(@fetchfrom p count_heads(piter)) for p in workers()])/niter*100
+end)		  # The command @fetchfrom makes the loop wait   
+			  # for the result of one proc before moving to the next.
+			  # --> equivalent to the serial code!
+
+@time(begin 							# Parallel version: 2.0 seconds.
+	a = @spawnat 2 count_heads(piter)
+	b = @spawnat 3 count_heads(piter)
+	(fetch(a)+fetch(b))/niter*100
+end)
+
+# or equivalently:
+
+@time(begin
+	sum(map(fetch, {(@spawnat p count_heads(piter)) for p in workers()}))/niter*100
+end)
+
+## TASK-BASED PROBLEM , small number of iterations 
+#######################################################
+
+niter = 1000
+piter = int64(niter/nworkers())
+@time(count_heads(niter)/niter*100)     # Serial version: 2-3 * 10^(-5) seconds
+
+@time(begin 							# Parallel version: 0.015 seconds. 
+	a = @spawnat 2 count_heads(piter)   # Much slower than the serial one!
+	b = @spawnat 3 count_heads(piter)
+	(fetch(a)+fetch(b))/niter*100
+end)
+
+## Something like our DATA-BASED PROBLEM , small number of iterations 
+#####################################################################
+
+addprocs(2)
+
+n = 300
+p = [2*i for i = 1:n]
+force = [i for i = 1:n]
+
+time_ser = 0.0
+for iter = 1:200
+	t0 = time()
+	begin
+		for i = 1:n 
+    		p[i] = p[i] + (1.0/2.0) * force[i]
+		end
+		p
+	end
+	time_ser += (time()-t0)
+end
+time_ser 			        # Serial version: 0.03 sec for 200 iterations
+
+@time(begin
+	for i = 1:n 
+    	p[i] = p[i] + (1.0/2.0) * force[i]
+	end
+end)  			            # 0.0002-3 sec for a single iteration
+
+n = 300
+p = [2*i for i = 1:n]
+force = [i for i = 1:n]
+dp = distribute(p)			# Introduce distributed arrays to parallelize
+dforce = distribute(force)
+
+time_par = 0.0
+for iter = 1:200
+	t0 = time()
+	@sync begin
+		for pid in workers()
+	    	@spawnat pid (localpart(dp)[:] += (1.0/2.0) * localpart(dforce)[:])
+		end
+		dp
+	end
+	time_par += (time()-t0)
+end
+time_par 					# 0.27 sec  for 200 iterations
+							# --> much slower than the serial version!
+
+@time(begin
+	for pid in workers()
+	   	@spawnat pid (localpart(dp)[:] += (1.0/2.0) * localpart(dforce)[:])
+	end
+end)                        # 0.003 sec for a single iteration
+
+## Something like our DATA-BASED PROBLEM , large number of iterations 
+#####################################################################
+
+addprocs(2)
+
+n = 30000 ################# 30k
+p = [2*i for i = 1:n]
+force = [i for i = 1:n]
+
+time_ser = 0.0
+for iter = 1:200
+	t0 = time()
+	begin
+		for i = 1:n 
+    		p[i] = p[i] + (1.0/2.0) * force[i]
+		end
+		p
+	end
+	time_ser += (time()-t0)
+end
+time_ser 				# Serial version: 2.9 seconds for 200 iterations
+
+@time(begin
+	for i = 1:n 
+    	p[i] = p[i] + (1.0/2.0) * force[i]
+	end
+end)  					# 0.02 - 0.015 seconds for a single iteration
+
+p = [2*i for i = 1:n]
+force = [i for i = 1:n]
+dp = distribute(p)
+dforce = distribute(force)
+
+time_par = 0.0
+for iter = 1:200
+	t0 = time()
+	@sync begin
+		for pid in workers()
+	    	@spawnat pid (localpart(dp)[:] += (1.0/2.0) * localpart(dforce)[:])
+		end
+	end
+	time_par += (time()-t0)
+end
+time_par 				# Parallel version: usually 2.7 seconds, but with fluctuations (sometimes more than 3 seconds)
+						# Generally, about the same as the serial version 
+
+@time(@sync begin
+	for pid in workers()
+	   	@spawnat pid (localpart(dp)[:] += (1.0/2.0) * localpart(dforce)[:])
+	end
+end)                    # 0.02 sec
+
+n = 300000           ################# 300k
+p = [2*i for i = 1:n]
+force = [i for i = 1:n]
+
+time_ser = 0.0
+for iter = 1:100
+	t0 = time()
+	begin
+		for i = 1:n 
+    		p[i] = p[i] + (1.0/2.0) * force[i]
+		end
+		p
+	end
+	time_ser += (time()-t0)
+end
+time_ser 				# Serial version: 16 seconds for 100 iterations
+
+@time(begin
+	for i = 1:n 
+    	p[i] = p[i] + (1.0/2.0) * force[i]
+	end
+end)  					# 0.15 seconds for a single iteration
+
+p = [2*i for i = 1:n];
+force = [i for i = 1:n];
+dp = distribute(p);
+dforce = distribute(force);
+
+time_par = 0.0
+for iter = 1:100
+	t0 = time()
+	@sync begin
+		for pid in workers()
+	    	@spawnat pid (localpart(dp)[:] += (1.0/2.0) * localpart(dforce)[:])
+		end
+	end
+	time_par += (time()-t0)
+end
+time_par 				# Parallel version: about 16 seconds
+						# Same as the serial version 
+
+
+
+n = 3000000           ################# 3000k
+p = [2*i for i = 1:n];
+force = [i for i = 1:n];
+
+time_ser = 0.0
+for iter = 1:10
+	t0 = time()
+	begin
+		for i = 1:n 
+    		p[i] = p[i] + (1.0/2.0) * force[i]
+		end
+		p
+	end
+	time_ser += (time()-t0)
+end
+time_ser 				# Serial version: 29 seconds for 10 iterations
+
+@time(begin
+	for i = 1:n 
+    	p[i] = p[i] + (1.0/2.0) * force[i]
+	end
+end)  					# 2.9 seconds for a single iteration
+
+p = [2*i for i = 1:n];
+force = [i for i = 1:n];
+dp = distribute(p);
+dforce = distribute(force);
+
+time_par = 0.0
+for iter = 1:10
+	t0 = time()
+	@sync begin
+		for pid in workers()
+	    	@spawnat pid (localpart(dp)[:] += (1.0/2.0) * localpart(dforce)[:])
+		end
+	end
+	time_par += (time()-t0)
+end
+time_par 				# Parallel version: 17 - 20 seconds
+						# Finally faster than the serial version 
+
+@time(@sync begin
+	for pid in workers()
+	   	@spawnat pid (localpart(dp)[:] += (1.0/2.0) * localpart(dforce)[:])
+	end
+end)                    # 1.5 seconds
+
+

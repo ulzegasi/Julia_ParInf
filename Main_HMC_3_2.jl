@@ -314,11 +314,16 @@ for counter = (nsample_burnin + 1):nsample
     u_sample[counter+1,:] = u 
 
     time_metropolis[counter-nsample_burnin] = time()-t3
-    if (counter%100 == 0)
+    # if (counter%100 == 0)
         println(string(counter, " loops completed in ", round(time()-tinit,1), " seconds \n"))
-    end
+    # end
 
 end
+
+writedlm("C:/Users/ulzegasi/respatimeser.dat", time_respa)
+writedlm("C:/Users/ulzegasi/respaslowser.dat", time_respa_s)
+writedlm("C:/Users/ulzegasi/respafastforceser.dat", time_respa_f_d)
+writedlm("C:/Users/ulzegasi/respafastupser.dat", time_respa_f_u)
 
 ## --------------------------------------------------------------------------------------------
 ## End of HMC loop

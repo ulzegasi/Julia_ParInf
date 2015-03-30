@@ -30,8 +30,8 @@ num_workers  = nworkers()
 first_worker = workers()[1]
 last_worker  = workers()[end]
 
-dir   = "C:/Users/ulzegasi/Julia_files/ParInf_HMC"       # Main project directory, local repository   
-dir2  = "C:/Users/ulzegasi/SWITCHdrive/JuliaTemp/Data"   # Secondary directory (e.g., data storage)
+@everywhere dir   = "C:/Users/ulzegasi/Julia_files/ParInf_HMC"       # Main project directory, local repository   
+@everywhere dir2  = "C:/Users/ulzegasi/SWITCHdrive/JuliaTemp/Data"   # Secondary directory (e.g., data storage)
 fname = string("_testing")                               # Output files
 @everywhere using ReverseDiffSource #, ForwardDiff       # Automated differentiation package
 reload("$dir/myDArray.jl")
@@ -60,7 +60,7 @@ ty  = iround(linspace(1, N, n+1))             # Indeces of "end point" beads (= 
 const s = 2                                   # Number of system parameters (k, gamma)     
 
 nsample_burnin  = 0                           # Number of system realizations (burnin and effective) 
-nsample_eff     = 4
+nsample_eff     = 100
 nsample         = nsample_eff + nsample_burnin
 
 dtau    = 0.02                                # Long range MD time step
@@ -92,10 +92,6 @@ S_init       = zeros(N)             # Initial state (with starting parameter val
 theta_sample = zeros(nsample+1, s)  # Containers for sampled parameters
 u_sample     = zeros(nsample+1, N)  # Containers for sampled coordinates.
 energies     = zeros(nsample)       # Containers for sampled energies
-mp           = zeros(s+N)           # Masses for the p momenta
-p            = zeros(s+N)           # Momenta
-theta_save   = zeros(s)             # To store temporary parameters
-u_save       = zeros(N)             # To store temporary coordinates.
 
 ##
 ## ============================================================================================
@@ -156,7 +152,7 @@ u_sample[1,:]     = u              # Store initial coordinates
 ## --------------------------------------------------------------------------------------------
 
 # Generate index ranges to assign boundary beads to the worker processes
-bdy_indexes = [distribute(zeros(n)).indexes[i][1] for i = 1:num_workers]
+bdy_indexes = convert(Array{UnitRange{Int64}}, [distribute(zeros(n)).indexes[i][1] for i = 1:num_workers])
 # Generate index ranges to assign {u} to the worker processes
 du_indexes  = [((bdy_indexes[i][1]-1)*j+1):((bdy_indexes[i][end])*j+1) for i = 1:num_workers]
 # Generate size of the distributed array that will represent {u} 
@@ -170,7 +166,7 @@ for i = 1:num_workers
     start_ind += chk_sizes[i]
 end
 # Generate extended {u} vector (with overlapping edges) and share it with all processes
-# then do the same with the rain input r
+# then do the same with the rain input r and the derivative of it log lnr_der
 ext_u = Array(Float64,du_size)
 for i = 1:num_workers
     ext_u[chk_indexes[i][1]] = u[du_indexes[i]]
@@ -184,6 +180,13 @@ for i = 1:num_workers
 end 
 for pid in workers()
     remotecall(pid, x->(global ext_r; ext_r = x; nothing), ext_r)
+end
+ext_lnr_der = Array(Float64,du_size)
+for i = 1:num_workers
+    ext_lnr_der[chk_indexes[i][1]] = lnr_der[du_indexes[i]]
+end 
+for pid in workers()
+    remotecall(pid, x->(global ext_lnr_der; ext_lnr_der = x; nothing), ext_lnr_der)
 end
 
 ##
@@ -206,15 +209,13 @@ for pid in workers()
     remotecall(pid, x->(global ext_y; ext_y = x; nothing), ext_y)
 end
 
-# Finally construct the distributed arrays du, dr, dy
-#####################################################
-du = myDArray(I->[ext_u[i] for i in I[1]],(du_size,),workers(),[nworkers()],chk_indexes)
-dr = myDArray(I->[ext_r[i] for i in I[1]],(du_size,),workers(),[nworkers()],chk_indexes)
-dy = myDArray(I->[ext_y[i] for i in I[1]],(dy_size,),workers(),[nworkers()],chk_y_indexes)
-
-du_short = distribute(u)
-dr_short = distribute(r)
-dy_short = distribute(y)
+# Finally construct the distributed arrays du, dr, dy, dlnr_der
+################################################################
+du       = myDArray(I->[ext_u[i] for i in I[1]],(du_size,),workers(),[nworkers()],chk_indexes)
+du_array = Array(Float64, du_size)
+dr       = myDArray(I->[ext_r[i] for i in I[1]],(du_size,),workers(),[nworkers()],chk_indexes)
+dlnr_der = myDArray(I->[ext_lnr_der[i] for i in I[1]],(du_size,),workers(),[nworkers()],chk_indexes)
+dy       = myDArray(I->[ext_y[i] for i in I[1]],(dy_size,),workers(),[nworkers()],chk_y_indexes)
 
 ## --------------------------------------------------------------------------------------------
 ## Share important stuff with all processes
@@ -225,6 +226,7 @@ for pid in workers()
     remotecall(pid, x->(global theta; theta = x; nothing), theta)
     remotecall(pid, x->(global T; T = x; nothing), T)
     remotecall(pid, x->(global N; N = x; nothing), N)
+    remotecall(pid, x->(global n; n = x; nothing), n)
     remotecall(pid, x->(global s; s = x; nothing), s)
     remotecall(pid, x->(global y; y = x; nothing), y)
     remotecall(pid, x->(global j; j = x; nothing), j)
@@ -242,14 +244,14 @@ for pid in workers()
     remotecall(pid, x->(global du; du = x; nothing), du)
     remotecall(pid, x->(global dy; dy = x; nothing), dy)
     remotecall(pid, x->(global dr; dr = x; nothing), dr)
+    remotecall(pid, x->(global dlnr_der; dlnr_der = x; nothing), dlnr_der)
 end
 ## --------------------------------------------------------------------------------------------
 ## Loading...
 ## --------------------------------------------------------------------------------------------
 
 println(string("\nLoading potentials, derivatives and functions...\n---------------------------------"))
-
-include("$dir/ParInf_Fun_AD_4.jl")
+include("$dir/ParInf_Fun_AD_4_2.jl")
 
 ## --------------------------------------------------------------------------------------------
 ## Masses (burn-in):
@@ -259,18 +261,46 @@ M_bdy   = 6.0*K*N/(gamma*T)
 M_theta = M_bdy/N
 M_stage = M_bdy*0.01
 
-mp[1:s] = M_theta
-for i=0:(n-1)  
-    mp[s+1+i*j] = M_bdy                                 # End point beads
+mtheta = zeros(s)           # Masses for the p momenta
+mu     = zeros(N)
+
+mtheta[1:s] = M_theta
+for i=1:n  
+    mu[(i-1)*j+1] = M_bdy                     # End point beads
     for k=2:j 
-        mp[s+i*j+k] = M_stage*k/(k-1)                   # Staging beads
+        mu[(i-1)*j+k] = M_stage*k/(k-1)       # Staging beads
     end
 end
-mp[s+N] = M_bdy                                         # Last end point bead
+mu[N] = M_bdy                                 # Last end point bead
 
-# mp_theta = mp[1:s] 
-# mp_du    = distribute(mp[s+1:end])
+# Generate extended mu vector (with overlapping edges) and share it with all processes
+# Finally construct the distributed array dmu and its sqrt
+################################################################
+ext_mu = Array(Float64, du_size)
+for i = 1:num_workers
+    ext_mu[chk_indexes[i][1]] = mu[du_indexes[i]]
+end 
+for pid in workers()
+    remotecall(pid, x->(global ext_mu; ext_mu = x; nothing), ext_mu)
+end
+dmu      = myDArray(I->[ext_mu[i]       for i in I[1]],(du_size,),workers(),[nworkers()],chk_indexes)
+dmu_sqrt = myDArray(I->[sqrt(ext_mu[i]) for i in I[1]],(du_size,),workers(),[nworkers()],chk_indexes)
 
+# Construct array and distributed array for parameters and coordinates momenta, respectively
+################################################################
+ptheta = zeros(s)           
+dpu    = myDArray(I->[0.0 for i in I[1]],(du_size,),workers(),[nworkers()],chk_indexes)
+
+# Construct array and distributed array to store temporary parameters and coordinates, respectively
+################################################################
+du_save    = du
+theta_save = theta
+
+force_old = myDArray(I->[0.0 for i in I[1]],(du_size,),workers(),[nworkers()],chk_indexes)
+force_new = myDArray(I->[0.0 for i in I[1]],(du_size,),workers(),[nworkers()],chk_indexes)
+force     = myDArray(I->[0.0 for i in I[1]],(du_size,),workers(),[nworkers()],chk_indexes)
+
+du_array  = float64(convert(Array,du))
 ## --------------------------------------------------------------------------------------------
 ## HMC loops
 ## --------------------------------------------------------------------------------------------
@@ -284,45 +314,46 @@ for counter = 1:nsample_burnin
 
     # Sample momenta:
     # -------------------
+    ptheta = sqrt(mtheta).*randn(s)
+    for p = 1:num_workers
+        @spawnat workers()[p] (localpart(dpu)[:] = localpart(dmu_sqrt)[:].*randn(length(localpart(du))))
+    end
 
-    p = sqrt(mp).*randn(s+N)
-    
     # Calculate energy:
     # -------------------
-
-    H_old = V_fast_fun(theta,u) + V_slow_fun(theta,u) + sum((p .* p) ./ (2*mp))
+    H_old = V_fast_fun_proc1(theta,du_array) + V_slow_fun_proc1(theta,du_array) + sum((ptheta .^2) ./ (2*mtheta)) +
+        sum([(@fetchfrom workers()[p] sum(((localpart(dpu)[:]).^2)./ (2*localpart(dmu)[:]))) for p = 1:num_workers])
+   
     energies[counter] = H_old
     
     # Save current state:
     # -------------------
-
     theta_save = theta
-    u_save     = u
+    du_save    = du
 
     # MD Integration:
     # -------------------
-
     for counter_respa = 1:n_respa 
-        RESPA(theta, u, p, mp, dtau, nn, deltatau, counter) 
+        RESPA(theta, ptheta, du, dpu, force, force_old, force_new, dtau, nn, deltatau, counter) 
     end 
 
     # Calculate energy of proposal state:
     # -------------------
-
-    H_new = V_fast_fun(theta,u) + V_slow_fun(theta,u) + sum(p .* p ./ (2*mp))
+    H_new = V_fast_fun_proc1(theta,du_array) + V_slow_fun_proc1(theta,du_array) + sum((ptheta .^2) ./ (2*mtheta)) +
+        sum([(@fetchfrom workers()[p] sum(((localpart(dpu)[:]).^2)./ (2*localpart(dmu)[:]))) for p = 1:num_workers])
 
     # Metropolis step:
     # -------------------
-
     accept_prob = min(1,exp(H_old-H_new))
     if rand() > accept_prob
-        for i=1:s theta[i] = theta_save[i] end
-        for i=1:N u[i]     = u_save[i] end
+        theta = theta_save
+        du    = du_save
+        du_array = float64(convert(Array,du))
         reject_counter_burnin += 1
     end
     
     theta_sample[counter+1,:] = theta
-    u_sample[counter+1,:] = u[1:end] 
+    u_sample[counter+1,:] = reduce_array(du_array)
    
     if (counter%100 == 0)
         println(string(counter, " loops completed in ", round(time()-tinit,1), " seconds \n"))
@@ -342,15 +373,23 @@ M_bdy   = 6.0*K*N/(gamma*T)
 M_theta = M_bdy./[1.0*N, 1.0*N]						    # Masses for K and gamma
 M_stage = M_bdy*0.02
 
-mp = zeros(Float64, s+N)
-mp[1:s] = M_theta
-for i=0:(n-1)  
-    mp[s+1+i*j] = M_bdy                                 # End point beads
+mtheta[1:s] = M_theta
+for i=1:n  
+    mu[(i-1)*j+1] = M_bdy                     # End point beads
     for k=2:j 
-        mp[s+i*j+k] = M_stage*k/(k-1)                   # Staging beads
+        mu[(i-1)*j+k] = M_stage*k/(k-1)       # Staging beads
     end
 end
-mp[s+N] = M_bdy                                         # Last end point bead
+mu[N] = M_bdy                                 # Last end point bead
+
+for i = 1:num_workers
+    ext_mu[chk_indexes[i][1]] = mu[du_indexes[i]]
+end
+for pid in workers()
+    remotecall(pid, x->(global ext_mu; ext_mu = x; nothing), ext_mu)
+end
+dmu      = myDArray(I->[ext_mu[i]       for i in I[1]],(du_size,),workers(),[nworkers()],chk_indexes)
+dmu_sqrt = myDArray(I->[sqrt(ext_mu[i]) for i in I[1]],(du_size,),workers(),[nworkers()],chk_indexes)
 
 reject_counter = 0
 
@@ -372,55 +411,53 @@ for counter = (nsample_burnin + 1):nsample
     # Sample momenta:
     # -------------------
     t0=time()
-    
-    p = sqrt(mp).*randn(s+N)
-
+    ptheta = sqrt(mtheta).*randn(s)
+    for p = 1:num_workers
+        @spawnat workers()[p] (localpart(dpu)[:] = localpart(dmu_sqrt)[:].*randn(length(localpart(du))))
+    end
+   
     # Calculate energy:
     # -------------------
-
-    H_old = V_fast_fun(theta,u) + V_slow_fun(theta,u) + sum((p .* p) ./ (2*mp))
+    H_old = V_fast_fun_proc1(theta,du_array) + V_slow_fun_proc1(theta,du_array) + sum((ptheta .^2) ./ (2*mtheta)) +
+        sum([(@fetchfrom workers()[p] sum(((localpart(dpu)[:]).^2)./ (2*localpart(dmu)[:]))) for p = 1:num_workers])
     energies[counter] = H_old
     
     time_Hold[counter-nsample_burnin] = time()-t0
     
     # Save current state:
     # -------------------
-
     theta_save = theta
-    u_save     = u       
+    du_save    = du       
 
     # MD Integration:
     # -------------------
     t1=time()
-    
     for counter_respa = 1:n_respa 
-        RESPA(theta, u, p, mp, dtau, nn, deltatau, counter)  
-    end 
+        RESPA(theta, ptheta, du, dpu, force, force_old, force_new, dmu, dtau, nn, deltatau, counter)  
+    end
     time_respa[counter-nsample_burnin] = time()-t1
 
     # Calculate energy of proposal state:
     # -------------------
-
     t2=time()
-
-    H_new = V_fast_fun(theta,u) + V_slow_fun(theta,u) + sum(p .* p ./ (2*mp))
+    H_new = V_fast_fun_proc1(theta,du_array) + V_slow_fun_proc1(theta,du_array) + sum((ptheta .^2) ./ (2*mtheta)) +
+        sum([(@fetchfrom workers()[p] sum(((localpart(dpu)[:]).^2)./ (2*localpart(dmu)[:]))) for p = 1:num_workers])
 
     time_Hnew[counter-nsample_burnin] = time()-t2
 
     # Metropolis step:
     # -------------------
-
     t3=time()
-
     accept_prob = min(1,exp(H_old-H_new))
     if rand() > accept_prob
-        for i=1:s theta[i] = theta_save[i] end
-        for i=1:N u[i]     = u_save[i] end
-        reject_counter += 1
+        theta = theta_save
+        du    = du_save
+        du_array = float64(convert(Array,du))
+        reject_counter_burnin += 1
     end
     
     theta_sample[counter+1,:] = theta
-    u_sample[counter+1,:] = u[1:end] 
+    u_sample[counter+1,:] = reduce_array(du_array) 
 
     time_metropolis[counter-nsample_burnin] = time()-t3
     #if (counter%100 == 0)
@@ -428,6 +465,11 @@ for counter = (nsample_burnin + 1):nsample
     #end
 
 end
+
+writedlm("C:/Users/ulzegasi/respatime.dat", time_respa)
+writedlm("C:/Users/ulzegasi/respaslow.dat", time_respa_s)
+writedlm("C:/Users/ulzegasi/respafastforce.dat", time_respa_f_d)
+writedlm("C:/Users/ulzegasi/respafastup.dat", time_respa_f_u)
 
 ## --------------------------------------------------------------------------------------------
 ## End of HMC loop
@@ -511,3 +553,5 @@ rain_in  = Array(Any, N+1); rain_in  = vcat("Rain_input", r)
 flow_out = Array(Any, n+2); flow_out = vcat("Output_flow", y)
 io_data  = Array(Any, 2*N+n+4); io_data  = vcat(S_first, rain_in, flow_out)
 writedlm("$dir2/iodata$fname.dat", io_data)
+ 
+writedlm("$dir/y.dat", flow_out)

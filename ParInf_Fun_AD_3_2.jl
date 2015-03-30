@@ -226,10 +226,10 @@ function RESPA(theta, u, p, mp, dtau, nn, deltatau, counter)     # (Tuckerman et
     # First long-range step (dtau):
     # ---------------------------
     time1 = time()
-    force = -V_slow_der(theta,u)
+    force = -V_slow_der(theta,u);  
     for i=1:(N+s) 
         p[i] = p[i]  + (dtau/2)* force[i]
-    end
+    end 
     time_respa_s[counter-nsample_burnin] += (time()-time1) 
     # Short-range steps (nn*deltatau):
     # ---------------------------
