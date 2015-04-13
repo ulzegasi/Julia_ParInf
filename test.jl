@@ -3756,4 +3756,64 @@ time_par 				# Parallel version: 17 - 20 seconds
 	end
 end)                    # 1.5 seconds
 
+asa = [1,2,3,4,-1]
 
+if asa[1:end] < 0
+	println("Careful!")
+end
+
+asa = [1,2,3]
+(2).^asa
+exp(asa)
+exp(3)
+xep = zeros(100000000)
+asa = [i for i = 1:100000000]
+@time(begin
+	for i = 1:length(asa)
+		xep[i] = asa[i]
+	end
+end)
+@time(begin
+	xep = asa
+end)
+
+xep[101]
+
+gamma = 5
+gamma(44)
+
+Kuppa = 5
+
+kuppa 
+
+u = zeros(301)
+u[1] = 0.354
+for i = 2:301
+	u[i] = u[i-1] + 0.832/i
+end
+for i = 1:11
+	bq[i] = i 
+end
+for i = 1:301
+	lnr_der[i] = i/10.0 
+end
+theta
+[1,2,3]+[4,5,6]
+asa = 4
+
+(asa *= 6) + 8.5
+
+cos(pi/2)
+
+require("$dir/function.jl")
+
+kappa = 78
+
+testa(3)
+
+zebra = 5
+zebra_old = zebra
+
+zebra += 15
+
+asas = 4+ zebra_old
