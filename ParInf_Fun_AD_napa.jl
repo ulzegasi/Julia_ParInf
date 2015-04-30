@@ -1,23 +1,20 @@
+
 ##########################################################################
 ## Potentials as functions
 ##########################################################################
-function V_N_fun(theta,u)   
+function V_N_fun(u)   
     
     # Variables:
     # ---------------------------
-
-    bet = theta[1]
-    gam = theta[2]
-    
-    K   = T*gam/(bet^2)
-
+    # bet = theta[1]
+    # gam = theta[2]    
+    # K   = T*gam/(bet^2)
     out = 0.0
     for s = 1:n
         for k = 2:j
             out += (1/2) * (T/dt) * k/(k-1) * u[(s-1)*j+k]^2
         end
     end
-
     return out
 end
 ##########################################################################
@@ -29,11 +26,11 @@ function V_n_fun(theta,u)
     bet = theta[1]
     gam = theta[2]
     
-    K   = T*gam/(bet^2)
+    # K   = T*gam/(bet^2)
 
     out = (bq[n+1]-bet*u[n*j+1])^2 / (2*sigma^2)
     for s = 1:n
-        out += (1/2) * (T/dt) * (1/j) * ( u[(s-1)*j+1] - u[s*j+1] )^2 -
+        out += (1/2) * (T/dt) * (1/j) * ( u[(s-1)*j+1] - u[s*j+1] )^2 +
                 (bq[s]-bet*u[(s-1)*j+1])^2 / (2*sigma^2)
     end
 
@@ -41,14 +38,14 @@ function V_n_fun(theta,u)
 end
 ##########################################################################
 function V_1_fun(theta,u)   
-    
+
     # Variables:
     # ---------------------------
 
     bet = theta[1]
     gam = theta[2]
     
-    K   = T*gam/(bet^2)
+    # K   = T*gam/(bet^2)
 
     rho = (2+gam)*bet/(2*gam)
 
@@ -76,6 +73,12 @@ function V_1_fun(theta,u)
         end
     end
 
+    # out += (1/2)*(log(T*gam/(bet^2)))^2 - 4*log(T*gam/(bet^2)) +    # Lognormal priors
+    #         (1/8)*(log(gam))^2+log(gam*bet)
+
+    # out += log(1.0+exp(s_gam*(gam-gam_0))) + log(1.0+exp(s_k*(T*gam/(bet^2)-k_0))) -
+    #         log(gam) + 3*log(bet)                                                   # Logistic priors
+
     return out
 end
 ##########################################################################
@@ -95,9 +98,9 @@ end
 ## Potentials as expressions
 ##########################################################################
 V_N = quote     
-    bet = theta[1]
-    gam = theta[2]
-    K   = T*gam/(bet^2)
+    # bet = theta[1]
+    # gam = theta[2]
+    # K   = T*gam/(bet^2)
     out_N    = 0.0
     out_temp = 0.0
     for s = 1:n
@@ -111,11 +114,11 @@ end
 V_n = quote
     bet = theta[1]
     gam = theta[2]
-    K   = T*gam/(bet^2)
+    # K   = T*gam/(bet^2)
     out_n    = 0.0
     out_temp = (bq[n+1]-bet*u[n*j+1])^2 / (2*sigma^2)
     for s = 1:n
-        out_temp += (1/2) * (T/dt) * (1/j) * ( u[(s-1)*j+1] - u[s*j+1] )^2 -
+        out_temp += (1/2) * (T/dt) * (1/j) * ( u[(s-1)*j+1] - u[s*j+1] )^2 +
                 (bq[s]-bet*u[(s-1)*j+1])^2 / (2*sigma^2)
     end
     out_n = out_temp
@@ -124,7 +127,7 @@ end
 V_1 = quote
     bet = theta[1]
     gam = theta[2]
-    K   = T*gam/(bet^2)
+    # K   = T*gam/(bet^2)
     rho = (2+gam)*bet/(2*gam)
     out_1    = 0.0
     out_temp = (1/gam)*exp(- bet*u[N]) + u[N]* ((T/bet) * lnr_der[N] + rho ) -
@@ -148,7 +151,15 @@ V_1 = quote
                         (dt/T) * T * tmp * (1/dt) * (T/bet) * (lnr_der[(s-1)*j+k] - lnr_der[(s-1)*j+k-1]) 
         end
     end
+
+    # out_1 = out_temp + (1/2)*(log(T*gam/(bet^2)))^2 -                       # Lognormal priors
+    #             4*log(T*gam/(bet^2)) + (1/8)*(log(gam))^2 + log(gam*bet)
+
+    # out_1 = out_temp + log(1.0+exp(s_gam*(gam-gam_0))) + log(1.0+exp(s_k*(T*gam/(bet^2)-k_0))) -
+    #           log(gam) + 3*log(bet)
+
     out_1 = out_temp
+
 end
 ##
 ##
@@ -173,9 +184,15 @@ dV_1_u     = rdiff(V_1, outsym=:out_1, u     = ones(Float64, N))
 ##
 ##
 ##########################################################################
+## Harmonic oscillator frequency (staging beads)
+##########################################################################
+w_stg(k) = sqrt(T*k/(dt*(k-1)*m_stg))  # h.o. frequencies (staging beads)
+
+##
+##
+##########################################################################
 ## Napa
 ##########################################################################
-
 function napa(theta, u, counter)     # (Tuckerman et al., JCP 97(3), 1992 )
     
     # Fast outer propagator (V_N), step dtau/2 
@@ -184,8 +201,8 @@ function napa(theta, u, counter)     # (Tuckerman et al., JCP 97(3), 1992 )
     for s = 1:n 
         for k = 2:j 
             u_old = u[(s-1)*j+k]
-            (u[(s-1)*j+k] *= cos(w_stg(k)*dtau/2.0)) + p[params+(s-1)*j+k]*sin(w_stg(k)*dtau/2.0) / (m_stg*w_stg(k))
-            (p[params+(s-1)*j+k] *= cos(w_stg(k)*dtau/2.0)) - m_stg*w_stg(k)*u_old*sin(w_stg(k)*dtau/2.0)
+            u[(s-1)*j+k] = u[(s-1)*j+k]*cos(w_stg(k)*dtau/2.0) + p[params+(s-1)*j+k]*sin(w_stg(k)*dtau/2.0) / (m_stg*w_stg(k))
+            p[params+(s-1)*j+k] = p[params+(s-1)*j+k]*cos(w_stg(k)*dtau/2.0) - m_stg*w_stg(k)*u_old*sin(w_stg(k)*dtau/2.0)
         end
     end
     time_respa_f[counter-nsample_burnin] += (time()-timef)
@@ -205,6 +222,7 @@ function napa(theta, u, counter)     # (Tuckerman et al., JCP 97(3), 1992 )
         p[i] += (dtau/2)*( force_old[i] + force_new[i] )
     end  
 
+    
     time_respa_s[counter-nsample_burnin] += (time()-time1)
 
     # Again, fast outer propagator (V_N), step dtau/2 
@@ -213,8 +231,8 @@ function napa(theta, u, counter)     # (Tuckerman et al., JCP 97(3), 1992 )
     for s = 1:n 
         for k = 2:j 
             u_old = u[(s-1)*j+k]
-            (u[(s-1)*j+k] *= cos(w_stg(k)*dtau/2.0)) + p[params+(s-1)*j+k]*sin(w_stg(k)*dtau/2.0) / (m_stg*w_stg(k))
-            (p[params+(s-1)*j+k] *= cos(w_stg(k)*dtau/2.0)) - m_stg*w_stg(k)*u_old*sin(w_stg(k)*dtau/2.0)
+            u[(s-1)*j+k] = u[(s-1)*j+k]*cos(w_stg(k)*dtau/2.0) + p[params+(s-1)*j+k]*sin(w_stg(k)*dtau/2.0) / (m_stg*w_stg(k))
+            p[params+(s-1)*j+k] = p[params+(s-1)*j+k]*cos(w_stg(k)*dtau/2.0) - m_stg*w_stg(k)*u_old*sin(w_stg(k)*dtau/2.0)
         end
     end
     time_respa_f[counter-nsample_burnin] += (time()-timef)

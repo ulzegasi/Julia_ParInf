@@ -16,8 +16,9 @@
 ## carlo.albert@eawag.ch
 ## ============================================================================================
 dir   = "C:/Users/ulzegasi/Julia_files/ParInf_HMC"  # Main project directory, local repository   
-dir2  = "$dir/temp_data"                            # Secondary directory (e.g., data storage)
-fname = string("_testing")                          # Output files
+dir2  = "$dir/good_results"                         # Secondary directory (e.g., output storage)
+dir3  = "$dir/input_data"                           # Input data directory
+fname = string("_dtau030_nnapa3_j40")               # Output files
 using ReverseDiffSource, PyPlot #, ForwardDiff      # Automated differentiation package
 pygui(true)
 srand(18072011)                                     # Seeding the RNG provides reproducibility
@@ -32,7 +33,7 @@ tdat  = float64(readdlm("$dir/t.dat")[range,2]) # Time points t.dat
 
 const params = 2         # Number of system parameters (k, gamma)
 const n = 10             # n+1 -> "end point" beads (see Tuckerman '93), n -> number of segments
-const j = 30             # n(j-1) -> total number of staging beads, j-1 -> staging beads per segment
+const j = 40             # n(j-1) -> total number of staging beads, j-1 -> staging beads per segment
 const N = int64(n*j+1)   # Total number of discrete time points = n*j + 1
                          # IMPORTANT: (N-1)/j = integer = n (measurement points)
 if  ((N-1)%j) != 0 
@@ -45,11 +46,11 @@ const dt = T/(N-1)                         # Time step
 const ty = iround(linspace(1, N, n+1))     # Indeces of "boundary" beads (= measurement points)     
 
 const nsample_burnin = 0                   # Number of points in the MCMC
-const nsample_eff    = 100
+const nsample_eff    = 50000
 const nsample        = nsample_eff + nsample_burnin
 
-const dtau           = 0.02                # MD time step
-const n_napa         = 10                  # Number of NAPA time steps
+const dtau           = 0.30                # MD time step
+const n_napa         = 3                   # Number of NAPA time steps
 # nn = 16  ; deltatau = dtau / nn          # Short time steps in RESPA --> NOT NEEDED IN THE NAPA IMPLEMENTATION
 
 const true_K     = 50.                     # Retention time
@@ -62,6 +63,18 @@ K     = 200.0                              # Initial state
 gam   = 0.5
 bet   = sqrt(T*gam/K)                                   
 theta = [bet, gam]
+
+# Logistic prior parameters
+# const s_gam = 4
+# const gam_0 = 3
+# const s_k   = 0.04
+# const k_0   = 500
+
+# Parameter limits
+K_min   = 0.0
+gam_min = 0.0
+K_max   = 1000.0
+gam_max = 5.0
 ##                 
 ## ============================================================================================
 ## Initialization of arrays and containers
@@ -71,7 +84,6 @@ q            = zeros(N)                 # Coordinates and rain input arrays
 u            = zeros(N)
 r            = zeros(N)
 lnr_der      = zeros(N)                 # Logarithmic derivative of rain input
-S            = zeros(N)                 # System realization (with true parameters)
 S_init       = zeros(N)                 # Initial state
 
 y            = zeros(n+1)               # Data points
@@ -108,15 +120,20 @@ end
 ## ==> beta*q = ln(S/(kr)) = ln(y/r)
 ## ============================================================================================
 ##
-S[1] = true_K * r[1]  # Define first point (--> <S*Peq(S)> with constant rain input)
+S = zeros(N)          # System realization (with true parameters)
+#=S[1] = true_K * r[1]  # Define first point (--> <S*Peq(S)> with constant rain input)
 for i = 2:N              
     S[i] = S[i-1] + dt*( r[i-1] - S[i-1]/true_K ) + sqrt(dt)*sqrt(true_gam/true_K)*S[i-1]*randn()
     if  S[i] < 0 
         error("Negative volume!")
     end
-end
-bq = log((1/true_K)*(S[ty]./r[ty])) + sigma*randn(n+1)  
-y  = r[ty].*exp(bq)                                   
+end=#
+                                  
+St = readdlm("$dir3/St_n10_K50_g02_s10_sinr.dat")
+bq = vec(readdlm("$dir3/bq_n10_K50_g02_s10_sinr.dat"))
+y  = vec(readdlm("$dir3/y_n10_K50_g02_s10_sinr.dat" ))
+
+S = St[iround(linspace(1, size(St,1), N)),1]
 
 #=
 plt.figure()
@@ -125,7 +142,7 @@ plt.ylabel("r, S/K, y")
 plt.title("System I/O")
 plt.plot(t, r, "b--", linewidth=2)
 plt.plot(t, S/true_K, "r", linewidth=2)
-yerr=2*sigma*ones(length(y))
+yerr=2*sigma*y
 plt.errorbar(t[ty], y, yerr=(yerr,yerr), fmt="o", color="b", capsize=4, elinewidth=2)
 =#
 ##
@@ -138,8 +155,9 @@ plt.errorbar(t[ty], y, yerr=(yerr,yerr), fmt="o", color="b", capsize=4, elinewid
 ## --------------------------------------------------------------------------------------------
 ## Initial state
 ## --------------------------------------------------------------------------------------------
+
 for s = 1:n
-    q[ty[s]:ty[s+1]] = (1/bet)*linspace(bq[s],bq[s+1],ty[s+1]-ty[s]+1)
+    q[ty[s]:ty[s+1]] = (1/bet)*linspace(bq[s],bq[s+1],ty[s+1]-ty[s]+1) + (sigma/bet)*randn(ty[s+1]-ty[s]+1)
 end
 
 #=
@@ -148,10 +166,10 @@ plt.plot(t[ty], q[ty], "go",markersize=6)
 =#
 #=
 out_init = (r.*exp(bet*q))
-plt.plot(t, S/true_K, "r", linewidth=2)
-plt.plot(t, out_init, "b", linewidth=2)
-yerr=2*sigma*ones(length(y))
-plt.errorbar(t[ty], y, yerr=(yerr,yerr), fmt="o", color="b", capsize=4, elinewidth=2)
+plt.plot(t, S/true_K, "r", linewidth=1)
+plt.plot(t, out_init, "b", linewidth=1)
+yerr=2*sigma*y
+plt.errorbar(t[ty], y, yerr=(yerr,yerr), fmt="o", color="b", capsize=8, elinewidth=2)
 =#
 
 ## Transformations q -> u 
@@ -175,9 +193,6 @@ u_sample[1,:]     = u              # Store initial coordinates
 m_bdy    = 10.0                       # m = m_q / dt
 m_stg    = 1.0                        # we assume m_q prop. to dt ==> m = costant     
 m_theta  = 1.0
-
-w_bdy    = sqrt(N/(j*m_bdy))        # h.o. frequencies (boundary beads)
-w_stg(k) = sqrt(N*k/((k-1)*m_stg))  # h.o. frequencies (staging beads)
 
 mp[1:params] = m_theta
 for s = 1:n  
@@ -212,8 +227,11 @@ for counter = 1:nsample_burnin
     
     # Calculate energy:
     # -------------------
-    H_old = V_N_fun(theta,u) + V_n_fun(theta,u) + V_1_fun(theta,u) + sum((p.^2)./(2*mp))
+    H_old = V_N_fun(u) + V_n_fun(theta,u) + V_1_fun(theta,u) + sum((p.^2)./(2*mp))
     energies[counter] = H_old
+    if  isnan(H_old) 
+        error(string("Iteration ", counter, " --> energy values diverged..."))
+    end
     
     # Save current state:
     # -------------------
@@ -223,12 +241,12 @@ for counter = 1:nsample_burnin
     # MD Integration:
     # -------------------
     for counter_napa = 1:n_napa 
-        napa(theta, u, p, mp, dtau, nn, deltatau) 
+        napa(theta, u, counter) 
     end 
 
     # Calculate energy of proposal state:
     # -------------------
-    H_new = V_N_fun(theta,u) + V_n_fun(theta,u) + V_1_fun(theta,u) + sum((p.^2)./(2*mp))
+    H_new = V_N_fun(u) + V_n_fun(theta,u) + V_1_fun(theta,u) + sum((p.^2)./(2*mp))
 
     # Metropolis step:
     # -------------------
@@ -256,9 +274,9 @@ m_bdy_burnin   = m_bdy
 m_stg_burnin   = m_stg
 m_theta_burnin = m_theta
 
-m_bdy    = 10.0                     # m = m_q / dt
-m_stg    = 1.0                      # we assume m_q prop. to dt ==> m = costant     
-m_theta  = [1.0, 1.0]
+m_bdy    = 700                      # m = m_q / dt
+m_stg    = 300                      # we assume m_q prop. to dt ==> m = costant     
+m_theta  = [150, 190]
 
 mp[1:params] = m_theta
 for s = 1:n  
@@ -269,20 +287,14 @@ for s = 1:n
 end
 mp[params+N] = m_bdy          
 
-# w_bdy    = sqrt(N/(j*m_bdy))        # h.o. frequencies (boundary beads)
-# w_stg(k) = sqrt(N*k/((k-1)*m_stg))  # h.o. frequencies (staging beads)
-
 reject_counter = 0
 
 # Initialization of vectors to store execution times
 
-time_Hold       = Array(Float64,nsample_eff)
 time_respa      = Array(Float64,nsample_eff)
 time_respa_s    = zeros(nsample_eff)
 time_respa_f    = zeros(nsample_eff)
 time_respa_f    = zeros(nsample_eff)
-time_Hnew       = Array(Float64,nsample_eff)
-time_metropolis = Array(Float64,nsample_eff) 
 
 println(string("\nStarting effective HMC loops...\n---------------------------------\n"))
 
@@ -295,15 +307,16 @@ for counter = (nsample_burnin + 1):nsample
 
     # Calculate energy:
     # -------------------
-    H_old = V_N_fun(theta,u) + V_n_fun(theta,u) + V_1_fun(theta,u) + sum((p.^2)./(2*mp))
+    H_old = V_N_fun(u) + V_n_fun(theta,u) + V_1_fun(theta,u) + sum((p.^2)./(2*mp))
     energies[counter] = H_old
-    
-    time_Hold[counter-nsample_burnin] = time()-t0
+    if  isnan(H_old) 
+        error(string("Iteration ", counter, " --> energy values diverged..."))
+    end
     
     # Save current state:
     # -------------------
-    theta_save = theta
-    u_save     = u
+    for i = 1:params theta_save[i] = theta[i] end
+    for i = 1:N      u_save[i]     = u[i]     end
 
     # MD Integration:
     # -------------------
@@ -315,39 +328,51 @@ for counter = (nsample_burnin + 1):nsample
 
     # Calculate energy of proposal state:
     # -------------------
-    t2=time()
-    H_new = V_N_fun(theta,u) + V_n_fun(theta,u) + V_1_fun(theta,u) + sum((p.^2)./(2*mp))
-    time_Hnew[counter-nsample_burnin] = time()-t2
+    
+    # println(H_new-H_old)
 
     # Metropolis step:
     # -------------------
-    t3=time()
-    accept_prob = min(1,exp(H_old-H_new))
-    if rand() > accept_prob
-        theta = theta_save
-        u     = u_save
+    
+    if (theta[2] <= gam_min) || (theta[2] >= gam_max) || ((T*theta[2]/(theta[1])^2) <= K_min) || ((T*theta[2]/(theta[1])^2) >= K_max) 
+        for i = 1:params theta[i] = theta_save[i] end
+        for i = 1:N      u[i]     = u_save[i]     end
         reject_counter += 1
+    elseif any(u .> 10.0) || any(u .< -10.0)
+        for i = 1:params theta[i] = theta_save[i] end
+        for i = 1:N      u[i]     = u_save[i]     end
+        reject_counter += 1
+    else
+        H_new = V_N_fun(u) + V_n_fun(theta,u) + V_1_fun(theta,u) + sum((p.^2)./(2*mp))
+        accept_prob = min(1,exp(H_old-H_new))
+        if rand() > accept_prob 
+            for i = 1:params theta[i] = theta_save[i] end
+            for i = 1:N      u[i]     = u_save[i]     end
+            reject_counter += 1
+        end
     end
     
     theta_sample[counter+1,:] = theta
     u_sample[counter+1,:]     = u 
    
-    time_metropolis[counter-nsample_burnin] = time()-t3
     if (counter%100 == 0)
         println(string(counter, " loops completed in ", round(time()-tinit,1), " seconds \n"))
     end
 
 end
 
-# writedlm("C:/Users/ulzegasi/respatimeser.dat", time_respa)
-# writedlm("C:/Users/ulzegasi/respaslowser.dat", time_respa_s)
+# writedlm("C:/Users/ulzegasi/respatimeser.dat",      time_respa)
+# writedlm("C:/Users/ulzegasi/respaslowser.dat",      time_respa_s)
 # writedlm("C:/Users/ulzegasi/respafastforceser.dat", time_respa_f_d)
-# writedlm("C:/Users/ulzegasi/respafastupser.dat", time_respa_f_u)
+# writedlm("C:/Users/ulzegasi/respafastupser.dat",    time_respa_f_u)
 
 ## --------------------------------------------------------------------------------------------
 ## End of HMC loop
 ## --------------------------------------------------------------------------------------------
-
+println(string("\nRun completed in ", round(time()-tinit,6), " seconds \n"))
+println(string("RESPA cycles in ", round(sum(time_respa),6), " seconds \n"))
+println(string("Slow RESPA in ", round(sum(time_respa_s),6), " seconds \n"))
+println(string("Fast RESPA in ", round(sum(time_respa_f),6), " seconds \n"))
 ## --------------------------------------------------------------------------------------------
 ## Back transformations (u -> q):
 ## (Tuckerman et al., JCP 99 (1993), eq. 2.19)
@@ -365,27 +390,20 @@ for sample_ind = 1:(nsample+1)
     end
     qs[sample_ind, N] = u_sample[sample_ind, N]
 end
+# q = (1/bet)*log(S/(K*r))
 
 for sample_ind = 1:(nsample+1)
     for ind = 1:N
         predy[sample_ind, ind] = r[ind]*exp(theta_sample[sample_ind, 1]*qs[sample_ind, ind])
     end
 end
-
-println(string("\nRun completed in ", round(time()-tinit,6), " seconds \n"))
-println(string("Calculation of H_old in ", round(sum(time_Hold),6), " seconds \n"))
-println(string("RESPA cycles in ", round(sum(time_respa),6), " seconds \n"))
-println(string("Slow RESPA in ", round(sum(time_respa_s),6), " seconds \n"))
-println(string("Fast RESPA in ", round(sum(time_respa_f),6), " seconds \n"))
-println(string("Calculation of H_new in ", round(sum(time_Hnew),6), " seconds \n"))
-println(string("Metropolis steps in ", round(sum(time_metropolis),6), " seconds \n"))
+# y = r*exp(bet*q)
 
 ##
 ## ============================================================================================
-## Saving parameters and results
+## Save parameters and results
 ## ============================================================================================
 ##
-
 param_names  = vcat("N", "j", "n", "t[1]", "dt", "params", "true_K", "true_gam", "sigma", "K", "gam", 
 	"nsample_burnin", "nsample_eff", "m_bdy_burnin", "m_bdy", "m_theta_burnin", "m_theta_bet", 
 	"m_theta_gam", "m_stg_burnin", "m_stg", "dtau", "n_napa")
@@ -397,10 +415,25 @@ writedlm("$dir2/params$fname.dat", hcat(param_names, param_values))
 last_qs = qs[1:(nsample+1),N]          
 writedlm("$dir2/last_qs$fname.dat", last_qs)
 
+u_chains          = Array(Float64, nsample+2, 4)
+u_chains[1,1]     = ty[int64(floor(size(ty,1)/2))]
+u_chains[2:end,1] = u_sample[:, ty[int64(floor(size(ty,1)/2))]]
+u_chains[1,2]     = ty[int64(floor(size(ty,1)/2))] + int64(floor((j-1)/2))
+u_chains[2:end,2] = u_sample[:, ty[int64(floor(size(ty,1)/2))] + int64(floor((j-1)/2))]
+u_chains[1,3]     = ty[int64(floor(size(ty,1)/2))] + j
+u_chains[2:end,3] = u_sample[:, ty[int64(floor(size(ty,1)/2))] + j]
+u_chains[1,4]     = ty[int64(floor(size(ty,1)/2))] + j + int64(floor((j-1)/2))
+u_chains[2:end,4] = u_sample[:, ty[int64(floor(size(ty,1)/2))] + j + int64(floor((j-1)/2))]
+writedlm("$dir2/u_chains$fname.dat", u_chains)
+
 red_range = 200; red_predy = Array(Float64, red_range, N); row_ind = 1
-for ip in iround(linspace(1,nsample+1,min(size(predy,1),200)))
-	red_predy[row_ind,1:N] = predy[ip,1:N]
-	row_ind += 1
+if red_range < (nsample+1)
+    for ip in iround(linspace(1, nsample+1, red_range))
+        red_predy[row_ind,1:N] = predy[ip,1:N]
+        row_ind += 1
+    end
+else
+    red_predy = predy
 end
 writedlm("$dir2/predy$fname.dat", red_predy)
 
@@ -414,7 +447,7 @@ writedlm("$dir2/energies$fname.dat", energies)
 reject_rates = [reject_counter_burnin/nsample_burnin*100,reject_counter/nsample_eff*100]
 writedlm("$dir2/reject$fname.dat", reject_rates)
 
-S_first  = Array(Any, N+1); S_first  = vcat("System_realization", S)
+S_first  = Array(Any, N+1); S_first = vcat("System_realization", zeros(N)) # S_first  = vcat("System_realization", S)
 rain_in  = Array(Any, N+1); rain_in  = vcat("Rain_input", r)
 flow_out = Array(Any, n+2); flow_out = vcat("Output_flow", y)
 io_data  = Array(Any, 2*N+n+4); io_data  = vcat(S_first, rain_in, flow_out)

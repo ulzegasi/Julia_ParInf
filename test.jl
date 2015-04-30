@@ -3817,3 +3817,184 @@ zebra_old = zebra
 zebra += 15
 
 asas = 4+ zebra_old
+
+a = [1,2,3]
+b = [4,5,6]
+
+a+b 
+a.*b
+
+m = 0.125
+w = 0.55
+function Hho(p,q)
+	out = 0.0
+	for i = 1:size(p,1)
+		out += p[i]^2/(2*m) + (1/2)*m*(sqrt(i)*w)^2*q[i]^2
+	end
+	return out
+end
+
+function Uho(p,q,t)
+	for i = 1:2
+		qold = q[i]
+		q[i] = q[i]*cos((sqrt(i)*w)*t) + p[i]*sin((sqrt(i)*w)*t)/(m*(sqrt(i)*w))
+		p[i] = p[i]*cos((sqrt(i)*w)*t) - qold*m*(sqrt(i)*w)*sin((sqrt(i)*w)*t)
+	end
+	return (p,q)
+end
+p = [1.2,2.3]
+q = [0.35,0.87]
+
+Hho(p,q)
+(p,q) = Uho(p,q,1)
+Hho(p,q)
+
+p = sqrt(m_stg).*randn(n*(j-1))
+ustg = zeros(n*(j-1))
+wstg = zeros(n*(j-1))
+ind = 1
+for s = 1:n 
+    for k = 2:j 
+        ustg[ind] = u[(s-1)*j+k]
+        wstg[ind] = w_stg(k)
+        ind += 1
+    end
+end
+
+
+function Eho(u,p)
+	ek = 0.0
+	for s = 1:n 
+    	for k = 2:j
+    		ek += (p[params+(s-1)*j+k]^2)/(2*m_stg)
+    	end
+	end
+	return (ek + V_N_fun(u))
+end
+
+Eho(u,p)
+
+for s = 1:n 
+    for k = 2:j 
+        u_old = u[(s-1)*j+k]
+        u[(s-1)*j+k] = u[(s-1)*j+k]*cos(w_stg(k)*dtau/2.0) + p[params+(s-1)*j+k]*sin(w_stg(k)*dtau/2.0) / (m_stg*w_stg(k))
+        p[params+(s-1)*j+k] = p[params+(s-1)*j+k]*cos(w_stg(k)*dtau/2.0) - m_stg*w_stg(k)*u_old*sin(w_stg(k)*dtau/2.0)
+    end
+end
+
+Eho(u,p)
+
+asa = [1,2,3,4]
+basa = [5,6,7,8]
+fasa = [4,6,8,2]
+
+@time(begin
+	for i = 1:1000
+		asa = asa + 2*(basa+fasa)
+	end
+end)
+@time(begin
+	for i = 1:1000
+		for ii = 1:4
+			asa[ii] = asa[ii] + 2*(basa[ii]+fasa[ii])
+		end
+	end
+end)
+
+maximum([3,5,8])
+
+asa = [8,27,64]
+asa2 = [2,3,4]
+sqrt(asa./asa2)
+
+asa = [1.0,2.0,3.0]
+asa2 = [0.4,0.5,0.6]
+
+basa = asa.*asa2
+exp(basa)
+
+exp(asa.*asa2)
+
+dV_bdy   = zeros(n+1)
+dV_stg   = zeros(n*(j-1))
+dV_theta = zeros(params)
+for s = 1:(n+1)
+	dV_bdy[s] = abs(dV(theta,u)[params+(s-1)*j+1])
+end
+ind = 1
+for s = 1:n
+	for k = 2:j
+		dV_stg[ind] = abs(dV(theta,u)[params+(s-1)*j+k])
+		ind += 1
+	end
+end
+for s = 1:params
+	dV_theta[s] = abs(dV(theta,u)[s])
+end
+round((maximum(dV_bdy)*0.002)^2)
+round((mean(dV_theta)*0.004)^2)
+mean(dV_stg)
+mean(dV_bdy)/mean(dV_stg)
+
+minimum(1./dV_bdy)
+
+m = 100
+(1/maximum(dV_bdy))*sqrt(m)
+(0.02*maximum(dV_bdy))^2
+
+minimum((0.044.*dV_theta).^2)
+
+(dV_theta.^2)/maximum((dV_bdy.^2))*1000
+mean(1./dV_bdy)
+(0.05*dV_theta).^2
+##########################################################
+## Discretization error
+##########################################################
+
+dtau_range = logspace(log10(0.0001), log10(0.04), 100)
+derr = zeros(100)
+for i = 1:100
+	dtau = dtau_range[i]
+	for counter = 1:nsample
+	
+    	# Sample momenta:
+    	# -------------------
+    	p = sqrt(mp).*randn(params+N)
+
+    	# Calculate energy:
+    	# -------------------
+    	H_old = V_N_fun(u) + V_n_fun(theta,u) + V_1_fun(theta,u) + sum((p.^2)./(2*mp))
+    	if  isnan(H_old) 
+    	    error(string("Iteration ", counter, " --> energy values diverged..."))
+    	end
+    	# Save current state:
+    	# -------------------
+    	theta_save = theta
+    	u_save     = u
+	
+    	# MD Integration:
+    	# -------------------
+    	for counter_napa = 1:1
+    	    napa(theta, u, counter) 
+    	end 
+
+    	# Calculate energy of proposal state:
+    	# -------------------
+    	H_new = V_N_fun(u) + V_n_fun(theta,u) + V_1_fun(theta,u) + sum((p.^2)./(2*mp))
+
+    	derr[i] += (H_old-H_new)
+
+    	# Metropolis step:
+    	# -------------------
+    	t3=time()
+    	accept_prob = min(1,exp(H_old-H_new))
+    	if rand() > accept_prob
+    	    theta = theta_save
+    	    u     = u_save
+    	    reject_counter += 1
+    	end
+	end 
+	derr[i] = derr[i]/nsample
+end
+##########################################################
+##########################################################
