@@ -52,7 +52,7 @@ const dt = T/(N-1)                         # Time step
 const ty = iround(linspace(1, N, n+1))     # Indeces of "boundary" beads (= measurement points)     
 
 const nsample_burnin = 0                   # Number of points in the MCMC
-const nsample_eff    = 5000
+const nsample_eff    = 20000
 const nsample        = nsample_eff + nsample_burnin
 
 const dtau           = 0.020               # MD time step
@@ -163,7 +163,7 @@ u_sample[1,:]     = u              # Store initial coordinates
 
 m_bdy    = 700                      # m = m_q / dt
 m_stg    = 300                      # we assume m_q prop. to dt ==> m = costant     
-m_theta  = [150, 150]
+m_theta  = 150
 
 mp[1:params] = m_theta
 for s = 1:n  
@@ -328,9 +328,9 @@ for counter = (nsample_burnin + 1):nsample
     theta_sample[counter+1,:] = theta
     u_sample[counter+1,:]     = u 
    
-    # if (counter%100 == 0)
+    if (counter%100 == 0)
         println(string(counter, " loops completed in ", round(time()-tinit,1), " seconds \n"))
-    # end
+    end
 
 end
 

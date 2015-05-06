@@ -101,7 +101,7 @@ pygui(true)
 ## System plots:
 ## --------------------------------------------------------------------------------------------
 
-plt.figure(1)
+#=plt.figure(1)
 plt.subplots_adjust(hspace=0.5)
 plt.subplot(211)
 plt.ylabel("S[t]")
@@ -112,18 +112,19 @@ plt.xlabel("time")
 plt.ylabel("r[t]")
 plt.title("Rain input")
 plt.plot(t,r,"b")
-plt.savefig("$dir/figure1$fname.png",transparent=true)
+plt.savefig("$dir/figure1$fname.png",transparent=true)=#
 
 
 plt.figure(2)
 #axes()[:set_ylim]([0,1.5])
 plt.xlabel("time")
-plt.ylabel("r, S/K, y")
+# plt.ylabel("r, S/K, y")
+plt.ylabel("r, y")
 plt.title("System I/O")
 plt.xticks(size="15")
 plt.yticks(size="15") 
-plt.plot(t,r,"b--",label="Rain input",linewidth=2)
-plt.plot(tS,S/true_K,"g",label="Output",linewidth=2)
+plt.plot(t,r,"b",label="Rain input",linewidth=2)
+# plt.plot(tS,S/true_K,"g",label="Output",linewidth=2)
 yerr=2*sigma*y
 plt.errorbar(t[ty], y, yerr=(yerr,yerr), fmt="o", markersize = 10, color="r", capsize=6, elinewidth=2)
 plt.tick_params(length=5, width=2)
