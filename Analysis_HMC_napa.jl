@@ -15,8 +15,8 @@
 ## simone.ulzega@eawag.ch
 ## carlo.albert@eawag.ch
 ## ============================================================================================
-dir   = "C:/Users/ulzegasi/Julia_files/ParInf_HMC/temp_data/dtau_dependence"
-dir2  = "C:/Users/ulzegasi/Julia_files/ParInf_HMC/input_data"
+dir   = "C:/Users/ulzegasi/Julia_files/ParInf_HMC/good_results"
+dir2  = "C:/Users/ulzegasi/Julia_files/ParInf_HMC/input_data" ## --> needed only when working with synthetic data
 fname = string("_dtau030_nnapa3_j30")
 ##
 ##
@@ -74,6 +74,7 @@ io_data  = readdlm("$dir/iodata$fname.dat")
 r = io_data[(N+3):(2*N+2)]
 y = io_data[(2*N+4):end]
 
+# Needed when working with synthetic data --> uncomment!
 St = readdlm("$dir2/St_n10_K50_g02_s10_sinr.dat")
 S  = St[:,1]
 tS = St[:,2]

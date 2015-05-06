@@ -3998,3 +3998,130 @@ for i = 1:100
 end
 ##########################################################
 ##########################################################
+
+plt.figure(1)
+#axes()[:set_ylim]([0,1.5])
+plt.xticks(size="15")
+plt.yticks(size="15") 
+plt.plot(t,r,"b--",label="Rain input",linewidth=1)
+plt.plot(t,S/true_K,"g",label="Output",linewidth=2)
+yerr=2*sigma*y
+plt.errorbar(t[ty], y, yerr=(yerr,yerr), fmt="o", markersize = 10, color="r", capsize=6, elinewidth=2)
+plt.tick_params(length=5, width=2)
+# plt.plot(t[ty],y,"bo",label="Data points")
+# plt.legend(loc="upper right",fancybox="true")
+
+range    = 1:N
+redrange = iround(linspace(1, n+1, min(n+1,101))) # Number of data points that will be shown
+                                                  # in the plot
+plt.figure(2)
+plt.xticks(size="15")
+plt.yticks(size="15") 
+# plt.subplots_adjust(hspace=0.5)
+# plt.subplot(211)
+# plt.xlabel("N")
+# plt.ylabel("Output")
+# plt.title("Sampled system dynamics vs. Data points")
+# plt.plot(range, maxy, label="Sampled system realizations", color="g", linewidth=1)
+# plt.plot(range, miny, color="g", linewidth=1)
+# plt.fill_between(range,maxy,miny,color="g",alpha=0.5)
+# yerr=2*sigma*y[redrange]
+# plt.errorbar(ty[redrange], y[redrange], yerr=(yerr,yerr), fmt="o", color="r", 
+#                                             capsize=4, elinewidth=2,label="Data points")
+# # plt.legend(loc="lower right",fancybox="true")
+
+# plt.subplot(212)
+# plt.xlabel("N")
+# plt.ylabel("Output")
+# plt.title("Spaghetti style")
+for ip = 1:size(predy,1)
+	plt.plot(range, vec(predy[ip,range]), label="Sampled system realizations", color="g", linewidth=1)
+end
+yerr=2*sigma*y[redrange]
+plt.errorbar(ty[redrange], y[redrange], yerr=(yerr,yerr), fmt="o", markersize = 10, color="r", capsize=6, elinewidth=4)
+plt.tick_params(length=5, width=2)
+
+
+plt.figure(3)
+axes()[:set_ylim]([0,2])
+axes()[:set_xlim]([0,400])
+plt.xticks(size="15")
+plt.yticks(size="15") 
+# plt.xlabel("K")
+# plt.ylabel("Gamma")
+# plt.title("Evolution in K-Gamma space")
+grid = iround(linspace(1, size(thetas)[1], 1000))       # Number of points in K-gamma space to be plotted
+grid2 = grid[length(grid)-49:length(grid)]              # Last points in K-gamma space to be highlighted
+plt.plot(thetas[grid,1], thetas[grid,2], linewidth = 0.5)
+plt.plot(thetas[grid,1], thetas[grid,2], "b.")
+plt.plot(thetas[1,1], thetas[1,2], "go", markersize = 15, label = "Initial state")
+plt.plot(thetas[grid2,1], thetas[grid2,2], "yo", markersize = 10, label = "Last points")
+plt.plot(thetas[end,1], thetas[end,2], "ro", markersize = 15, label = "Last state")
+plt.plot(true_K, true_gam, "rs", markersize = 20, label = "True value", linewidth = 2)
+plt.tick_params(length=5, width=2)
+
+lowlim = maximum([2,nsample_burnin+1])
+plt.figure(4)
+plt.xticks(size="15")
+plt.yticks(size="15") 
+# plt.subplots_adjust(hspace=0.5)
+# plt.subplot(211)
+# plt.xlabel("K")
+# plt.ylabel("Probability density")
+# plt.title("PDF")
+kd_K = KernelDensity.kde(thetas[lowlim:end,1])
+plt.axis([-0.01,400,0,maximum(kd_K.density)+0.002])
+plt.hist(thetas[lowlim:end,1], 200, normed = 1, color = "y")
+plt.plot(kd_K.x, kd_K.density, color = "r", linewidth = 3, label = "Kernel density kde(K)")
+# mu_K   = mean(thetas[lowlim:end,1])
+# sig_K  = std(thetas[lowlim:end,1])
+# xx_K   = linspace(0.0001, 400, 500)
+# plt.plot(xx_K, pdf(LogNormal(4,1),xx_K), "b", linewidth = 1, label = "LogNormal distribution")
+# plt.axvline(x=mu_K, linewidth=2, color="r")
+# plt.axvspan(mu_K-sig_K, mu_K+sig_K, facecolor="y", alpha=0.3)
+plt.tick_params(length=5, width=2)
+
+
+
+plt.figure(5)
+plt.xticks(size="15")
+plt.yticks(size="15") 
+# plt.xlabel("Gamma")
+# plt.ylabel("Probability density")
+# plt.title("PDF")
+kd_G = KernelDensity.kde(thetas[lowlim:end,2])
+plt.axis([-0.01,2,0,3])
+plt.hist(thetas[lowlim:end,2], 80, normed = 1, color = "y")
+plt.plot(kd_G.x, kd_G.density, color = "r", linewidth = 3, label = "Kernel density kde(Gamma)")
+# mu_G   = mean(thetas[lowlim:end,2])
+# sig_G  = std(thetas[lowlim:end,2])
+# xx_G   = linspace(0.0001, 1, 500)
+# plt.plot(xx_G, pdf(LogNormal(0,2),xx_G), "b", linewidth = 1, label = "LogNormal distribution")
+# plt.axvline(x=mu_G, linewidth=2, color="r")
+# plt.axvspan(mu_G-sig_G, mu_G+sig_G, facecolor="y", alpha=0.3)
+plt.tick_params(length=5, width=2)
+
+asa=3.5
+
+if asa<3 || asa > 4
+	println("asa!!!!")
+else
+	asa = 6
+	if asa > 5
+		println("not asa!!!")
+	end
+end
+asa
+
+indasa = iround(linspace(1, 100, 10))
+
+asa = [i for i = 1:10]
+asa2 = asa[indasa]
+
+asa[34]
+
+if any(asa .>= 10.01)
+	println("oh yeah")
+else 
+	println("not true")
+end

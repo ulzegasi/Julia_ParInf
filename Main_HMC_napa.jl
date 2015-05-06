@@ -18,7 +18,7 @@
 dir   = "C:/Users/ulzegasi/Julia_files/ParInf_HMC"  # Main project directory, local repository   
 dir2  = "$dir/good_results"                         # Secondary directory (e.g., output storage)
 dir3  = "$dir/input_data"                           # Input data directory
-fname = string("_dtau030_nnapa3_j40")               # Output files
+fname = string("_dtau030_nnapa3_j60")               # Output files
 using ReverseDiffSource, PyPlot #, ForwardDiff      # Automated differentiation package
 pygui(true)
 srand(18072011)                                     # Seeding the RNG provides reproducibility
@@ -33,7 +33,7 @@ tdat  = float64(readdlm("$dir/t.dat")[range,2]) # Time points t.dat
 
 const params = 2         # Number of system parameters (k, gamma)
 const n = 10             # n+1 -> "end point" beads (see Tuckerman '93), n -> number of segments
-const j = 40             # n(j-1) -> total number of staging beads, j-1 -> staging beads per segment
+const j = 60             # n(j-1) -> total number of staging beads, j-1 -> staging beads per segment
 const N = int64(n*j+1)   # Total number of discrete time points = n*j + 1
                          # IMPORTANT: (N-1)/j = integer = n (measurement points)
 if  ((N-1)%j) != 0 
@@ -276,7 +276,7 @@ m_theta_burnin = m_theta
 
 m_bdy    = 700                      # m = m_q / dt
 m_stg    = 300                      # we assume m_q prop. to dt ==> m = costant     
-m_theta  = [150, 190]
+m_theta  = [150, 150]
 
 mp[1:params] = m_theta
 for s = 1:n  
