@@ -15,9 +15,9 @@
 ## simone.ulzega@eawag.ch
 ## carlo.albert@eawag.ch
 ## ============================================================================================
-dir   = "C:/Users/ulzegasi/Julia_files/ParInf_HMC/temp_data/dtau_dependence"
+dir   = "C:/Users/ulzegasi/Julia_files/ParInf_HMC/temp_data"
 dir2  = "C:/Users/ulzegasi/Julia_files/ParInf_HMC/input_data"
-fname = string("_dtau030_nnapa3_j30")
+fname = string("_rr601")
 ##
 ##
 ## ============================================================================================
@@ -70,11 +70,11 @@ energies = readdlm("$dir/energies$fname.dat")
 reject   = readdlm("$dir/reject$fname.dat")
 
 io_data  = readdlm("$dir/iodata$fname.dat")
-# S = io_data[2:N+1]
+S = io_data[2:N+1]
 r = io_data[(N+3):(2*N+2)]
 y = io_data[(2*N+4):end]
 
-St = readdlm("$dir2/St_n10_K50_g02_s10_sinr.dat")
+St = readdlm("$dir2/St$fname.dat")
 S  = St[:,1]
 tS = St[:,2]
 
@@ -321,15 +321,38 @@ reject
 
 ############################################################################################
 ############################################################################################
+
+#=
+plt.figure(figsize=(12.5, 2.5))
+axes()[:set_ylim]([0,1.8])
+axes()[:set_xlim]([-10,850])
+plt.axis("off")
+# plt.xticks(size="16")
+# plt.yticks(size="16") 
+plt.plot(t[ty], y, "ro", markersize = 10)
+# plt.plot(t,r,"bo",label="Rain input",markersize = 5, color="b")
+# plt.errorbar(t[ty], r[ty], yerr=(2*sigma*r[ty],2*sigma*r[ty]), fmt="o", markersize = 12, color="b", capsize=6, elinewidth=2)
+# plt.plot(t,S/true_K,"g",label="Output",linewidth=2)
+# plt.plot(t,S_ex,"g",label="Output",linewidth=2)
+# plt.errorbar(t[ty], y, yerr=(2*sigma*y,2*sigma*y), fmt="o", markersize = 10, color="r", capsize=10, elinewidth=3)
+# plt.tick_params(length=6, width=2)
+=#
+
+#=
+S_ex=vec(predy[1,:])
+=#
 #=
 plt.figure(1)
-plt.xticks(size="15")
-plt.yticks(size="15") 
-plt.plot(t,r,"b--",label="Rain input",linewidth=1)
-plt.plot(t,S/true_K,"g",label="Output",linewidth=2)
-yerr=2*sigma*y
-plt.errorbar(t[ty], y, yerr=(yerr,yerr), fmt="o", markersize = 10, color="r", capsize=6, elinewidth=2)
-plt.tick_params(length=5, width=2)
+plt.figure(figsize=(10.24, 2.56))
+axes()[:set_ylim]([0,1.8])
+plt.xticks(size="16")
+plt.yticks(size="16") 
+plt.plot(t,r,"bo",label="Rain input",markersize = 3, color="b")
+# plt.errorbar(t[ty], r[ty], yerr=(2*sigma*r[ty],2*sigma*r[ty]), fmt="o", markersize = 12, color="b", capsize=6, elinewidth=2)
+# plt.plot(t,S/true_K,"g",label="Output",linewidth=2)
+plt.plot(t,S_ex,"g",label="Output",linewidth=2)
+plt.errorbar(t[ty], y, yerr=(2*sigma*y,2*sigma*y), fmt="o", markersize = 10, color="r", capsize=10, elinewidth=3)
+plt.tick_params(length=6, width=2)
 
 range    = 1:N
 redrange = iround(linspace(1, n+1, min(n+1,101))) # Number of data points that will be shown
@@ -350,7 +373,7 @@ axes()[:set_ylim]([0,2])
 axes()[:set_xlim]([0,400])
 plt.xticks(size="15")
 plt.yticks(size="15") 
-grid = iround(linspace(1, size(thetas)[1], 1000))       
+grid = iround(linspace(1, size(thetas)[1], 500))       
 grid2 = grid[length(grid)-49:length(grid)]             
 plt.plot(thetas[grid,1], thetas[grid,2], linewidth = 0.5)
 plt.plot(thetas[grid,1], thetas[grid,2], "b.")

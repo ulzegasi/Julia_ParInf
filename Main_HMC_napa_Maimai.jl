@@ -25,22 +25,29 @@ srand(18072011)                                     # Seeding the RNG provides r
 # srand(time())                                     # Seeding the RNG with actual time provides randomness
 ##
 ## ============================================================================================
+## Load data
+## ============================================================================================
+##
+St    = readdlm("$dir3/St$fname.dat")
+S     = St[:,1]
+t     = St[:,2]   
+ydat  = vec(readdlm("$dir3/y$fname.dat"))
+r     = vec(readdlm("$dir3/r$fname.dat"))  
+##
+## ============================================================================================
 ## System parameters
 ## ============================================================================================
 ##
-range = 2:5002
-tdat  = float64(readdlm("$dir/t.dat")[range,2]) # Time points t.dat
 
-const params = 2         # Number of system parameters (k, gamma)
-const n = 20             # n+1 -> "end point" beads (see Tuckerman '93), n -> number of segments
-const j = 30             # n(j-1) -> total number of staging beads, j-1 -> staging beads per segment
-const N = int64(n*j+1)   # Total number of discrete time points = n*j + 1
-                         # IMPORTANT: (N-1)/j = integer = n (measurement points)
+const params = 2              # Number of system parameters (k, gamma)
+const n = 20                  # n+1 -> "end point" beads (see Tuckerman '93), n -> number of segments
+const j = 30                  # n(j-1) -> total number of staging beads, j-1 -> staging beads per segment
+const N = int64(n*j+1)        # Total number of discrete time points = n*j + 1
+                              # IMPORTANT: (N-1)/j = integer = n (measurement points)
 if  ((N-1)%j) != 0 
     error("Be careful, the number of staging points j must fulfill (N-1)/j = integer !")
 end
 
-const t  = linspace(tdat[1], tdat[end], N) # Generate N time points in [t[1],t[end]]      
 const T  = t[end]-t[1]                     # Total time interval
 const dt = T/(N-1)                         # Time step
 const ty = iround(linspace(1, N, n+1))     # Indeces of "boundary" beads (= measurement points)     
@@ -81,10 +88,7 @@ gam_max = 5.0
 ## ============================================================================================
 ##
 ## Data
-S       = Array(Float64,N)           # System realization with true parameters
-y       = Array(Float64,N)           # Data AND staging points
-# bq      = Array(Float64,n+1)         # bq = beta*q = ln(S/(true_k*r)) # = ln(y/r) #
-# r       = Array(Float64,N)           
+y       = Array(Float64,N)
 lnr_der = Array(Float64,N)           # Log derivative of (smoothed) rain input
 ## System coordinates/modes
 q       = Array(Float64,N)       
@@ -107,20 +111,6 @@ predy        = Array(Float64,nsample+1,N)      # Sampled outputs
 ## Load data
 ## ============================================================================================
 ##
-St      = readdlm("$dir3/St$fname.dat")
-S_full  = St[:,1]; bigN = length(S_full)
-t_full  = St[:,2]   
-bq_full = vec(readdlm("$dir3/bq$fname.dat"))
-y_full  = vec(readdlm("$dir3/y$fname.dat"))
-r_full  = readdlm("$dir3/r$fname.dat")[:,2]     # Raw rain
-
-# bq = bq_full[iround(linspace(1, length(bq_full), n+1))] 
-
-y_data  = y_full[iround(linspace(1, length(y_full), n+1))]
-S       = S_full[iround(linspace(1, length(S_full), N))]
-r       = r_full[iround(linspace(1, length(r_full), N))]
-for s = 1:(n+1)     y[ty[s]] = y_data[s]   end
-
 # With sinusoidal rain
 # r = Array(Float64,N)
 # r = sin(t/100.).*sin(t/100.) + 0.1;
@@ -141,19 +131,30 @@ end=#
 ## ============================================================================================
 #=
 plt.figure(figsize=(12.5, 4.5))
-axes()[:set_ylim]([0,40])
-axes()[:set_xlim]([-10,850])
+axes()[:set_ylim]([0,20])
+axes()[:set_xlim]([-5,605])
 plt.xlabel("time")
 plt.ylabel("r")
-plt.plot(t_full, r_full, "bo", markersize = 6)
-plt.plot(t_full, r_full, "b", linewidth=1)
+plt.plot(t, r, "bo", markersize = 6)
+plt.plot(t, r, "b", linewidth=1)
 
 plt.figure(figsize=(12.5, 4.5))
 axes()[:set_ylim]([0,5])
-axes()[:set_xlim]([-10,850])
+axes()[:set_xlim]([-5,605])
 plt.xlabel("time")
 plt.ylabel("S/K, y")
-plt.plot(t_full, S_full/true_K, "r", linewidth = 4, color = (1,0.65,0))
+plt.plot(t, S/true_K, "r", linewidth = 4, color = (1,0.65,0))
+yerr=2*sigma*y
+plt.errorbar(t[ty], y, yerr=(yerr,yerr), fmt="o", color = (1,0,0), markersize = 10, capsize=8, elinewidth=4)
+
+plt.figure(figsize=(12.5, 4.5))
+axes()[:set_ylim]([0,7.5])
+axes()[:set_xlim]([-5,605])
+plt.xlabel("time")
+plt.ylabel("S/K, y")
+plt.plot(t, r, "bo", markersize = 6)
+plt.plot(t, r, "b", linewidth=1)
+plt.plot(t, S/true_K, "r", linewidth = 4, color = (1,0.65,0))
 yerr=2*sigma*y
 plt.errorbar(t[ty], y, yerr=(yerr,yerr), fmt="o", color = (1,0,0), markersize = 10, capsize=8, elinewidth=4)
 
@@ -163,7 +164,6 @@ plt.errorbar(t[ty], y, yerr=(yerr,yerr), fmt="o", color = (1,0,0), markersize = 
 ## Rain input, log derivative
 ## ============================================================================================
 ##  
-lnr_der = Array(Float64,N)                      
 for i = 1:(N-1)  lnr_der[i] = ( log(r[i+1]) - log(r[i]) ) / dt  end
 ##
 ##
@@ -175,7 +175,7 @@ for i = 1:(N-1)  lnr_der[i] = ( log(r[i+1]) - log(r[i]) ) / dt  end
 ## Generate initial state -> linear interpolation of (synthetic) measurement data
 ## --------------------------------------------------------------------------------------------
 for s = 1:n
-    y[ty[s]:ty[s+1]] = linspace(y[ty[s]],y[ty[s+1]],ty[s+1]-ty[s]+1)
+    y[ty[s]:ty[s+1]] = linspace(ydat[s],ydat[s+1],ty[s+1]-ty[s]+1)
 end
 
 for i = 1:N 
@@ -185,16 +185,19 @@ end
 #=
 plt.figure(figsize=(12.5, 4.5))
 axes()[:set_ylim]([0,5])
-axes()[:set_xlim]([-10,850])
+axes()[:set_xlim]([-5,605])
 plt.plot(t, y, "go",markersize=4)
 plt.plot(t[ty], y[ty], "go",markersize=12)
 =#
 
+#=
 plt.figure(figsize=(12.5, 4.5))
-axes()[:set_ylim]([0,5])
-axes()[:set_xlim]([-10,850])
+axes()[:set_ylim]([-3,3])
+axes()[:set_xlim]([-5,605])
+plt.plot(t, q, "g-",linewidth=1)
 plt.plot(t, q, "go",markersize=4)
 plt.plot(t[ty], q[ty], "go",markersize=12)
+=#
 
 ## Transformations q -> u 
 ## (eqs 2.16-17 in Tuckerman et al., JCP 99 (4), 2796, 1993)
