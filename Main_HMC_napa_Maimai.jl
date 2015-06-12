@@ -18,7 +18,7 @@
 dir   = "C:/Users/ulzegasi/Julia_files/ParInf_HMC"  # Main project directory, local repository   
 dir2  = "$dir/temp_data"                            # Secondary directory (e.g., output storage)
 dir3  = "$dir/input_data"                           # Input data directory
-fname = string("_mmH601")                           # Output files
+fname = string("_sin301_n10")                       # Output files
 using ReverseDiffSource, PyPlot #, ForwardDiff      # Automated differentiation package
 pygui(true)
 srand(18072011)                                     # Seeding the RNG provides reproducibility
@@ -31,16 +31,15 @@ srand(18072011)                                     # Seeding the RNG provides r
 St    = readdlm("$dir3/St$fname.dat")
 S     = St[:,1]
 t     = St[:,2]   
-ydat  = vec(readdlm("$dir3/y$fname.dat"))
+yfull = vec(readdlm("$dir3/y$fname.dat"))
 r     = vec(readdlm("$dir3/r$fname.dat"))  
 ##
 ## ============================================================================================
 ## System parameters
 ## ============================================================================================
 ##
-
 const params = 2              # Number of system parameters (k, gamma)
-const n = 20                  # n+1 -> "end point" beads (see Tuckerman '93), n -> number of segments
+const n = 10                  # n+1 -> "end point" beads (see Tuckerman '93), n -> number of segments
 const j = 30                  # n(j-1) -> total number of staging beads, j-1 -> staging beads per segment
 const N = int64(n*j+1)        # Total number of discrete time points = n*j + 1
                               # IMPORTANT: (N-1)/j = integer = n (measurement points)
@@ -53,10 +52,10 @@ const dt = T/(N-1)                         # Time step
 const ty = iround(linspace(1, N, n+1))     # Indeces of "boundary" beads (= measurement points)     
 
 const nsample_burnin = 0                   # Number of points in the MCMC
-const nsample_eff    = 5000
+const nsample_eff    = 20000
 const nsample        = nsample_eff + nsample_burnin
 
-const dtau           = 0.03                # MD time step
+const dtau           = 0.3                 # MD time step
 const n_napa         = 3                   # Number of NAPA time steps
 # nn = 16  ; deltatau = dtau / nn          # Short time steps in RESPA --> NOT NEEDED IN THE NAPA IMPLEMENTATION
 
@@ -88,8 +87,9 @@ gam_max = 5.0
 ## ============================================================================================
 ##
 ## Data
-y       = Array(Float64,N)
-lnr_der = Array(Float64,N)           # Log derivative of (smoothed) rain input
+y       = Array(Float64,n+1)    # Synthetic output data
+lnr_der = Array(Float64,N)      # Log derivative of (smoothed) rain input
+bq      = Array(Float64,n+1)    # Synthetic data bet*q = log(y/r), including measurement error model
 ## System coordinates/modes
 q       = Array(Float64,N)       
 u       = Array(Float64,N)       
@@ -108,7 +108,7 @@ qs           = Array(Float64,nsample+1,N)      # Sampled coordinates
 predy        = Array(Float64,nsample+1,N)      # Sampled outputs
 ##
 ## ============================================================================================
-## Load data
+## Old generation of synthetic data
 ## ============================================================================================
 ##
 # With sinusoidal rain
@@ -123,12 +123,30 @@ for i = 2:N
 end=#
 ##
 ## ============================================================================================
-## Synthetic output discharge data 
-## Use a system realization with true parameters (--> Ito) to generate synthetic discharge data 
-## Measurement error model --> ln(y/r) = beta*q + sigma*epsilon
-## N.B.: using the definitions S = (T g r / b^2)*exp(bq) and b = sqrt(Tg/K)
-## ==> beta*q = ln(S/(kr)) = ln(y/r)
+## Data generation
 ## ============================================================================================
+##
+for i = 1:(N-1)  
+	lnr_der[i] = (log(r[i+1])-log(r[i]))/dt   # Log-derivative of the rain
+end
+
+for s = 1:(n+1)
+	y[s] = yfull[ty[s]]						  # Synthetic measurement data
+end           		
+
+for s = 1:(n+1) 
+    q[ty[s]] = (1/bet)*log(y[s]/r[ty[s]])	  # To dimensionless coordinates (measurement points) ...
+end
+
+for s = 1:n 								  # ... and their linear interpolation (staging points)
+    q[ty[s]:ty[s+1]] = 						  
+    	linspace(q[ty[s]],q[ty[s+1]],ty[s+1]-ty[s]+1)
+end
+
+for s = 1:n+1
+	bq[s] = log(y[s]/r[ty[s]])
+end
+
 #=
 plt.figure(figsize=(12.5, 4.5))
 axes()[:set_ylim]([0,20])
@@ -158,50 +176,24 @@ plt.plot(t, S/true_K, "r", linewidth = 4, color = (1,0.65,0))
 yerr=2*sigma*y
 plt.errorbar(t[ty], y, yerr=(yerr,yerr), fmt="o", color = (1,0,0), markersize = 10, capsize=8, elinewidth=4)
 
-=#                       
-##
-## ============================================================================================
-## Rain input, log derivative
-## ============================================================================================
-##  
-for i = 1:(N-1)  lnr_der[i] = ( log(r[i+1]) - log(r[i]) ) / dt  end
-##
-##
-## ============================================================================================
-## Hamiltonian Monte Carlo
-## ============================================================================================
-##
-## --------------------------------------------------------------------------------------------
-## Generate initial state -> linear interpolation of (synthetic) measurement data
-## --------------------------------------------------------------------------------------------
-for s = 1:n
-    y[ty[s]:ty[s+1]] = linspace(ydat[s],ydat[s+1],ty[s+1]-ty[s]+1)
-end
-
-for i = 1:N 
-    q[i] = (1/bet)*log(y[i]/r[i])
-end
-
-#=
-plt.figure(figsize=(12.5, 4.5))
-axes()[:set_ylim]([0,5])
-axes()[:set_xlim]([-5,605])
-plt.plot(t, y, "go",markersize=4)
-plt.plot(t[ty], y[ty], "go",markersize=12)
-=#
-
-#=
 plt.figure(figsize=(12.5, 4.5))
 axes()[:set_ylim]([-3,3])
 axes()[:set_xlim]([-5,605])
 plt.plot(t, q, "g-",linewidth=1)
 plt.plot(t, q, "go",markersize=4)
 plt.plot(t[ty], q[ty], "go",markersize=12)
-=#
 
+=#                       
+
+##
+##
+## ============================================================================================
+## Hamiltonian Monte Carlo
+## ============================================================================================
+##
 ## Transformations q -> u 
 ## (eqs 2.16-17 in Tuckerman et al., JCP 99 (4), 2796, 1993)
-
+##
 for s = 0:(n-1)
     u[s*j+1] = q[s*j+1]
     for k = 2:j
@@ -310,7 +302,7 @@ m_theta_burnin = m_theta
 
 m_bdy    = 700                      # m = m_q / dt
 m_stg    = 300                      # we assume m_q prop. to dt ==> m = costant     
-m_theta  = [180, 160]
+m_theta  = [150, 150]
 
 mp[1:params] = m_theta
 for s = 1:n  
@@ -460,6 +452,7 @@ u_chains[1,4]     = ty[int64(floor(size(ty,1)/2))] + j + int64(floor((j-1)/2))
 u_chains[2:end,4] = u_sample[:, ty[int64(floor(size(ty,1)/2))] + j + int64(floor((j-1)/2))]
 writedlm("$dir2/u_chains$fname.dat", u_chains)
 
+#=
 red_range = 200; red_predy = Array(Float64, red_range, N); row_ind = 1
 if red_range < (nsample+1)
     for ip in iround(linspace(1, nsample+1, red_range))
@@ -469,7 +462,21 @@ if red_range < (nsample+1)
 else
     red_predy = predy
 end
+=#
+
+red_range = min(200,nsample+1); red_predy = Array(Float64, red_range, N); row_ind = 1
+for ip in iround(linspace(1, nsample+1, red_range))
+    red_predy[row_ind,1:N] = predy[ip,1:N]
+    row_ind += 1
+end
 writedlm("$dir2/predy$fname.dat", red_predy)
+
+red_qs = Array(Float64, red_range, N); row_ind = 1
+for ip in iround(linspace(1, nsample+1, red_range))
+    red_qs[row_ind,1:N] = qs[ip,1:N]
+    row_ind += 1
+end
+writedlm("$dir2/predq$fname.dat", red_qs)
 
 thetas      = Array(Float64,nsample+1,params)
 thetas[:,1] = T*theta_sample[:,2]./(theta_sample[:,1]).^2  # K
@@ -481,7 +488,8 @@ writedlm("$dir2/energies$fname.dat", energies)
 reject_rates = [reject_counter_burnin/nsample_burnin*100,reject_counter/nsample_eff*100]
 writedlm("$dir2/reject$fname.dat", reject_rates)
 
-S_first  = Array(Any, N+1); S_first = vcat("System_realization", zeros(N)) # S_first  = vcat("System_realization", S)
+S_first  = Array(Any, N+1); S_first  = vcat("System_realization", S)
+#=S_first = vcat("System_realization", zeros(N)) =# 
 rain_in  = Array(Any, N+1); rain_in  = vcat("Rain_input", r)
 flow_out = Array(Any, n+2); flow_out = vcat("Output_flow", y)
 io_data  = Array(Any, 2*N+n+4); io_data  = vcat(S_first, rain_in, flow_out)

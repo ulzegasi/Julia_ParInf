@@ -17,7 +17,7 @@
 ## ============================================================================================
 dir   = "C:/Users/ulzegasi/Julia_files/ParInf_HMC/temp_data"
 dir2  = "C:/Users/ulzegasi/Julia_files/ParInf_HMC/input_data"
-fname = string("_rr601")
+fname = string("_sin301_n10")
 ##
 ##
 ## ============================================================================================
@@ -62,6 +62,7 @@ ty  = iround(linspace(1, N, n+1))   # Indexes of measurement points
 
 qs       = readdlm("$dir/last_qs$fname.dat")
 predy    = readdlm("$dir/predy$fname.dat")
+predq    = readdlm("$dir/predq$fname.dat")
 
 thetas   = readdlm("$dir/thetas$fname.dat")
 bet      = sqrt(T*thetas[:,2]./thetas[:,1])
@@ -74,9 +75,9 @@ S = io_data[2:N+1]
 r = io_data[(N+3):(2*N+2)]
 y = io_data[(2*N+4):end]
 
-St = readdlm("$dir2/St$fname.dat")
-S  = St[:,1]
-tS = St[:,2]
+#=St = readdlm("$dir2/St$fname.dat")
+S2  = St[:,1]
+tS = St[:,2]=#
 
 u_chains = readdlm("$dir/u_chains$fname.dat")
 u1       = int64(u_chains[1,1])
@@ -100,35 +101,38 @@ pygui(true)
 ## System plots:
 ## --------------------------------------------------------------------------------------------
 
-plt.figure(1)
+plt.figure(1,figsize=(12.5, 8.5))
 plt.subplots_adjust(hspace=0.5)
-plt.subplot(211)
+plt.subplot(211)[:set_xlim]([-5,605])
+plt.grid("on")
 plt.ylabel("S[t]")
 plt.title("Water volume")
-plt.plot(tS, S,"r")
-plt.subplot(212)
+plt.plot(t, S,"r")
+plt.subplot(212)[:set_xlim]([-5,605])
+plt.grid("on")
 plt.xlabel("time")
 plt.ylabel("r[t]")
 plt.title("Rain input")
 plt.plot(t,r,"b")
 plt.savefig("$dir/figure1$fname.png",transparent=true)
 
-
-plt.figure(2)
-#axes()[:set_ylim]([0,1.5])
-plt.xlabel("time")
-plt.ylabel("r, S/K, y")
-plt.title("System I/O")
-plt.xticks(size="15")
-plt.yticks(size="15") 
-plt.plot(t,r,"b--",label="Rain input",linewidth=2)
-plt.plot(tS,S/true_K,"g",label="Output",linewidth=2)
+plt.figure(2,figsize=(12.5, 8.5))
+plt.subplots_adjust(hspace=0.5)
+plt.subplot(211)[:set_xlim]([-5,605])
+plt.grid("on")
+plt.ylabel("y[t]")
+plt.title("Runoff")
+plt.plot(t, S/true_K, color = (1,0.65,0), linewidth=2)
 yerr=2*sigma*y
-plt.errorbar(t[ty], y, yerr=(yerr,yerr), fmt="o", markersize = 10, color="r", capsize=6, elinewidth=2)
-plt.tick_params(length=5, width=2)
-# plt.plot(t[ty],y,"bo",label="Data points")
-# plt.legend(loc="upper right",fancybox="true")
-
+plt.errorbar(t[ty], y, yerr=(yerr,yerr), fmt="o", markersize = 12, color="r", capsize=10, elinewidth=4)
+plt.tick_params(length=5, width=3)
+plt.subplot(212)[:set_xlim]([-5,605])
+plt.grid("on")
+plt.xlabel("time")
+plt.ylabel("r[t]")
+plt.title("Rain input")
+plt.plot(t,r,"b")
+plt.tick_params(length=5, width=3)
 plt.savefig("$dir/figure2$fname.png",transparent=true)
 
 ## --------------------------------------------------------------------------------------------
@@ -138,11 +142,14 @@ plt.savefig("$dir/figure2$fname.png",transparent=true)
 range    = 1:N
 redrange = iround(linspace(1, n+1, min(n+1,101))) # Number of data points that will be shown
                                                   # in the plot
+#=
 maxy=Array(Float64,N)
 miny=Array(Float64,N)
 maxy=vec(maximum(predy,1))                        # For each time point, max and min
 miny=vec(minimum(predy,1))                        # of all the sampled system realizations
+=#
 
+#=
 plt.figure(3)
 plt.subplots_adjust(hspace=0.5)
 plt.subplot(211)
@@ -167,6 +174,35 @@ end
 yerr=2*sigma*y[redrange]
 plt.errorbar(ty[redrange], y[redrange], yerr=(yerr,yerr), fmt="o", color="r", 
                                             capsize=4, elinewidth=2,label="Data points")
+plt.savefig("$dir/figure3$fname.png",transparent=true,dpi=300)
+=#
+
+plt.figure(3,figsize=(12.5, 8.5))
+plt.subplots_adjust(hspace=0.5)
+plt.subplot(211)[:set_xlim]([-5,605])
+plt.xticks(size="15")
+plt.yticks(size="15") 
+plt.tick_params(length=5, width=2)
+plt.xlabel("N")
+plt.ylabel("Output")
+plt.title("Spaghetti plot - q")
+for ip = 1:size(predq,1)
+	plt.plot(range, vec(predq[ip,range]), label="Sampled system realizations", color="g", linewidth=1)
+end
+qerr=2*sigma*ones(length(redrange))
+plt.errorbar(ty[redrange], vec(predq[1,ty[redrange]]), yerr=(qerr,qerr), fmt="o", color="r", markersize = 12, capsize=8, elinewidth=4)
+plt.subplot(212)[:set_xlim]([-5,605])
+plt.xticks(size="15")
+plt.yticks(size="15") 
+plt.tick_params(length=5, width=2)
+plt.xlabel("N")
+plt.ylabel("Output")
+plt.title("Spaghetti plot - y")
+for ip = 1:size(predy,1)
+	plt.plot(range, vec(predy[ip,range]), label="Sampled system realizations", color="g", linewidth=1)
+end
+yerr=2*sigma*y[redrange]
+plt.errorbar(ty[redrange], y[redrange], yerr=(yerr,yerr), fmt="o", color="r", markersize = 12, capsize=8, elinewidth=4)
 plt.savefig("$dir/figure3$fname.png",transparent=true,dpi=300)
 
 ## --------------------------------------------------------------------------------------------
@@ -194,6 +230,33 @@ plt.subplot(212)
 plt.ylabel("Normal(mu,sig)")
 plt.title("Final state QQ plot")
 res = qqbuild(r[N]*exp(bet[range].*qs[range]),Normal(mu,sig))
+plt.plot(res.qy, res.qx, linewidth = 3)
+xy = [x for x in linspace(minimum([res.qx,res.qy]),maximum([res.qx,res.qy]),4)]
+plt.plot(xy, xy, "r--", linewidth = 3)
+plt.savefig("$dir/figure4$fname.png",transparent=true)
+
+
+range = (nsample_burnin+2):(nsample+1)
+plt.figure(4)
+plt.subplots_adjust(hspace=0.5)
+plt.subplot(211)
+plt.xlabel("q")
+plt.ylabel("Probability density")
+plt.title("Final state q")
+plt.hist(qs[range], 50, normed = 1, color = "y")
+kd = KernelDensity.kde(qs[range])
+plt.plot(kd.x, kd.density, color = "r", linewidth = 3, label = "Kernel density kde(exp(u))")
+mu  = mean(qs[range])
+sig = std(qs[range])
+xx  = linspace(mu-4sig, mu+4sig, 100)
+plt.plot(xx, pdf(Normal(mu,sig),xx), "b--", linewidth = 3, label = "Normal distribution")
+# plt.legend(loc="upper right",fancybox="true")
+
+plt.subplot(212)
+# plt.xlabel("exp(u)")
+plt.ylabel("Normal(mu,sig)")
+plt.title("Final state QQ plot")
+res = qqbuild(qs[range],Normal(mu,sig))
 plt.plot(res.qy, res.qx, linewidth = 3)
 xy = [x for x in linspace(minimum([res.qx,res.qy]),maximum([res.qx,res.qy]),4)]
 plt.plot(xy, xy, "r--", linewidth = 3)
