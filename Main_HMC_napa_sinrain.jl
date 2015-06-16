@@ -54,7 +54,7 @@ const dt = T/(N-1)                         # Time step
 const ty = iround(linspace(1, N, n+1))     # Indeces of "boundary" beads (= measurement points)     
 
 const nsample_burnin = 0                   # Number of points in the MCMC
-const nsample_eff    = 10000
+const nsample_eff    = 20000
 const nsample        = nsample_eff + nsample_burnin
 
 const dtau           = 0.30                # MD time step
@@ -139,7 +139,7 @@ for s = 1:(n+1)
 end
 =#
 for s = 1:n 								  # ... and their linear interpolation (staging points)
-    q[ty[s]:ty[s+1]] = (1/true_bet)*linspace(bq[s],bq[s+1],ty[s+1]-ty[s]+1)  # +(sigma/bet)*randn(ty[s+1]-ty[s]+1)
+    q[ty[s]:ty[s+1]] = (1/bet)*linspace(bq[s],bq[s+1],ty[s+1]-ty[s]+1)  # +(sigma/bet)*randn(ty[s+1]-ty[s]+1)
 end
 #=
 for s = 1:n+1

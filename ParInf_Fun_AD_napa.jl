@@ -176,10 +176,10 @@ dV_n_u     = rdiff(V_n, outsym=:out_n, u     = ones(Float64, N))
 dV_1_theta = rdiff(V_1, outsym=:out_1, theta = ones(Float64, params)) 
 dV_1_u     = rdiff(V_1, outsym=:out_1, u     = ones(Float64, N)) 
 
-@eval dV_n(theta,u) = [($dV_n_theta)[2][1],($dV_n_u)[2][1]]
-@eval dV_1(theta,u) = [($dV_1_theta)[2][1],($dV_1_u)[2][1]]
+@eval dV_n(theta,u) = [($dV_n_theta)[2],($dV_n_u)[2]]
+@eval dV_1(theta,u) = [($dV_1_theta)[2],($dV_1_u)[2]]
 # or
-@eval dV(theta,u) = [($dV_n_theta)[2][1]+($dV_1_theta)[2][1],($dV_n_u)[2][1]+($dV_1_u)[2][1]]
+@eval dV(theta,u) = [($dV_n_theta)[2]+($dV_1_theta)[2],($dV_n_u)[2]+($dV_1_u)[2]]
 
 ##
 ##

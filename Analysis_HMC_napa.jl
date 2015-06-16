@@ -17,7 +17,7 @@
 ## ============================================================================================
 dir   = "C:/Users/ulzegasi/Julia_files/ParInf_HMC/temp_data"
 dir2  = "C:/Users/ulzegasi/Julia_files/ParInf_HMC/input_data"
-fname = string("_sin301_n10")
+fname = string("_sinr_n10")
 ##
 ##
 ## ============================================================================================
@@ -236,6 +236,7 @@ plt.plot(xy, xy, "r--", linewidth = 3)
 plt.savefig("$dir/figure4$fname.png",transparent=true)
 
 
+#=
 range = (nsample_burnin+2):(nsample+1)
 plt.figure(4)
 plt.subplots_adjust(hspace=0.5)
@@ -261,6 +262,7 @@ plt.plot(res.qy, res.qx, linewidth = 3)
 xy = [x for x in linspace(minimum([res.qx,res.qy]),maximum([res.qx,res.qy]),4)]
 plt.plot(xy, xy, "r--", linewidth = 3)
 plt.savefig("$dir/figure4$fname.png",transparent=true)
+=#
 
 ## --------------------------------------------------------------------------------------------
 ## Plot parameters:
