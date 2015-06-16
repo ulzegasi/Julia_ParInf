@@ -18,7 +18,7 @@
 dir   = "C:/Users/ulzegasi/Julia_files/ParInf_HMC"  # Main project directory, local repository   
 dir2  = "$dir/temp_data"                            # Secondary directory (e.g., output storage)
 dir3  = "$dir/input_data"                           # Input data directory
-fname = string("_sinr_n10")                        # Output files
+fname = string("_n10_K50_g02_s10_sinr")                        # Output files
 using ReverseDiffSource, PyPlot #, ForwardDiff      # Automated differentiation package
 pygui(true)
 srand(18072011)                                     # Seeding the RNG provides reproducibility
@@ -31,14 +31,16 @@ srand(18072011)                                     # Seeding the RNG provides r
 St     = readdlm("$dir3/St$fname.dat")
 S      = St[:,1]
 long_t = St[:,2]   
-long_r = vec(readdlm("$dir3/r$fname.dat"))
+bq     = vec(readdlm("$dir3/bq$fname.dat"))
 y      = vec(readdlm("$dir3/y$fname.dat"))
-bq     = vec(readdlm("$dir3/bq$fname.dat"))  
 ##
 ## ============================================================================================
 ## System parameters
 ## ============================================================================================
 ##
+range = 2:5002
+tdat  = float64(readdlm("$dir/t.dat")[range,2]) # Time points t.dat
+
 const params = 2              # Number of system parameters (k, gamma)
 const n = 10                  # n+1 -> "end point" beads (see Tuckerman '93), n -> number of segments
 const j = 30                  # n(j-1) -> total number of staging beads, j-1 -> staging beads per segment
@@ -48,7 +50,7 @@ if  ((N-1)%j) != 0
     error("Be careful, the number of staging points j must fulfill (N-1)/j = integer !")
 end
 
-const t  = long_t[iround(linspace(1, size(long_t,1), N))]
+const t  = linspace(tdat[1], tdat[end], N) # Generate N time points in [t[1],t[end]]
 const T  = t[end]-t[1]                     # Total time interval
 const dt = T/(N-1)                         # Time step
 const ty = iround(linspace(1, N, n+1))     # Indeces of "boundary" beads (= measurement points)     
@@ -120,13 +122,12 @@ for i = 2:N
     end
 end
 =#
-
 ##
 ## ============================================================================================
 ## Data generation
 ## ============================================================================================
 ##
-r = long_r[iround(linspace(1, size(long_r,1), N))]
+r = Array(Float64,N); r = sin(t/100.).*sin(t/100.) + 0.1
 for i = 1:(N-1)  
 	lnr_der[i] = (log(r[i+1])-log(r[i]))/dt   # Log-derivative of the rain
 end
@@ -139,7 +140,7 @@ for s = 1:(n+1)
 end
 =#
 for s = 1:n 								  # ... and their linear interpolation (staging points)
-    q[ty[s]:ty[s+1]] = (1/bet)*linspace(bq[s],bq[s+1],ty[s+1]-ty[s]+1)  # +(sigma/bet)*randn(ty[s+1]-ty[s]+1)
+    q[ty[s]:ty[s+1]] = (1/true_bet)*linspace(bq[s],bq[s+1],ty[s+1]-ty[s]+1)  # +(sigma/bet)*randn(ty[s+1]-ty[s]+1)
 end
 #=
 for s = 1:n+1
@@ -430,6 +431,8 @@ end
 ## Save parameters and results
 ## ============================================================================================
 ##
+fname = string("_sinr") 
+
 param_names  = vcat("N", "j", "n", "t[1]", "dt", "params", "true_K", "true_gam", "sigma", "K", "gam", 
 	"nsample_burnin", "nsample_eff", "m_bdy_burnin", "m_bdy", "m_theta_burnin", "m_theta_bet", 
 	"m_theta_gam", "m_stg_burnin", "m_stg", "dtau", "n_napa")

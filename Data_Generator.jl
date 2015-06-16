@@ -81,6 +81,8 @@ yerr=2*sig*y
 plt.errorbar(t[ty], y, yerr=(yerr,yerr), fmt="o", color="r", markersize = 10, capsize=8, elinewidth=4)
 =#
 
+t[ty]
+ty
 St = zeros(N,2)
 St[:,1] = S
 St[:,2] = t

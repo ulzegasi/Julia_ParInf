@@ -17,7 +17,7 @@
 ## ============================================================================================
 dir   = "C:/Users/ulzegasi/Julia_files/ParInf_HMC/temp_data"
 dir2  = "C:/Users/ulzegasi/Julia_files/ParInf_HMC/input_data"
-fname = string("_sinr_n10")
+fname = string("_sinr")
 ##
 ##
 ## ============================================================================================
