@@ -132,11 +132,11 @@ with
 
 According to \cite{lau_2007_StateDepDiff}, the probability, $P(q_1,T|q_0,0)$, of finding the system in a state $q$ at time $t = T$ given that it was in an initial state $q_0$ at time $t = 0$, can be expressed in the form of a path integral as
 \begin{equation}\label{pathint}
-P(q_1,T|q_0,0) 
-= 
+P(q_1,T|q_0,0)
+=
 \frac{1}{Z}
-\int 
-e^{-{\mathcal S}[q,\dot q]} 
+\int
+e^{-{\mathcal S}[q,\dot q]}
 \delta(q(T)-q_1)
 \delta(q(0)-q_0)
 \mathcal{D}q \,,
@@ -169,7 +169,7 @@ The {\em action} is a functional on the space of paths and reads as
 %  \right\}
 % \,.
 %\end{equation}
-\begin{equation}
+\begin{equation}\label{action1}
 {\mathcal S}[{q},\dot q]
 =
 \frac{1}{T}
@@ -193,7 +193,7 @@ We introduce the time-dependent {\em Hamiltonian}
   =
   \frac{1}{\gamma}e^{-\beta q}+q\rho(t)\,,
 \end{equation}
-and rewrite action (\ref{action}) as,
+and rewrite action (\ref{action1}) as,
 \begin{multline}\label{action}
 {\mathcal S}[{q},\dot q]
 =
@@ -330,7 +330,7 @@ with
 \begin{equation}\label{K}
    K( p,{\pmb\pi})
    =
-   \int_0^T \frac{ p^2(t)}{2m_q}dt
+   \int_0^T \frac{ p^2(t)}{2m(t)}dt
    + \sum_{\alpha=1}^2\frac{\pi_\alpha^2}{2m_\alpha}\,,
 \end{equation}
 where $V( q,\bt)$ is the negative logarithm of the kernel of (\ref{posterior_pathint}).
@@ -362,11 +362,11 @@ The last step is the standard Metropolis algorithm, while the first two steps al
 Let us first write down the discretization of the path-integral (\ref{phaseSpacePathInt}).
 Therefore, let us assume that the measurement time points $\left\{ y_s \right\}_{s=1,\dots, n+1}$ of the time series (\ref{data}) are equidistantly distributed on the time interval $[0,T]$, with $t_1=0$ and $t_{n+1}=T$.
 Each interval between two consecutive data points is further partitioned into $j$ bins, such that we have a total of $nj+1=N>>1$ discretization points.
-Path-integral (\ref{posterior_pathint}) is approximated by an ordinary integral, with the approximate path-measure 
+Path-integral (\ref{posterior_pathint}) is approximated by an ordinary integral, with the approximate path-measure
 \begin{equation}
   \mathcal Dp\wedge\mathcal Dq
   \approx
-  \prod_i dp_i\wedge dq_i 
+  \prod_i dp_i\wedge dq_i
 \end{equation}
 and the discretized versions of $K( p,{\pmb\pi})$ and $V( q,\bt)$
 \begin{align}
@@ -382,7 +382,7 @@ and the discretized versions of $K( p,{\pmb\pi})$ and $V( q,\bt)$
    \frac{\Delta t}{T}
    \sum_{i=2}^{N}
    \left\{
-    \frac{1}{2} 
+    \frac{1}{2}
     T^2 \dot q_i^2
     +
     \frac{1}{2}
@@ -394,7 +394,7 @@ and the discretized versions of $K( p,{\pmb\pi})$ and $V( q,\bt)$
     e^{-\beta q_i}
    -
     T q_i\dot\rho_i
-   \right\}
+   \right\}\label{Vdisc}
   \\
   &+
   \frac{1}{\gamma}
@@ -411,7 +411,8 @@ and the discretized versions of $K( p,{\pmb\pi})$ and $V( q,\bt)$
   & +
   \sum_{s=1}^{n+1}
   \frac{(\ln(y_s/r_{(s-1)j+1}) - {\beta q_{(s-1)j+1}})^2}{2\sigma^2}
-   \,,\label{Vdisc}
+  \nonumber
+   \,,
 \end{align}
 with
 \begin{equation}
@@ -421,7 +422,7 @@ with
 \end{equation}
 and
 \begin{equation}\label{rhodisc}
-\rho_i = \frac{T}{\beta} \frac{\ln(r_{i+1}/r_i)}{\Delta t}
+\rho_i = \frac{T}{\beta} \frac{\ln(r_{i}/r_{i-1})}{\Delta t}
 +
 \frac{(2+\gamma)\beta}{2\gamma}
 \,,\quad
@@ -440,7 +441,7 @@ To solve this problem, we change coordinates, such that the harmonic part of the
 One option would be to use the Fourier modes of ${\eta}(t)$ as configurational variables. Calculating the potential requires then an inversion of a Toeplitz matrix. This approach is interesting because, in our case, it allows for an approximate analytical integration of high-frequency modes (see \cite{doll_1985_fourier}).
 
 We choose another approach, the so-called \emph{staging} as described in \cite{tuckerman1992reversible}, and diagonalize the harmonic part only in between the measurement points.
-We first note that Hamiltonian (\ref{Hamiltonian}) can be seen as the classical Hamiltonian of a polymer chain with harmonic bonds between neighbouring beads, described by the first harmonic term of $V(q,\bt)$, in an external field described by the other non-harmonic terms of $V(q,\bt)$.
+We first note that the Hamiltonian (\ref{Hamiltonian}) can be seen as the classical Hamiltonian of a polymer chain with harmonic bonds between neighbouring beads, described by the first harmonic term of $V(q,\bt)$, in an external field described by the other non-harmonic terms of $V(q,\bt)$.
 Furthermore, the model parameters are viewed as additional degrees of freedom that couple with all other degrees of freedom.
 Sampling system realizations, each defined by a set of coordinates $\left\{ q_i\right\}$ and parameters $\bt$, is equivalent to sampling states in the polymer dynamics.
 
@@ -479,7 +480,7 @@ with its inverse given by
 \end{equation}
 or equivalently by the recursive relation
 \begin{equation}
-  q_{sj+k} = u_{sj+k} + \frac{k-1}{k} q_{s+k+1}+ \frac{1}{k}q_{sj+1} \,.
+  q_{sj+k} = u_{sj+k} + \frac{k-1}{k} q_{sj+k+1}+ \frac{1}{k}u_{sj+1} \,.
 \end{equation}
 %Moreover, we introduce the following transformation for the parameters,
 %
@@ -516,11 +517,15 @@ where
   \left\{
    \frac{\Delta t }{m_q}p_{(s-1)j+1}^2
     +
-    \frac{T}{j\Delta t}
+    \frac{(\ln(y_s/r_{(s-1)j+1}) - {\beta u_{(s-1)j+1}})^2}{\sigma^2}
+   \right\}
+   \\
+  \nonumber
+  &+
+  \frac{T}{2j\Delta t}
+  \sum_{s=1}^{n}
     (u_{(s-1)j+1} - u_{sj+1})^2
-    -
-    \frac{(\ln(y_s/r_{(s-1)j+1}) - {\beta u_{(s-1)j+1}})^2}{2\sigma^2}
-   \right\}\,,\\
+   \,,\\
   \mathcal H_1
   &=
    \sum_{\alpha=1}^2\frac{\pi_\alpha^2}{2m_\alpha}
@@ -539,6 +544,7 @@ where
     T q_i\dot\rho_i
    \right\}
   \\
+  \nonumber
   &+
   \frac{1}{\gamma}
   e^{-\beta q_N}
@@ -605,7 +611,7 @@ The fast outer propagator is then given by eqs.
   -
   m\omega_k u_{(s-1)j+k}(0) \sin(\omega_k\Delta\tau/2)\,,
 \end{align}
-for $k=2,\dots,j$.
+for $s=1,\dots,n$ and $k=2,\dots,j$.
 
 For the inner, slow propagator, we employ the velocity Verlet algorithm.
 For the boundary beads, it reads

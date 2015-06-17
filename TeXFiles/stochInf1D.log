@@ -1,7 +1,7 @@
-This is pdfTeX, Version 3.1415926-2.5-1.40.14 (MiKTeX 2.9) (preloaded format=pdflatex 2014.4.3)  13 MAR 2015 17:54
+This is pdfTeX, Version 3.1415926-2.5-1.40.14 (MiKTeX 2.9) (preloaded format=pdflatex 2014.11.28)  17 JUN 2015 10:11
 entering extended mode
-**C:/Users/albertca/github/Julia_ParInf/TeXFiles/stochInf1D.tex
-(C:/Users/albertca/github/Julia_ParInf/TeXFiles/stochInf1D.tex
+**C:/Users/ulzegasi/Julia_files/ParInf_HMC/TeXFiles/stochInf1D.tex
+(C:/Users/ulzegasi/Julia_files/ParInf_HMC/TeXFiles/stochInf1D.tex
 LaTeX2e <2011/06/27>
 Babel <v3.8m> and hyphenation patterns for english, afrikaans, ancientgreek, ar
 abic, armenian, assamese, basque, bengali, bokmal, bulgarian, catalan, coptic, 
@@ -30,10 +30,10 @@ File: size11.clo 2007/10/19 v1.4h Standard LaTeX file (size option)
 \belowcaptionskip=\skip42
 \bibindent=\dimen102
 )
-(C:\Users\albertca\AppData\Roaming\MiKTeX\2.9\tex\latex\a4wide\a4wide.sty
+(C:\Users\ulzegasi\AppData\Roaming\MiKTeX\2.9\tex\latex\a4wide\a4wide.sty
 Package: a4wide 1994/08/30
 
-(C:\Users\albertca\AppData\Roaming\MiKTeX\2.9\tex\latex\ntgclass\a4.sty
+(C:\Users\ulzegasi\AppData\Roaming\MiKTeX\2.9\tex\latex\ntgclass\a4.sty
 Package: a4 2004/04/15 v1.2g A4 based page layout
 ))
 ("C:\Program Files (x86)\MiKTeX 2.9\tex\latex\amsmath\amsmath.sty"
@@ -123,7 +123,7 @@ Package: amscd 1999/11/29 v2.0
 \bigaw@=\dimen113
 \minCDarrowwidth=\dimen114
 )
-(C:\Users\albertca\AppData\Roaming\MiKTeX\2.9\tex\latex\natbib\natbib.sty
+(C:\Users\ulzegasi\AppData\Roaming\MiKTeX\2.9\tex\latex\natbib\natbib.sty
 Package: natbib 2010/09/13 8.31b (PWD, AO)
 \bibhang=\skip49
 \bibsep=\skip50
@@ -162,7 +162,7 @@ Package: ltxcmds 2011/11/09 v1.22 LaTeX kernel commands for general use (HO)
 \Gin@req@height=\dimen115
 \Gin@req@width=\dimen116
 )
-("C:\Program Files (x86)\MiKTeX 2.9\tex\latex\preprint\authblk.sty"
+(C:\Users\ulzegasi\AppData\Roaming\MiKTeX\2.9\tex\latex\preprint\authblk.sty
 Package: authblk 2001/02/27 1.3 (PWD)
 \affilsep=\skip51
 \@affilsep=\skip52
@@ -170,7 +170,7 @@ Package: authblk 2001/02/27 1.3 (PWD)
 \c@authors=\count102
 \c@affil=\count103
 )
-("C:\Program Files (x86)\MiKTeX 2.9\tex\latex\sidecap\sidecap.sty"
+(C:\Users\ulzegasi\AppData\Roaming\MiKTeX\2.9\tex\latex\sidecap\sidecap.sty
 Package: sidecap 2003/06/06 v1.6f SideCap Package (RN/HjG)
 
 ("C:\Program Files (x86)\MiKTeX 2.9\tex\latex\base\ifthen.sty"
@@ -183,10 +183,10 @@ Package: ifthen 2001/05/26 v1.1c Standard LaTeX ifthen package (DPC)
 \c@SC@C=\count104
 \SC@BOX=\box28
 )
-(C:\Users\albertca\AppData\Roaming\MiKTeX\2.9\tex\latex\caption\caption.sty
+(C:\Users\ulzegasi\AppData\Roaming\MiKTeX\2.9\tex\latex\caption\caption.sty
 Package: caption 2013/05/02 v3.3-89 Customizing captions (AR)
 
-(C:\Users\albertca\AppData\Roaming\MiKTeX\2.9\tex\latex\caption\caption3.sty
+(C:\Users\ulzegasi\AppData\Roaming\MiKTeX\2.9\tex\latex\caption\caption3.sty
 Package: caption3 2013/05/02 v1.6-88 caption3 kernel (AR)
 Package caption3 Info: TeX engine: e-TeX on input line 57.
 \captionmargin=\dimen121
@@ -318,7 +318,7 @@ Xy-pic pdf driver: `line' extension support
 ("C:\Program Files (x86)\MiKTeX 2.9\tex\generic\xypic\xypdf-li.tex" loaded)
 Xy-pic pdf driver: `rotate' extension support
 ("C:\Program Files (x86)\MiKTeX 2.9\tex\generic\xypic\xypdf-ro.tex" loaded)
-loaded)) (C:\Users\albertca\github\Julia_ParInf\TeXFiles\stochInf1D.aux)
+loaded)) (C:\Users\ulzegasi\Julia_files\ParInf_HMC\TeXFiles\stochInf1D.aux)
 LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 81.
 LaTeX Font Info:    ... okay on input line 81.
 LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 81.
@@ -332,7 +332,7 @@ LaTeX Font Info:    ... okay on input line 81.
 LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 81.
 LaTeX Font Info:    ... okay on input line 81.
 
-(C:\Users\albertca\AppData\Roaming\MiKTeX\2.9\tex\context\base\supp-pdf.mkii
+(C:\Users\ulzegasi\AppData\Roaming\MiKTeX\2.9\tex\context\base\supp-pdf.mkii
 [Loading MPS to PDF converter (version 2006.09.02).]
 \scratchcounter=\count116
 \scratchdimen=\dimen162
@@ -345,10 +345,10 @@ LaTeX Font Info:    ... okay on input line 81.
 \MPnumerator=\count120
 \makeMPintoPDFobject=\count121
 \everyMPtoPDFconversion=\toks35
-) (C:\Users\albertca\AppData\Roaming\MiKTeX\2.9\tex\latex\ms\ragged2e.sty
+) (C:\Users\ulzegasi\AppData\Roaming\MiKTeX\2.9\tex\latex\ms\ragged2e.sty
 Package: ragged2e 2009/05/21 v2.1 ragged2e Package (MS)
 
-(C:\Users\albertca\AppData\Roaming\MiKTeX\2.9\tex\latex\ms\everysel.sty
+(C:\Users\ulzegasi\AppData\Roaming\MiKTeX\2.9\tex\latex\ms\everysel.sty
 Package: everysel 2011/10/28 v1.2 EverySelectfont Package (MS)
 
 ABD: EverySelectfont initializing macros
@@ -382,87 +382,125 @@ LaTeX Font Info:    Try loading font information for U+msb on input line 81.
 File: umsb.fd 2013/01/14 v3.01 AMS symbols B
 )
 Package xypdf Info: Line width: 0.43799pt on input line 81.
- [1
 
-{C:/Users/albertca/AppData/Local/MiKTeX/2.9/pdftex/config/pdftex.map}] [2] [3] 
-[4] [5]
-[6] <Figs/FigRainData.png, id=37, 682.7106pt x 444.2196pt>
+
+Package natbib Warning: Citation `lau_2007_StateDepDiff' on page 1 undefined on
+ input line 133.
+
+[1
+
+{C:/Users/ulzegasi/AppData/Local/MiKTeX/2.9/pdftex/config/pdftex.map}]
+[2]
+
+Package natbib Warning: Citation `duane_1987_HMC' on page 3 undefined on input 
+line 322.
+
+
+Package natbib Warning: Citation `metropolis_1953_MRT2' on page 3 undefined on 
+input line 351.
+
+[3]
+
+Package natbib Warning: Citation `doll_1985_fourier' on page 4 undefined on inp
+ut line 441.
+
+
+Package natbib Warning: Citation `tuckerman1992reversible' on page 4 undefined 
+on input line 443.
+
+[4]
+
+Package natbib Warning: Citation `tuckerman1993efficient' on page 5 undefined o
+n input line 470.
+
+
+Package natbib Warning: Citation `tuckerman1992reversible' on page 5 undefined 
+on input line 564.
+
+[5] [6] <Figs/FigRainData.png, id=37, 682.7106pt x 444.2196pt>
 File: Figs/FigRainData.png Graphic file (type png)
 
 <use Figs/FigRainData.png>
-Package pdftex.def Info: Figs/FigRainData.png used on input line 680.
+Package pdftex.def Info: Figs/FigRainData.png used on input line 686.
 (pdftex.def)             Requested size: 309.85626pt x 201.61864pt.
 
 <Figs/FigSpaghetti.png, id=39, 672.111pt x 402.303pt>
 File: Figs/FigSpaghetti.png Graphic file (type png)
 
 <use Figs/FigSpaghetti.png>
-Package pdftex.def Info: Figs/FigSpaghetti.png used on input line 687.
+Package pdftex.def Info: Figs/FigSpaghetti.png used on input line 693.
 (pdftex.def)             Requested size: 398.38567pt x 238.46165pt.
 
 <Figs/FigFinalState.png, id=40, 540.5796pt x 391.2216pt>
 File: Figs/FigFinalState.png Graphic file (type png)
 
 <use Figs/FigFinalState.png>
-Package pdftex.def Info: Figs/FigFinalState.png used on input line 694.
+Package pdftex.def Info: Figs/FigFinalState.png used on input line 700.
 (pdftex.def)             Requested size: 265.59494pt x 192.21364pt.
 
 <Figs/FigChains.png, id=41, 432.6564pt x 510.2262pt>
 File: Figs/FigChains.png Graphic file (type png)
  <use Figs/FigChains.png>
-Package pdftex.def Info: Figs/FigChains.png used on input line 701.
+Package pdftex.def Info: Figs/FigChains.png used on input line 707.
 (pdftex.def)             Requested size: 309.85626pt x 365.4318pt.
 
 <Figs/FigPhaseSpaceEvol.png, id=42, 660.066pt x 438.9198pt>
 File: Figs/FigPhaseSpaceEvol.png Graphic file (type png)
 
 <use Figs/FigPhaseSpaceEvol.png>
-Package pdftex.def Info: Figs/FigPhaseSpaceEvol.png used on input line 708.
+Package pdftex.def Info: Figs/FigPhaseSpaceEvol.png used on input line 714.
 (pdftex.def)             Requested size: 398.38567pt x 264.90768pt.
 
 <Figs/FigKg.png, id=43, 694.7556pt x 278.9622pt>
 File: Figs/FigKg.png Graphic file (type png)
  <use Figs/FigKg.png>
-Package pdftex.def Info: Figs/FigKg.png used on input line 715.
+Package pdftex.def Info: Figs/FigKg.png used on input line 721.
 (pdftex.def)             Requested size: 398.38567pt x 159.95932pt.
 
-(C:\Users\albertca\github\Julia_ParInf\TeXFiles\stochInf1D.bbl) [7 <C:/Users/al
-bertca/github/Julia_ParInf/TeXFiles/Figs/FigRainData.png>] [8 <C:/Users/albertc
-a/github/Julia_ParInf/TeXFiles/Figs/FigSpaghetti.png> <C:/Users/albertca/github
-/Julia_ParInf/TeXFiles/Figs/FigFinalState.png>] [9 <C:/Users/albertca/github/Ju
-lia_ParInf/TeXFiles/Figs/FigChains.png>] [10 <C:/Users/albertca/github/Julia_Pa
-rInf/TeXFiles/Figs/FigPhaseSpaceEvol.png> <C:/Users/albertca/github/Julia_ParIn
-f/TeXFiles/Figs/FigKg.png>]
-(C:\Users\albertca\github\Julia_ParInf\TeXFiles\stochInf1D.aux) ) 
+(C:\Users\ulzegasi\Julia_files\ParInf_HMC\TeXFiles\stochInf1D.bbl
+
+Package natbib Warning: Empty `thebibliography' environment on input line 3.
+
+)
+
+Package natbib Warning: There were undefined citations.
+
+[7 <C:/Users/ulzegasi/Julia_files/ParInf_HMC/TeXFiles/Figs/FigRainData.png>]
+[8 <C:/Users/ulzegasi/Julia_files/ParInf_HMC/TeXFiles/Figs/FigSpaghetti.png> <C
+:/Users/ulzegasi/Julia_files/ParInf_HMC/TeXFiles/Figs/FigFinalState.png>]
+[9 <C:/Users/ulzegasi/Julia_files/ParInf_HMC/TeXFiles/Figs/FigChains.png>]
+[10 <C:/Users/ulzegasi/Julia_files/ParInf_HMC/TeXFiles/Figs/FigPhaseSpaceEvol.p
+ng> <C:/Users/ulzegasi/Julia_files/ParInf_HMC/TeXFiles/Figs/FigKg.png>]
+(C:\Users\ulzegasi\Julia_files\ParInf_HMC\TeXFiles\stochInf1D.aux) ) 
 Here is how much of TeX's memory you used:
- 6611 strings out of 493921
- 89044 string characters out of 3144868
- 195990 words of memory out of 3000000
- 9770 multiletter control sequences out of 15000+200000
+ 6600 strings out of 493921
+ 88780 string characters out of 3144866
+ 195796 words of memory out of 3000000
+ 9759 multiletter control sequences out of 15000+200000
  19724 words of font info for 77 fonts, out of 3000000 for 9000
  841 hyphenation exceptions out of 8191
- 36i,12n,38p,3268b,355s stack positions out of 5000i,500n,10000p,200000b,50000s
-<C:/Program Fi
-les (x86)/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmbx10.pfb><C:/Program File
-s (x86)/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmbx12.pfb><C:/Program Files 
-(x86)/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmex10.pfb><C:/Program Files (x
-86)/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmmi10.pfb><C:/Program Files (x86
-)/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmmi6.pfb><C:/Program Files (x86)/M
-iKTeX 2.9/fonts/type1/public/amsfonts/cm/cmmi7.pfb><C:/Program Files (x86)/MiKT
-eX 2.9/fonts/type1/public/amsfonts/cm/cmmi8.pfb><C:/Program Files (x86)/MiKTeX 
-2.9/fonts/type1/public/amsfonts/cm/cmr10.pfb><C:/Program Files (x86)/MiKTeX 2.9
-/fonts/type1/public/amsfonts/cm/cmr12.pfb><C:/Program Files (x86)/MiKTeX 2.9/fo
-nts/type1/public/amsfonts/cm/cmr17.pfb><C:/Program Files (x86)/MiKTeX 2.9/fonts
-/type1/public/amsfonts/cm/cmr6.pfb><C:/Program Files (x86)/MiKTeX 2.9/fonts/typ
-e1/public/amsfonts/cm/cmr8.pfb><C:/Program Files (x86)/MiKTeX 2.9/fonts/type1/p
-ublic/amsfonts/cm/cmr9.pfb><C:/Program Files (x86)/MiKTeX 2.9/fonts/type1/publi
-c/amsfonts/cm/cmsy10.pfb><C:/Program Files (x86)/MiKTeX 2.9/fonts/type1/public/
-amsfonts/cm/cmsy6.pfb><C:/Program Files (x86)/MiKTeX 2.9/fonts/type1/public/ams
-fonts/cm/cmsy8.pfb><C:/Program Files (x86)/MiKTeX 2.9/fonts/type1/public/amsfon
-ts/cm/cmti10.pfb><C:/Program Files (x86)/MiKTeX 2.9/fonts/type1/public/amsfonts
-/cm/cmti12.pfb><C:/Program Files (x86)/MiKTeX 2.9/fonts/type1/public/amsfonts/s
-ymbols/msbm10.pfb>
-Output written on stochInf1D.pdf (10 pages, 1339783 bytes).
+ 36i,12n,38p,3271b,355s stack positions out of 5000i,500n,10000p,200000b,50000s
+<C:/Program
+ Files (x86)/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmbx10.pfb><C:/Program F
+iles (x86)/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmbx12.pfb><C:/Program Fil
+es (x86)/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmex10.pfb><C:/Program Files
+ (x86)/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmmi10.pfb><C:/Program Files (
+x86)/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmmi6.pfb><C:/Program Files (x86
+)/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmmi7.pfb><C:/Program Files (x86)/M
+iKTeX 2.9/fonts/type1/public/amsfonts/cm/cmmi8.pfb><C:/Program Files (x86)/MiKT
+eX 2.9/fonts/type1/public/amsfonts/cm/cmr10.pfb><C:/Program Files (x86)/MiKTeX 
+2.9/fonts/type1/public/amsfonts/cm/cmr12.pfb><C:/Program Files (x86)/MiKTeX 2.9
+/fonts/type1/public/amsfonts/cm/cmr17.pfb><C:/Program Files (x86)/MiKTeX 2.9/fo
+nts/type1/public/amsfonts/cm/cmr6.pfb><C:/Program Files (x86)/MiKTeX 2.9/fonts/
+type1/public/amsfonts/cm/cmr8.pfb><C:/Program Files (x86)/MiKTeX 2.9/fonts/type
+1/public/amsfonts/cm/cmr9.pfb><C:/Program Files (x86)/MiKTeX 2.9/fonts/type1/pu
+blic/amsfonts/cm/cmsy10.pfb><C:/Program Files (x86)/MiKTeX 2.9/fonts/type1/publ
+ic/amsfonts/cm/cmsy6.pfb><C:/Program Files (x86)/MiKTeX 2.9/fonts/type1/public/
+amsfonts/cm/cmsy8.pfb><C:/Program Files (x86)/MiKTeX 2.9/fonts/type1/public/ams
+fonts/cm/cmti10.pfb><C:/Program Files (x86)/MiKTeX 2.9/fonts/type1/public/amsfo
+nts/cm/cmti12.pfb><C:/Program Files (x86)/MiKTeX 2.9/fonts/type1/public/amsfont
+s/symbols/msbm10.pfb>
+Output written on stochInf1D.pdf (10 pages, 1336014 bytes).
 PDF statistics:
  124 PDF objects out of 1000 (max. 8388607)
  0 named destinations out of 1000 (max. 500000)

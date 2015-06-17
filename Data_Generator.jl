@@ -20,7 +20,7 @@
 
 dir  = "C:/Users/ulzegasi/Julia_files/ParInf_HMC" 
 dir2 = "C:/Users/ulzegasi/Julia_files/ParInf_HMC/input_data" 
-using PyPlot
+using PyPlot, Distributions
 pygui(true)
 
 ##
@@ -39,9 +39,10 @@ T  = t[end]-t[1]                     # Total time interval
 dt = T/(N-1)                         # Time step
 ty = iround(linspace(1, N, n + 1))   # Indeces of "boundary" beads (= measurement points)     
 
-K     = 50.         # Retention time
-gam   = 0.2         # Dimensionless noise parameter
-sig   = 0.10        # Measurement noise
+K   = 50.         # Retention time
+gam = 0.2         # Dimensionless noise parameter
+bet = sqrt(T*gam/K)
+sig = 0.10        # Measurement noise
 
 S = zeros(N)   # System realization (with true parameters)
 
@@ -67,8 +68,14 @@ for i = 2:N
         error("Negative volume!")
     end
 end
-bq = log((1/K)*(S[ty]./r[ty])) + sig*randn(n+1)  
-y  = r[ty].*exp(bq)                                   
+
+y  = S[ty]/K.*rand(LogNormal(0,sig),n+1)
+bq = log(y./r[ty])
+
+########################
+# bq = log((1/K)*(S[ty]./r[ty])) + sig*randn(n+1)  
+# y  = r[ty].*exp(bq)
+########################                                   
 
 #=
 plt.figure()
@@ -81,8 +88,6 @@ yerr=2*sig*y
 plt.errorbar(t[ty], y, yerr=(yerr,yerr), fmt="o", color="r", markersize = 10, capsize=8, elinewidth=4)
 =#
 
-t[ty]
-ty
 St = zeros(N,2)
 St[:,1] = S
 St[:,2] = t

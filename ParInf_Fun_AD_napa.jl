@@ -166,14 +166,14 @@ end
 ##########################################################################
 ## Derivatives
 ##########################################################################
-# dV_N_theta = rdiff(V_N, outsym=:out_N, theta = ones(Float64, params)) 
+# dV_N_theta = rdiff(V_N, outsym=:out_N, theta = ones(Float64, nparams)) 
 # dV_N_u     = rdiff(V_N, outsym=:out_N, u     = ones(Float64, N)) 
 # @eval dV_N(theta,u) = [($dV_N_theta)[2][1],($dV_N_u)[2][1]]
 
-dV_n_theta = rdiff(V_n, outsym=:out_n, theta = ones(Float64, params)) 
+dV_n_theta = rdiff(V_n, outsym=:out_n, theta = ones(Float64, nparams)) 
 dV_n_u     = rdiff(V_n, outsym=:out_n, u     = ones(Float64, N)) 
 
-dV_1_theta = rdiff(V_1, outsym=:out_1, theta = ones(Float64, params)) 
+dV_1_theta = rdiff(V_1, outsym=:out_1, theta = ones(Float64, nparams)) 
 dV_1_u     = rdiff(V_1, outsym=:out_1, u     = ones(Float64, N)) 
 
 @eval dV_n(theta,u) = [($dV_n_theta)[2],($dV_n_u)[2]]
@@ -201,8 +201,8 @@ function napa(theta, u, counter)     # (Tuckerman et al., JCP 97(3), 1992 )
     for s = 1:n 
         for k = 2:j 
             u_old = u[(s-1)*j+k]
-            u[(s-1)*j+k] = u[(s-1)*j+k]*cos(w_stg(k)*dtau/2.0) + p[params+(s-1)*j+k]*sin(w_stg(k)*dtau/2.0) / (m_stg*w_stg(k))
-            p[params+(s-1)*j+k] = p[params+(s-1)*j+k]*cos(w_stg(k)*dtau/2.0) - m_stg*w_stg(k)*u_old*sin(w_stg(k)*dtau/2.0)
+            u[(s-1)*j+k] = u[(s-1)*j+k]*cos(w_stg(k)*dtau/2.0) + p[nparams+(s-1)*j+k]*sin(w_stg(k)*dtau/2.0) / (m_stg*w_stg(k))
+            p[nparams+(s-1)*j+k] = p[nparams+(s-1)*j+k]*cos(w_stg(k)*dtau/2.0) - m_stg*w_stg(k)*u_old*sin(w_stg(k)*dtau/2.0)
         end
     end
     time_respa_f[counter-nsample_burnin] += (time()-timef)
@@ -212,13 +212,13 @@ function napa(theta, u, counter)     # (Tuckerman et al., JCP 97(3), 1992 )
     time1 = time()
     force_old = -dV(theta,u)
     for s = 1:(n+1)
-        u[(s-1)*j+1] += dtau * ( p[params+(s-1)*j+1]  + (dtau/2.0) * force_old[params+(s-1)*j+1] ) / m_bdy
+        u[(s-1)*j+1] += dtau * ( p[nparams+(s-1)*j+1]  + (dtau/2.0) * force_old[nparams+(s-1)*j+1] ) / m_bdy
     end 
-    for i = 1:params
+    for i = 1:nparams
         theta[i] += dtau * ( p[i]  + (dtau/2.0) * force_old[i] ) / mp[i]
     end
     force_new = -dV(theta,u)
-    for i = 1:(params+N)
+    for i = 1:(nparams+N)
         p[i] += (dtau/2)*( force_old[i] + force_new[i] )
     end  
 
@@ -231,8 +231,8 @@ function napa(theta, u, counter)     # (Tuckerman et al., JCP 97(3), 1992 )
     for s = 1:n 
         for k = 2:j 
             u_old = u[(s-1)*j+k]
-            u[(s-1)*j+k] = u[(s-1)*j+k]*cos(w_stg(k)*dtau/2.0) + p[params+(s-1)*j+k]*sin(w_stg(k)*dtau/2.0) / (m_stg*w_stg(k))
-            p[params+(s-1)*j+k] = p[params+(s-1)*j+k]*cos(w_stg(k)*dtau/2.0) - m_stg*w_stg(k)*u_old*sin(w_stg(k)*dtau/2.0)
+            u[(s-1)*j+k] = u[(s-1)*j+k]*cos(w_stg(k)*dtau/2.0) + p[nparams+(s-1)*j+k]*sin(w_stg(k)*dtau/2.0) / (m_stg*w_stg(k))
+            p[nparams+(s-1)*j+k] = p[nparams+(s-1)*j+k]*cos(w_stg(k)*dtau/2.0) - m_stg*w_stg(k)*u_old*sin(w_stg(k)*dtau/2.0)
         end
     end
     time_respa_f[counter-nsample_burnin] += (time()-timef)
