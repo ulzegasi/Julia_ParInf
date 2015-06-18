@@ -17,7 +17,7 @@
 ## ============================================================================================
 dir   = "C:/Users/ulzegasi/Julia_files/ParInf_HMC/temp_data"
 dir2  = "C:/Users/ulzegasi/Julia_files/ParInf_HMC/input_data"
-fname = string("_sinr")
+fname = string("_sinr_680_150")
 ##
 ##
 ## ============================================================================================
@@ -30,7 +30,7 @@ paramslist     = readdlm("$dir/params$fname.dat")
 N              = int64(paramslist[findin(paramslist[:,1],["N"]),2])[1]
 j              = int64(paramslist[findin(paramslist[:,1],["j"]),2])[1]
 n              = int64(paramslist[findin(paramslist[:,1],["n"]),2])[1] 
-nparams		   = int64(paramslist[findin(paramslist[:,1],["params"]),2])[1] 
+nparams		   = int64(paramslist[findin(paramslist[:,1],["nparams"]),2])[1] 
 nsample_burnin = int64(paramslist[findin(paramslist[:,1],["nsample_burnin"]),2])[1]
 nsample_eff    = int64(paramslist[findin(paramslist[:,1],["nsample_eff"]),2])[1]  
 n_napa         = int64(paramslist[findin(paramslist[:,1],["n_napa"]),2])[1] 
@@ -103,12 +103,12 @@ pygui(true)
 
 plt.figure(1,figsize=(12.5, 8.5))
 plt.subplots_adjust(hspace=0.5)
-plt.subplot(211)[:set_xlim]([-5,605])
+plt.subplot(211)[:set_xlim]([-5,845])
 plt.grid("on")
 plt.ylabel("S[t]")
 plt.title("Water volume")
 plt.plot(t, S,"r")
-plt.subplot(212)[:set_xlim]([-5,605])
+plt.subplot(212)[:set_xlim]([-5,845])
 plt.grid("on")
 plt.xlabel("time")
 plt.ylabel("r[t]")
@@ -118,7 +118,7 @@ plt.savefig("$dir/figure1$fname.png",transparent=true)
 
 plt.figure(2,figsize=(12.5, 8.5))
 plt.subplots_adjust(hspace=0.5)
-plt.subplot(211)[:set_xlim]([-5,605])
+plt.subplot(211)[:set_xlim]([-5,845])
 plt.grid("on")
 plt.ylabel("y[t]")
 plt.title("Runoff")
@@ -126,7 +126,7 @@ plt.plot(t, S/true_K, color = (1,0.65,0), linewidth=2)
 yerr=2*sigma*y
 plt.errorbar(t[ty], y, yerr=(yerr,yerr), fmt="o", markersize = 12, color="r", capsize=10, elinewidth=4)
 plt.tick_params(length=5, width=3)
-plt.subplot(212)[:set_xlim]([-5,605])
+plt.subplot(212)[:set_xlim]([-5,845])
 plt.grid("on")
 plt.xlabel("time")
 plt.ylabel("r[t]")
@@ -179,7 +179,7 @@ plt.savefig("$dir/figure3$fname.png",transparent=true,dpi=300)
 
 plt.figure(3,figsize=(12.5, 8.5))
 plt.subplots_adjust(hspace=0.5)
-plt.subplot(211)[:set_xlim]([-5,605])
+plt.subplot(211)[:set_xlim]([-5,305])
 plt.xticks(size="15")
 plt.yticks(size="15") 
 plt.tick_params(length=5, width=2)
@@ -191,7 +191,7 @@ for ip = 1:size(predq,1)
 end
 qerr=2*sigma*ones(length(redrange))
 plt.errorbar(ty[redrange], vec(predq[1,ty[redrange]]), yerr=(qerr,qerr), fmt="o", color="r", markersize = 12, capsize=8, elinewidth=4)
-plt.subplot(212)[:set_xlim]([-5,605])
+plt.subplot(212)[:set_xlim]([-5,305])
 plt.xticks(size="15")
 plt.yticks(size="15") 
 plt.tick_params(length=5, width=2)

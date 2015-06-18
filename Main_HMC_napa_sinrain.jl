@@ -31,7 +31,6 @@ srand(18072011)                                     # Seeding the RNG provides r
 St     = readdlm("$dir3/St$fname.dat")
 S      = St[:,1]
 long_t = St[:,2]   
-# bq     = vec(readdlm("$dir3/bq$fname.dat"))
 y      = vec(readdlm("$dir3/y$fname.dat"))
 ##
 ## ============================================================================================
@@ -56,12 +55,11 @@ const dt = T/(N-1)                         # Time step
 const ty = iround(linspace(1, N, n+1))     # Indeces of "boundary" beads (= measurement points)     
 
 const nsample_burnin = 0                   # Number of points in the MCMC
-const nsample_eff    = 20000
+const nsample_eff    = 50000
 const nsample        = nsample_eff + nsample_burnin
 
-const dtau           = 0.30                # MD time step
+const dtau           = 0.25                # MD time step
 const n_napa         = 3                   # Number of NAPA time steps
-# nn = 16  ; deltatau = dtau / nn          # Short time steps in RESPA --> NOT NEEDED IN THE NAPA IMPLEMENTATION
 
 const true_K     = 50.                    # Retention time
 const true_gam   = 0.2                     # Dimensionless noise parameter
@@ -131,25 +129,14 @@ r = Array(Float64,N); r = sin(t/100.).*sin(t/100.) + 0.1
 for i = 1:(N-1)  
 	lnr_der[i] = (log(r[i+1])-log(r[i]))/dt   # Log-derivative of the rain
 end
-#=
-for s = 1:(n+1)
-	y[s] = yfull[ty[s]]						  # Synthetic measurement data
-end           		
-for s = 1:(n+1) 
-    q[ty[s]] = (1/bet)*log(y[s]/r[ty[s]])	  # To dimensionless coordinates (measurement points) ...
-end
-=#
+
 q_init = (1/true_bet)*log(y./r[ty])
 bq     = true_bet*q_init
 for s = 1:n 								  # ... and their linear interpolation (staging points)
     q[ty[s]:ty[s+1]] = linspace(q_init[s],q_init[s+1],ty[s+1]-ty[s]+1)
 end
-#=
-for s = 1:n+1
-	bq[s] = log(y[s]/r[ty[s]])
-end
-=#
 
+############## It could be interesting to plot a few figures to visualize input data ##############
 #=
 plt.figure(figsize=(12.5, 4.5))
 axes()[:set_ylim]([0,2])
@@ -185,7 +172,6 @@ axes()[:set_xlim]([-5,840])
 plt.plot(t, q, "g-",linewidth=1)
 plt.plot(t, q, "go",markersize=4)
 plt.plot(t[ty], q[ty], "go",markersize=12)
-
 =#                       
 
 ##
@@ -303,7 +289,7 @@ m_bdy_burnin   = m_bdy
 m_stg_burnin   = m_stg
 m_theta_burnin = m_theta
 
-m_bdy    = 700                      # m = m_q / dt
+m_bdy    = 680                      # m = m_q / dt
 m_stg    = 300                      # we assume m_q prop. to dt ==> m = costant     
 m_theta  = [150, 150]
 
@@ -390,11 +376,6 @@ for counter = (nsample_burnin + 1):nsample
 
 end
 
-# writedlm("C:/Users/ulzegasi/respatimeser.dat",      time_respa)
-# writedlm("C:/Users/ulzegasi/respaslowser.dat",      time_respa_s)
-# writedlm("C:/Users/ulzegasi/respafastforceser.dat", time_respa_f_d)
-# writedlm("C:/Users/ulzegasi/respafastupser.dat",    time_respa_f_u)
-
 ## --------------------------------------------------------------------------------------------
 ## End of HMC loop
 ## --------------------------------------------------------------------------------------------
@@ -433,7 +414,7 @@ end
 ## Save parameters and results
 ## ============================================================================================
 ##
-fname = string("_sinr") 
+fname = string("_sinr_680_150") 
 
 param_names  = vcat("N", "j", "n", "t[1]", "dt", "nparams", "true_K", "true_gam", "sigma", "K", "gam", 
 	"nsample_burnin", "nsample_eff", "m_bdy_burnin", "m_bdy", "m_theta_burnin", "m_theta_bet", 
@@ -441,7 +422,7 @@ param_names  = vcat("N", "j", "n", "t[1]", "dt", "nparams", "true_K", "true_gam"
 param_values = vcat(N, j, n, t[1], dt, nparams, true_K, true_gam, sigma, K, gam, 
 	nsample_burnin, nsample_eff, m_bdy_burnin, m_bdy, m_theta_burnin, m_theta, 
 	m_stg_burnin, m_stg, dtau, n_napa)
-writedlm("$dir2/nparams$fname.dat", hcat(param_names, param_values))
+writedlm("$dir2/params$fname.dat", hcat(param_names, param_values))
 
 last_qs = qs[1:(nsample+1),N]          
 writedlm("$dir2/last_qs$fname.dat", last_qs)
