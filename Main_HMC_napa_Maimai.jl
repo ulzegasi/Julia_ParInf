@@ -18,7 +18,7 @@
 dir   = "C:/Users/ulzegasi/Julia_files/ParInf_HMC"  # Main project directory, local repository   
 dir2  = "$dir/temp_data"                            # Secondary directory (e.g., output storage)
 dir3  = "$dir/input_data"                           # Input data directory
-fname = string("_sinr_n10")                        # Output files
+fname = string("_mmH_N601_n30")                     # Output files
 using ReverseDiffSource, PyPlot #, ForwardDiff      # Automated differentiation package
 pygui(true)
 srand(18072011)                                     # Seeding the RNG provides reproducibility
@@ -29,36 +29,35 @@ srand(18072011)                                     # Seeding the RNG provides r
 ## ============================================================================================
 ##
 St     = readdlm("$dir3/St$fname.dat")
-S      = St[:,1]
-long_t = St[:,2]   
-long_r = vec(readdlm("$dir3/r$fname.dat"))
+S      = St[:,1]  
+r      = vec(readdlm("$dir3/r$fname.dat"))
 y      = vec(readdlm("$dir3/y$fname.dat"))
-bq     = vec(readdlm("$dir3/bq$fname.dat"))  
+# bq     = vec(readdlm("$dir3/bq$fname.dat"))  
 ##
 ## ============================================================================================
 ## System parameters
 ## ============================================================================================
 ##
-const params = 2              # Number of system parameters (k, gamma)
-const n = 10                  # n+1 -> "end point" beads (see Tuckerman '93), n -> number of segments
-const j = 30                  # n(j-1) -> total number of staging beads, j-1 -> staging beads per segment
+const nparams = 2              # Number of system parameters (k, gamma)
+const n = 30                  # n+1 -> "end point" beads (see Tuckerman '93), n -> number of segments
+const j = 20                  # n(j-1) -> total number of staging beads, j-1 -> staging beads per segment
 const N = int64(n*j+1)        # Total number of discrete time points = n*j + 1
                               # IMPORTANT: (N-1)/j = integer = n (measurement points)
 if  ((N-1)%j) != 0 
     error("Be careful, the number of staging points j must fulfill (N-1)/j = integer !")
 end
 
-const t  = long_t[iround(linspace(1, size(long_t,1), N))]
+const t  = St[:,2]
 const T  = t[end]-t[1]                     # Total time interval
 const dt = T/(N-1)                         # Time step
 const ty = iround(linspace(1, N, n+1))     # Indeces of "boundary" beads (= measurement points)     
 
 const nsample_burnin = 0                   # Number of points in the MCMC
-const nsample_eff    = 10000
+const nsample_eff    = 2000
 const nsample        = nsample_eff + nsample_burnin
 
-const dtau           = 0.30                # MD time step
-const n_napa         = 3                   # Number of NAPA time steps
+const dtau           = 0.02                # MD time step
+const n_napa         = 5                   # Number of NAPA time steps
 # nn = 16  ; deltatau = dtau / nn          # Short time steps in RESPA --> NOT NEEDED IN THE NAPA IMPLEMENTATION
 
 const true_K     = 50.                    # Retention time
@@ -94,14 +93,14 @@ lnr_der = Array(Float64,N)      # Log derivative of (smoothed) rain input
 q       = Array(Float64,N)       
 u       = Array(Float64,N)       
 ## Masses and momenta for HMC
-mp      = Array(Float64,params+N)     
-p       = Array(Float64,params+N)
+mp      = Array(Float64,nparams+N)     
+p       = Array(Float64,nparams+N)
 ## Containers for sampled objects
-theta_sample = Array(Float64,nsample+1,params) # Container for sampled parameters
+theta_sample = Array(Float64,nsample+1,nparams) # Container for sampled parameters
 u_sample     = Array(Float64,nsample+1,N)      # Container for sampled coordinates
 energies     = Array(Float64,nsample)          # Container for sampled energies
 ## To store temporary values
-theta_save   = Array(Float64,params)           # To store temporary parameters
+theta_save   = Array(Float64,nparams)           # To store temporary parameters
 u_save       = Array(Float64,N)                # To store temporary coordinates
 ## results
 qs           = Array(Float64,nsample+1,N)      # Sampled coordinates
@@ -123,62 +122,52 @@ end
 
 ##
 ## ============================================================================================
-## Data generation
+## Data
 ## ============================================================================================
 ##
-r = long_r[iround(linspace(1, size(long_r,1), N))]
 for i = 1:(N-1)  
 	lnr_der[i] = (log(r[i+1])-log(r[i]))/dt   # Log-derivative of the rain
 end
-#=
-for s = 1:(n+1)
-	y[s] = yfull[ty[s]]						  # Synthetic measurement data
-end           		
-for s = 1:(n+1) 
-    q[ty[s]] = (1/bet)*log(y[s]/r[ty[s]])	  # To dimensionless coordinates (measurement points) ...
+
+q_init = (1/true_bet)*log(y./r[ty])
+bq     = true_bet*q_init
+for s = 1:n                                   # ... and their linear interpolation (staging points)
+    q[ty[s]:ty[s+1]] = linspace(q_init[s],q_init[s+1],ty[s+1]-ty[s]+1)
 end
-=#
-for s = 1:n 								  # ... and their linear interpolation (staging points)
-    q[ty[s]:ty[s+1]] = (1/true_bet)*linspace(bq[s],bq[s+1],ty[s+1]-ty[s]+1)  # +(sigma/bet)*randn(ty[s+1]-ty[s]+1)
-end
-#=
-for s = 1:n+1
-	bq[s] = log(y[s]/r[ty[s]])
-end
-=#
+
 
 #=
 plt.figure(figsize=(12.5, 4.5))
-axes()[:set_ylim]([0,2])
-axes()[:set_xlim]([-5,840])
+axes()[:set_ylim]([0,10])
+axes()[:set_xlim]([-5,605])
 plt.xlabel("time")
 plt.ylabel("r")
 plt.plot(t, r, "bo", markersize = 6)
 plt.plot(t, r, "b", linewidth=1)
 
 plt.figure(figsize=(12.5, 4.5))
-axes()[:set_ylim]([0,2])
-axes()[:set_xlim]([-5,840])
+axes()[:set_ylim]([0,3])
+axes()[:set_xlim]([-5,605])
 plt.xlabel("time")
 plt.ylabel("S/K, y")
-plt.plot(long_t, S/true_K, "r", linewidth = 2, color = (1,0.65,0))
+plt.plot(t, S/true_K, "r", linewidth = 2, color = (1,0.65,0))
 yerr=2*sigma*y
 plt.errorbar(t[ty], y, yerr=(yerr,yerr), fmt="o", color = (1,0,0), markersize = 10, capsize=8, elinewidth=4)
 
 plt.figure(figsize=(12.5, 4.5))
-axes()[:set_ylim]([0,2])
-axes()[:set_xlim]([-5,840])
+axes()[:set_ylim]([0,5])
+axes()[:set_xlim]([-5,605])
 plt.xlabel("time")
 plt.ylabel("S/K, y")
-plt.plot(long_t, S/true_K, "r", linewidth = 2, color = (1,0.65,0))
+plt.plot(t, S/true_K, "r", linewidth = 2, color = (1,0.65,0))
 plt.plot(t, r, "bo", markersize = 6)
 plt.plot(t, r, "b", linewidth=1)
 yerr=2*sigma*y
 plt.errorbar(t[ty], y, yerr=(yerr,yerr), fmt="o", color = (1,0,0), markersize = 10, capsize=8, elinewidth=4)
 
 plt.figure(figsize=(12.5, 4.5))
-axes()[:set_ylim]([-1,1])
-axes()[:set_xlim]([-5,840])
+axes()[:set_ylim]([-3,3])
+axes()[:set_xlim]([-5,605])
 plt.plot(t, q, "g-",linewidth=1)
 plt.plot(t, q, "go",markersize=4)
 plt.plot(t[ty], q[ty], "go",markersize=12)
@@ -213,14 +202,14 @@ m_bdy    = 10.0                       # m = m_q / dt
 m_stg    = 1.0                        # we assume m_q prop. to dt ==> m = costant     
 m_theta  = 1.0
 
-mp[1:params] = m_theta
+mp[1:nparams] = m_theta
 for s = 1:n  
-    mp[params+(s-1)*j+1] = m_bdy                       
+    mp[nparams+(s-1)*j+1] = m_bdy                       
     for k = 2:j 
-        mp[params+(s-1)*j+k] = m_stg                   
+        mp[nparams+(s-1)*j+k] = m_stg                   
     end
 end
-mp[params+N] = m_bdy                                       
+mp[nparams+N] = m_bdy                                       
 
 ## --------------------------------------------------------------------------------------------
 ## Loading potentials, derivatives and Napa 
@@ -242,7 +231,7 @@ for counter = 1:nsample_burnin
 
     # Sample momenta:
     # -------------------
-    p = sqrt(mp).*randn(params+N)
+    p = sqrt(mp).*randn(nparams+N)
     
     # Calculate energy:
     # -------------------
@@ -254,7 +243,7 @@ for counter = 1:nsample_burnin
     
     # Save current state:
     # -------------------
-    for i = 1:params theta_save[i] = theta[i] end
+    for i = 1:nparams theta_save[i] = theta[i] end
     for i = 1:N      u_save[i]     = u[i]     end
 
     # MD Integration:
@@ -266,18 +255,18 @@ for counter = 1:nsample_burnin
     # Metropolis step and energy of proposal state
     # -------------------
     if (theta[2] <= gam_min) || (theta[2] >= gam_max) || ((T*theta[2]/(theta[1])^2) <= K_min) || ((T*theta[2]/(theta[1])^2) >= K_max) 
-        for i = 1:params theta[i] = theta_save[i] end
+        for i = 1:nparams theta[i] = theta_save[i] end
         for i = 1:N      u[i]     = u_save[i]     end
         reject_counter_burnin += 1
     elseif any(u .> 10.0) || any(u .< -10.0)
-        for i = 1:params theta[i] = theta_save[i] end
+        for i = 1:nparams theta[i] = theta_save[i] end
         for i = 1:N      u[i]     = u_save[i]     end
         reject_counter_burnin += 1
     else
         H_new = V_N_fun(u) + V_n_fun(theta,u) + V_1_fun(theta,u) + sum((p.^2)./(2*mp))
         accept_prob = min(1,exp(H_old-H_new))
         if rand() > accept_prob 
-            for i = 1:params theta[i] = theta_save[i] end
+            for i = 1:nparams theta[i] = theta_save[i] end
             for i = 1:N      u[i]     = u_save[i]     end
             reject_counter_burnin += 1
         end
@@ -304,14 +293,14 @@ m_bdy    = 700                      # m = m_q / dt
 m_stg    = 300                      # we assume m_q prop. to dt ==> m = costant     
 m_theta  = [150, 150]
 
-mp[1:params] = m_theta
+mp[1:nparams] = m_theta
 for s = 1:n  
-    mp[params+(s-1)*j+1] = m_bdy                       
+    mp[nparams+(s-1)*j+1] = m_bdy                       
     for k = 2:j 
-        mp[params+(s-1)*j+k] = m_stg                   
+        mp[nparams+(s-1)*j+k] = m_stg                   
     end
 end
-mp[params+N] = m_bdy          
+mp[nparams+N] = m_bdy          
 
 reject_counter = 0
 
@@ -329,7 +318,7 @@ for counter = (nsample_burnin + 1):nsample
     # Sample momenta:
     # -------------------
     t0=time()
-    p = sqrt(mp).*randn(params+N)
+    p = sqrt(mp).*randn(nparams+N)
 
     # Calculate energy:
     # -------------------
@@ -341,7 +330,7 @@ for counter = (nsample_burnin + 1):nsample
     
     # Save current state:
     # -------------------
-    for i = 1:params theta_save[i] = theta[i] end
+    for i = 1:nparams theta_save[i] = theta[i] end
     for i = 1:N      u_save[i]     = u[i]     end
 
     # MD Integration:
@@ -361,18 +350,18 @@ for counter = (nsample_burnin + 1):nsample
     # -------------------
     
     if (theta[2] <= gam_min) || (theta[2] >= gam_max) || ((T*theta[2]/(theta[1])^2) <= K_min) || ((T*theta[2]/(theta[1])^2) >= K_max) 
-        for i = 1:params theta[i] = theta_save[i] end
+        for i = 1:nparams theta[i] = theta_save[i] end
         for i = 1:N      u[i]     = u_save[i]     end
         reject_counter += 1
     elseif any(u .> 10.0) || any(u .< -10.0)
-        for i = 1:params theta[i] = theta_save[i] end
+        for i = 1:nparams theta[i] = theta_save[i] end
         for i = 1:N      u[i]     = u_save[i]     end
         reject_counter += 1
     else
         H_new = V_N_fun(u) + V_n_fun(theta,u) + V_1_fun(theta,u) + sum((p.^2)./(2*mp))
         accept_prob = min(1,exp(H_old-H_new))
         if rand() > accept_prob 
-            for i = 1:params theta[i] = theta_save[i] end
+            for i = 1:nparams theta[i] = theta_save[i] end
             for i = 1:N      u[i]     = u_save[i]     end
             reject_counter += 1
         end
@@ -430,10 +419,13 @@ end
 ## Save parameters and results
 ## ============================================================================================
 ##
-param_names  = vcat("N", "j", "n", "t[1]", "dt", "params", "true_K", "true_gam", "sigma", "K", "gam", 
+
+fname = string("_mmH_testing") 
+
+param_names  = vcat("N", "j", "n", "t[1]", "dt", "nparams", "true_K", "true_gam", "sigma", "K", "gam", 
 	"nsample_burnin", "nsample_eff", "m_bdy_burnin", "m_bdy", "m_theta_burnin", "m_theta_bet", 
 	"m_theta_gam", "m_stg_burnin", "m_stg", "dtau", "n_napa")
-param_values = vcat(N, j, n, t[1], dt, params, true_K, true_gam, sigma, K, gam, 
+param_values = vcat(N, j, n, t[1], dt, nparams, true_K, true_gam, sigma, K, gam, 
 	nsample_burnin, nsample_eff, m_bdy_burnin, m_bdy, m_theta_burnin, m_theta, 
 	m_stg_burnin, m_stg, dtau, n_napa)
 writedlm("$dir2/params$fname.dat", hcat(param_names, param_values))
@@ -478,7 +470,7 @@ for ip in iround(linspace(1, nsample+1, red_range))
 end
 writedlm("$dir2/predq$fname.dat", red_qs)
 
-thetas      = Array(Float64,nsample+1,params)
+thetas      = Array(Float64,nsample+1,nparams)
 thetas[:,1] = T*theta_sample[:,2]./(theta_sample[:,1]).^2  # K
 thetas[:,2] = theta_sample[:,2]                            # gamma
 writedlm("$dir2/thetas$fname.dat", thetas)
