@@ -1,3 +1,20 @@
 \begin{thebibliography}{}
 
+\bibitem[Duane et~al., 1987]{duane_1987_HMC}
+Duane, S., Kennedy, A., Pendleton, B., and Roweth, D. ({1987}).
+\newblock {Hybrid Monte Carlo}.
+\newblock {\em {Phys. Lett. B}}, {195}({2}):{216--222}.
+
+\bibitem[Lau and Lubensky, 2007]{lau_2007_StateDepDiff}
+Lau, A.~W.~C. and Lubensky, T.~C. (2007).
+\newblock State-dependent diffusion: thermodynamic consistency and its path
+  integral formulation.
+\newblock {\em Phys.~Rev.~E}, 76(1):011123.
+
+\bibitem[Metropolis et~al., 1953]{metropolis_1953_MRT2}
+Metropolis, N., Rosenbluth, A., Rosenbluth, M., Teller, A., and Teller, E.
+  ({1953}).
+\newblock Equation of state calculations by fast computing machines.
+\newblock {\em {J. Chem. Phys.}}, {21}({6}):{1087--1092}.
+
 \end{thebibliography}

@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.1415926-2.5-1.40.14 (MiKTeX 2.9) (preloaded format=pdflatex 2014.11.28)  17 JUN 2015 10:11
+This is pdfTeX, Version 3.1415926-2.5-1.40.14 (MiKTeX 2.9) (preloaded format=pdflatex 2014.11.28)  16 JUL 2015 11:00
 entering extended mode
 **C:/Users/ulzegasi/Julia_files/ParInf_HMC/TeXFiles/stochInf1D.tex
 (C:/Users/ulzegasi/Julia_files/ParInf_HMC/TeXFiles/stochInf1D.tex
@@ -319,18 +319,18 @@ Xy-pic pdf driver: `line' extension support
 Xy-pic pdf driver: `rotate' extension support
 ("C:\Program Files (x86)\MiKTeX 2.9\tex\generic\xypic\xypdf-ro.tex" loaded)
 loaded)) (C:\Users\ulzegasi\Julia_files\ParInf_HMC\TeXFiles\stochInf1D.aux)
-LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 81.
-LaTeX Font Info:    ... okay on input line 81.
-LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 81.
-LaTeX Font Info:    ... okay on input line 81.
-LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 81.
-LaTeX Font Info:    ... okay on input line 81.
-LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 81.
-LaTeX Font Info:    ... okay on input line 81.
-LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 81.
-LaTeX Font Info:    ... okay on input line 81.
-LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 81.
-LaTeX Font Info:    ... okay on input line 81.
+LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 80.
+LaTeX Font Info:    ... okay on input line 80.
+LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 80.
+LaTeX Font Info:    ... okay on input line 80.
+LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 80.
+LaTeX Font Info:    ... okay on input line 80.
+LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 80.
+LaTeX Font Info:    ... okay on input line 80.
+LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 80.
+LaTeX Font Info:    ... okay on input line 80.
+LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 80.
+LaTeX Font Info:    ... okay on input line 80.
 
 (C:\Users\ulzegasi\AppData\Roaming\MiKTeX\2.9\tex\context\base\supp-pdf.mkii
 [Loading MPS to PDF converter (version 2006.09.02).]
@@ -371,97 +371,78 @@ LaTeX Info: Redefining \selectfont on input line 126.
 )
 Package caption Info: Begin \AtBeginDocument code.
 Package caption Info: End \AtBeginDocument code.
-LaTeX Font Info:    Try loading font information for U+msa on input line 81.
+LaTeX Font Info:    Try loading font information for U+msa on input line 80.
 
 ("C:\Program Files (x86)\MiKTeX 2.9\tex\latex\amsfonts\umsa.fd"
 File: umsa.fd 2013/01/14 v3.01 AMS symbols A
 )
-LaTeX Font Info:    Try loading font information for U+msb on input line 81.
+LaTeX Font Info:    Try loading font information for U+msb on input line 80.
 
 ("C:\Program Files (x86)\MiKTeX 2.9\tex\latex\amsfonts\umsb.fd"
 File: umsb.fd 2013/01/14 v3.01 AMS symbols B
 )
-Package xypdf Info: Line width: 0.43799pt on input line 81.
+Package xypdf Info: Line width: 0.43799pt on input line 80.
+ [1
 
-
-Package natbib Warning: Citation `lau_2007_StateDepDiff' on page 1 undefined on
- input line 133.
-
-[1
-
-{C:/Users/ulzegasi/AppData/Local/MiKTeX/2.9/pdftex/config/pdftex.map}]
-[2]
-
-Package natbib Warning: Citation `duane_1987_HMC' on page 3 undefined on input 
-line 322.
-
-
-Package natbib Warning: Citation `metropolis_1953_MRT2' on page 3 undefined on 
-input line 351.
-
-[3]
+{C:/Users/ulzegasi/AppData/Local/MiKTeX/2.9/pdftex/config/pdftex.map}] [2] [3]
 
 Package natbib Warning: Citation `doll_1985_fourier' on page 4 undefined on inp
-ut line 441.
+ut line 440.
 
 
 Package natbib Warning: Citation `tuckerman1992reversible' on page 4 undefined 
-on input line 443.
+on input line 442.
 
 [4]
 
 Package natbib Warning: Citation `tuckerman1993efficient' on page 5 undefined o
-n input line 470.
+n input line 469.
 
 
 Package natbib Warning: Citation `tuckerman1992reversible' on page 5 undefined 
-on input line 564.
+on input line 563.
 
 [5] [6] <Figs/FigRainData.png, id=37, 682.7106pt x 444.2196pt>
 File: Figs/FigRainData.png Graphic file (type png)
 
 <use Figs/FigRainData.png>
-Package pdftex.def Info: Figs/FigRainData.png used on input line 686.
+Package pdftex.def Info: Figs/FigRainData.png used on input line 685.
 (pdftex.def)             Requested size: 309.85626pt x 201.61864pt.
 
 <Figs/FigSpaghetti.png, id=39, 672.111pt x 402.303pt>
 File: Figs/FigSpaghetti.png Graphic file (type png)
 
 <use Figs/FigSpaghetti.png>
-Package pdftex.def Info: Figs/FigSpaghetti.png used on input line 693.
+Package pdftex.def Info: Figs/FigSpaghetti.png used on input line 692.
 (pdftex.def)             Requested size: 398.38567pt x 238.46165pt.
 
 <Figs/FigFinalState.png, id=40, 540.5796pt x 391.2216pt>
 File: Figs/FigFinalState.png Graphic file (type png)
 
 <use Figs/FigFinalState.png>
-Package pdftex.def Info: Figs/FigFinalState.png used on input line 700.
+Package pdftex.def Info: Figs/FigFinalState.png used on input line 699.
 (pdftex.def)             Requested size: 265.59494pt x 192.21364pt.
 
 <Figs/FigChains.png, id=41, 432.6564pt x 510.2262pt>
 File: Figs/FigChains.png Graphic file (type png)
  <use Figs/FigChains.png>
-Package pdftex.def Info: Figs/FigChains.png used on input line 707.
+Package pdftex.def Info: Figs/FigChains.png used on input line 706.
 (pdftex.def)             Requested size: 309.85626pt x 365.4318pt.
 
 <Figs/FigPhaseSpaceEvol.png, id=42, 660.066pt x 438.9198pt>
 File: Figs/FigPhaseSpaceEvol.png Graphic file (type png)
 
 <use Figs/FigPhaseSpaceEvol.png>
-Package pdftex.def Info: Figs/FigPhaseSpaceEvol.png used on input line 714.
+Package pdftex.def Info: Figs/FigPhaseSpaceEvol.png used on input line 713.
 (pdftex.def)             Requested size: 398.38567pt x 264.90768pt.
 
 <Figs/FigKg.png, id=43, 694.7556pt x 278.9622pt>
 File: Figs/FigKg.png Graphic file (type png)
  <use Figs/FigKg.png>
-Package pdftex.def Info: Figs/FigKg.png used on input line 721.
+Package pdftex.def Info: Figs/FigKg.png used on input line 720.
 (pdftex.def)             Requested size: 398.38567pt x 159.95932pt.
 
-(C:\Users\ulzegasi\Julia_files\ParInf_HMC\TeXFiles\stochInf1D.bbl
-
-Package natbib Warning: Empty `thebibliography' environment on input line 3.
-
-)
+(C:\Users\ulzegasi\Julia_files\ParInf_HMC\TeXFiles\stochInf1D.bbl)
 
 Package natbib Warning: There were undefined citations.
 
@@ -473,10 +454,10 @@ Package natbib Warning: There were undefined citations.
 ng> <C:/Users/ulzegasi/Julia_files/ParInf_HMC/TeXFiles/Figs/FigKg.png>]
 (C:\Users\ulzegasi\Julia_files\ParInf_HMC\TeXFiles\stochInf1D.aux) ) 
 Here is how much of TeX's memory you used:
- 6600 strings out of 493921
- 88780 string characters out of 3144866
- 195796 words of memory out of 3000000
- 9759 multiletter control sequences out of 15000+200000
+ 6606 strings out of 493921
+ 88956 string characters out of 3144866
+ 195898 words of memory out of 3000000
+ 9765 multiletter control sequences out of 15000+200000
  19724 words of font info for 77 fonts, out of 3000000 for 9000
  841 hyphenation exceptions out of 8191
  36i,12n,38p,3271b,355s stack positions out of 5000i,500n,10000p,200000b,50000s
@@ -500,7 +481,7 @@ amsfonts/cm/cmsy8.pfb><C:/Program Files (x86)/MiKTeX 2.9/fonts/type1/public/ams
 fonts/cm/cmti10.pfb><C:/Program Files (x86)/MiKTeX 2.9/fonts/type1/public/amsfo
 nts/cm/cmti12.pfb><C:/Program Files (x86)/MiKTeX 2.9/fonts/type1/public/amsfont
 s/symbols/msbm10.pfb>
-Output written on stochInf1D.pdf (10 pages, 1336014 bytes).
+Output written on stochInf1D.pdf (10 pages, 1338473 bytes).
 PDF statistics:
  124 PDF objects out of 1000 (max. 8388607)
  0 named destinations out of 1000 (max. 500000)

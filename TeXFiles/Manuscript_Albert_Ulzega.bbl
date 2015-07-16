@@ -1,0 +1,35 @@
+\begin{thebibliography}{1}
+
+\bibitem{lau_2007}
+A.~W.~C. Lau and T.~C. Lubensky.
+\newblock State-dependent diffusion: thermodynamic consistency and its path
+  integral formulation.
+\newblock {\em Phys.~Rev.~E}, 76(1):011123, 2007.
+
+\bibitem{duane_1987}
+S.~Duane, A.~D. Kennedy, B.~J. Pendleton, and D.~Roweth.
+\newblock {Hybrid Monte Carlo}.
+\newblock {\em {Phys.~Lett.~B}}, {195}({2}):{216--222}, {1987}.
+
+\bibitem{metropolis_1953}
+N.~Metropolis, A.~W. Rosenbluth, M.~N. Rosenbluth, A.~H. Teller, and E.~Teller.
+\newblock Equation of state calculations by fast computing machines.
+\newblock {\em {J.~Chem.~Phys.}}, {21}({6}):{1087--1092}, {1953}.
+
+\bibitem{doll_1985}
+J.~D. Doll, R.~D. Coalson, and D.~L. Freeman.
+\newblock Fourier path-integral monte carlo methods: Partial averaging.
+\newblock {\em {Phys.~Rev.~Lett.}}, {55}({1}):{1--4}, {1985}.
+
+\bibitem{tuckerman_1992}
+M.~Tuckerman, B.~J. Berne, and G.~J. Martyna.
+\newblock Reversible multiple time scale molecular dynamics.
+\newblock {\em J.~Chem.~Phys.}, 97(3):1990--2001, 1992.
+
+\bibitem{tuckerman_1993}
+M.~E. Tuckerman, B.~J. Berne, G.~J. Martyna, and M.~L. Klein.
+\newblock Efficient molecular dynamics and hybrid monte carlo algorithms for
+  path integrals.
+\newblock {\em J.~Chem.~Phys.}, 99(4):2796--2808, 1993.
+
+\end{thebibliography}

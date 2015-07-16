@@ -289,6 +289,8 @@ plt.figure(6)
 plt.xlabel("K")
 plt.ylabel("Gamma")
 plt.title("Evolution in K-Gamma space")
+axes()[:set_ylim]([0,6])
+axes()[:set_xlim]([0,450])
 grid = iround(linspace(1, size(thetas)[1], 1000))       # Number of points in K-gamma space to be plotted
 grid2 = grid[length(grid)-49:length(grid)]              # Last points in K-gamma space to be highlighted
 plt.plot(thetas[grid,1], thetas[grid,2], linewidth = 0.5)
