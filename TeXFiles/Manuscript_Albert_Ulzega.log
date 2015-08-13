@@ -1,9 +1,7 @@
-This is pdfTeX, Version 3.1415926-2.5-1.40.14 (MiKTeX 2.9) (preloaded format=pdflatex 2014.11.28)  16 JUL 2015 11:25
+This is pdfTeX, Version 3.1415926-2.5-1.40.14 (MiKTeX 2.9) (preloaded format=pdflatex 2014.4.3)  13 AUG 2015 14:10
 entering extended mode
-**C:/Users/ulzegasi/Julia_files/ParInf_HMC/TeXFiles/Manuscript_Albert_Ulzega.te
-x
-
-(C:/Users/ulzegasi/Julia_files/ParInf_HMC/TeXFiles/Manuscript_Albert_Ulzega.tex
+**C:/Users/albertca/github/Julia_ParInf/TeXFiles/Manuscript_Albert_Ulzega.tex
+(C:/Users/albertca/github/Julia_ParInf/TeXFiles/Manuscript_Albert_Ulzega.tex
 LaTeX2e <2011/06/27>
 Babel <v3.8m> and hyphenation patterns for english, afrikaans, ancientgreek, ar
 abic, armenian, assamese, basque, bengali, bokmal, bulgarian, catalan, coptic, 
@@ -15,9 +13,9 @@ german-x-2013-05-26, nynorsk, oriya, panjabi, pinyin, polish, portuguese, roman
 ian, russian, sanskrit, serbian, slovak, slovenian, spanish, swedish, swissgerm
 an, tamil, telugu, turkish, turkmen, ukenglish, ukrainian, uppersorbian, usengl
 ishmax, welsh, loaded.
-(C:\Users\ulzegasi\Julia_files\ParInf_HMC\TeXFiles\iopart.cls
+(C:\Users\albertca\github\Julia_ParInf\TeXFiles\iopart.cls
 Document Class: iopart 1996/06/10 v0.0 IOP Journals LaTeX article class
-(C:\Users\ulzegasi\Julia_files\ParInf_HMC\TeXFiles\iopart12.clo
+(C:\Users\albertca\github\Julia_ParInf\TeXFiles\iopart12.clo
 File: iopart12.clo 1997/01/15 v1.0 LaTeX2e file (size option)
 )
 \c@jnl=\count79
@@ -34,7 +32,7 @@ File: iopart12.clo 1997/01/15 v1.0 LaTeX2e file (size option)
 \mathindent=\dimen102
 \c@eqnval=\count87
 )
-(C:\Users\ulzegasi\Julia_files\ParInf_HMC\TeXFiles\iopams.sty
+(C:\Users\albertca\github\Julia_ParInf\TeXFiles\iopams.sty
 Package: iopams 1997/02/13 v1.0
 
 ("C:\Program Files (x86)\MiKTeX 2.9\tex\latex\amsmath\amsgen.sty"
@@ -169,7 +167,7 @@ Package hyperref Info: Implicit mode ON; LaTeX internals redefined.
 Package hyperref Info: Bookmarks ON on input line 4688.
 \c@Hy@tempcnt=\count92
 
-(C:\Users\ulzegasi\AppData\Roaming\MiKTeX\2.9\tex\latex\url\url.sty
+(C:\Users\albertca\AppData\Roaming\MiKTeX\2.9\tex\latex\url\url.sty
 \Urlmuskip=\muskip10
 Package: url 2013/09/16  ver 3.4  Verb mode for urls, etc.
 )
@@ -321,8 +319,7 @@ Xy-pic pdf driver: `line' extension support
 Xy-pic pdf driver: `rotate' extension support
 ("C:\Program Files (x86)\MiKTeX 2.9\tex\generic\xypic\xypdf-ro.tex" loaded)
 loaded))
-(C:\Users\ulzegasi\Julia_files\ParInf_HMC\TeXFiles\Manuscript_Albert_Ulzega.aux
-)
+(C:\Users\albertca\github\Julia_ParInf\TeXFiles\Manuscript_Albert_Ulzega.aux)
 LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 60.
 LaTeX Font Info:    ... okay on input line 60.
 LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 60.
@@ -337,7 +334,8 @@ LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 60.
 LaTeX Font Info:    ... okay on input line 60.
 LaTeX Font Info:    Checking defaults for PD1/pdf/m/n on input line 60.
 LaTeX Font Info:    ... okay on input line 60.
- (C:\Users\ulzegasi\AppData\Roaming\MiKTeX\2.9\tex\context\base\supp-pdf.mkii
+
+(C:\Users\albertca\AppData\Roaming\MiKTeX\2.9\tex\context\base\supp-pdf.mkii
 [Loading MPS to PDF converter (version 2006.09.02).]
 \scratchcounter=\count109
 \scratchdimen=\dimen145
@@ -374,13 +372,12 @@ LaTeX Info: Redefining \ref on input line 60.
 LaTeX Info: Redefining \pageref on input line 60.
 LaTeX Info: Redefining \nameref on input line 60.
 
-(C:\Users\ulzegasi\Julia_files\ParInf_HMC\TeXFiles\Manuscript_Albert_Ulzega.out
-)
-(C:\Users\ulzegasi\Julia_files\ParInf_HMC\TeXFiles\Manuscript_Albert_Ulzega.out
-)
+(C:\Users\albertca\github\Julia_ParInf\TeXFiles\Manuscript_Albert_Ulzega.out)
+(C:\Users\albertca\github\Julia_ParInf\TeXFiles\Manuscript_Albert_Ulzega.out)
 \@outlinefile=\write4
 LaTeX Font Info:    Try loading font information for U+msa on input line 60.
- ("C:\Program Files (x86)\MiKTeX 2.9\tex\latex\amsfonts\umsa.fd"
+
+("C:\Program Files (x86)\MiKTeX 2.9\tex\latex\amsfonts\umsa.fd"
 File: umsa.fd 2013/01/14 v3.01 AMS symbols A
 )
 LaTeX Font Info:    Try loading font information for U+msb on input line 60.
@@ -389,92 +386,90 @@ LaTeX Font Info:    Try loading font information for U+msb on input line 60.
 File: umsb.fd 2013/01/14 v3.01 AMS symbols B
 )
 Package xypdf Info: Line width: 0.47998pt on input line 60.
-Missing character: There is no Ã in font cmr10!
-Missing character: There is no ¼ in font cmr10!
-Missing character: There is no Ã in font cmr10!
-Missing character: There is no ¼ in font cmr10!
  [1
 
-{C:/Users/ulzegasi/AppData/Local/MiKTeX/2.9/pdftex/config/pdftex.map}]
-Overfull \hbox (1.2549pt too wide) in alignment at lines 187--218
+{C:/Users/albertca/AppData/Local/MiKTeX/2.9/pdftex/config/pdftex.map}] [2] [3] 
+[4]
+Overfull \hbox (1.2549pt too wide) in alignment at lines 253--284
  [] [] [] [] 
  []
 
-[2] [3] [4] [5] [6] [7]
-<Figs/FigRainData.png, id=145, 682.7106pt x 444.2196pt>
+[5] [6] [7] [8] [9] <Figs/FigRainData.png, id=193, 682.7106pt x 444.2196pt>
 File: Figs/FigRainData.png Graphic file (type png)
 
 <use Figs/FigRainData.png>
-Package pdftex.def Info: Figs/FigRainData.png used on input line 583.
+Package pdftex.def Info: Figs/FigRainData.png used on input line 646.
 (pdftex.def)             Requested size: 178.55725pt x 116.17897pt.
 
-<Figs/FigSpaghetti.png, id=147, 672.111pt x 402.303pt>
+<Figs/FigSpaghetti.png, id=195, 672.111pt x 402.303pt>
 File: Figs/FigSpaghetti.png Graphic file (type png)
 
 <use Figs/FigSpaghetti.png>
-Package pdftex.def Info: Figs/FigSpaghetti.png used on input line 589.
+Package pdftex.def Info: Figs/FigSpaghetti.png used on input line 652.
 (pdftex.def)             Requested size: 223.19998pt x 133.60138pt.
 
-<Figs/FigFinalState.png, id=148, 540.5796pt x 391.2216pt>
+<Figs/FigFinalState.png, id=196, 540.5796pt x 391.2216pt>
 File: Figs/FigFinalState.png Graphic file (type png)
 
 <use Figs/FigFinalState.png>
-Package pdftex.def Info: Figs/FigFinalState.png used on input line 596.
+Package pdftex.def Info: Figs/FigFinalState.png used on input line 659.
 (pdftex.def)             Requested size: 133.92134pt x 96.9157pt.
 
-<Figs/FigChains.png, id=149, 432.6564pt x 510.2262pt>
+<Figs/FigChains.png, id=197, 432.6564pt x 510.2262pt>
 File: Figs/FigChains.png Graphic file (type png)
  <use Figs/FigChains.png>
-Package pdftex.def Info: Figs/FigChains.png used on input line 603.
+Package pdftex.def Info: Figs/FigChains.png used on input line 666.
 (pdftex.def)             Requested size: 178.55725pt x 210.57211pt.
 
-<Figs/FigPhaseSpaceEvol.png, id=150, 660.066pt x 438.9198pt>
+<Figs/FigPhaseSpaceEvol.png, id=198, 660.066pt x 438.9198pt>
 File: Figs/FigPhaseSpaceEvol.png Graphic file (type png)
 
 <use Figs/FigPhaseSpaceEvol.png>
-Package pdftex.def Info: Figs/FigPhaseSpaceEvol.png used on input line 610.
+Package pdftex.def Info: Figs/FigPhaseSpaceEvol.png used on input line 673.
 (pdftex.def)             Requested size: 223.19998pt x 148.41367pt.
 
-<Figs/FigKg.png, id=151, 694.7556pt x 278.9622pt>
+<Figs/FigKg.png, id=199, 694.7556pt x 278.9622pt>
 File: Figs/FigKg.png Graphic file (type png)
  <use Figs/FigKg.png>
-Package pdftex.def Info: Figs/FigKg.png used on input line 617.
+Package pdftex.def Info: Figs/FigKg.png used on input line 680.
 (pdftex.def)             Requested size: 223.19998pt x 89.61876pt.
- [8 <C:/Users/ulzegasi/Julia_files/ParInf_HMC/TeXFiles/Figs/FigRainData.png> <C
-:/Users/ulzegasi/Julia_files/ParInf_HMC/TeXFiles/Figs/FigSpaghetti.png>] [9 <C:
-/Users/ulzegasi/Julia_files/ParInf_HMC/TeXFiles/Figs/FigFinalState.png> <C:/Use
-rs/ulzegasi/Julia_files/ParInf_HMC/TeXFiles/Figs/FigChains.png> <C:/Users/ulzeg
-asi/Julia_files/ParInf_HMC/TeXFiles/Figs/FigPhaseSpaceEvol.png>]
-<lion.png, id=171, 84.315pt x 98.3675pt>
-File: lion.png Graphic file (type png)
- <use lion.png>
-Package pdftex.def Info: lion.png used on input line 632.
-(pdftex.def)             Requested size: 84.31477pt x 98.36723pt.
- [10 <C:/Users/ulzegasi/Julia_files/ParInf_HMC/TeXFiles/Figs/FigKg.png> <C:/Use
-rs/ulzegasi/Julia_files/ParInf_HMC/TeXFiles/lion.png>]
-(C:\Users\ulzegasi\Julia_files\ParInf_HMC\TeXFiles\Manuscript_Albert_Ulzega.bbl
+ [10 <C:/Users/albertca/github/Julia_ParInf/TeXFiles/Figs/FigRainData.png>] [11
+ <C:/Users/albertca/github/Julia_ParInf/TeXFiles/Figs/FigSpaghetti.png> <C:/Use
+rs/albertca/github/Julia_ParInf/TeXFiles/Figs/FigFinalState.png> <C:/Users/albe
+rtca/github/Julia_ParInf/TeXFiles/Figs/FigChains.png>]
+(C:\Users\albertca\github\Julia_ParInf\TeXFiles\Manuscript_Albert_Ulzega.bbl
+[12 <C:/Users/albertca/github/Julia_ParInf/TeXFiles/Figs/FigPhaseSpaceEvol.png>
+ <C:/Users/albertca/github/Julia_ParInf/TeXFiles/Figs/FigKg.png>]
+Missing character: There is no â in font cmr10!
+Missing character: There is no € in font cmr10!
+Missing character: There is no ” in font cmr10!
+Missing character: There is no â in font cmr10!
+Missing character: There is no € in font cmr10!
+Missing character: There is no ” in font cmr10!
+Missing character: There is no â in font cmr10!
+Missing character: There is no € in font cmr10!
+Missing character: There is no ” in font cmr10!
 )
-Package atveryend Info: Empty hook `BeforeClearDocument' on input line 700.
- [11]
-Package atveryend Info: Empty hook `AfterLastShipout' on input line 700.
+Package atveryend Info: Empty hook `BeforeClearDocument' on input line 706.
+ [13]
+Package atveryend Info: Empty hook `AfterLastShipout' on input line 706.
 
-(C:\Users\ulzegasi\Julia_files\ParInf_HMC\TeXFiles\Manuscript_Albert_Ulzega.aux
-)
-Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 700.
-Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 700.
+(C:\Users\albertca\github\Julia_ParInf\TeXFiles\Manuscript_Albert_Ulzega.aux)
+Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 706.
+Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 706.
 Package rerunfilecheck Info: File `Manuscript_Albert_Ulzega.out' has not change
 d.
-(rerunfilecheck)             Checksum: 365A4BCF238B7662E0E6FAC2AF01CA51;351.
-Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 700.
+(rerunfilecheck)             Checksum: 4E98BFD49C60609EFE5887C49C72542A;311.
+Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 706.
  ) 
 Here is how much of TeX's memory you used:
- 8438 strings out of 493921
- 115618 string characters out of 3144866
- 249247 words of memory out of 3000000
- 11527 multiletter control sequences out of 15000+200000
- 17137 words of font info for 68 fonts, out of 3000000 for 9000
+ 8459 strings out of 493921
+ 116141 string characters out of 3144868
+ 249743 words of memory out of 3000000
+ 11535 multiletter control sequences out of 15000+200000
+ 16800 words of font info for 66 fonts, out of 3000000 for 9000
  841 hyphenation exceptions out of 8191
- 29i,12n,28p,3312b,409s stack positions out of 5000i,500n,10000p,200000b,50000s
+ 29i,11n,28p,3309b,453s stack positions out of 5000i,500n,10000p,200000b,50000s
 <C:/Program Files (x86)/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmbx10.pfb>
 <C:/Program Files (x86)/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmbx12.pfb><C
 :/Program Files (x86)/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmex10.pfb><C:/
@@ -486,20 +481,17 @@ les (x86)/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmmi8.pfb><C:/Program Files
  (x86)/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmr10.pfb><C:/Program Files (x
 86)/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmr12.pfb><C:/Program Files (x86)
 /MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmr6.pfb><C:/Program Files (x86)/MiK
-TeX 2.9/fonts/type1/public/amsfonts/cm/cmr7.pfb><C:/Program Files (x86)/MiKTeX 
-2.9/fonts/type1/public/amsfonts/cm/cmr8.pfb><C:/Program Files (x86)/MiKTeX 2.9/
-fonts/type1/public/amsfonts/cm/cmsy10.pfb><C:/Program Files (x86)/MiKTeX 2.9/fo
-nts/type1/public/amsfonts/cm/cmsy6.pfb><C:/Program Files (x86)/MiKTeX 2.9/fonts
-/type1/public/amsfonts/cm/cmsy7.pfb><C:/Program Files (x86)/MiKTeX 2.9/fonts/ty
-pe1/public/amsfonts/cm/cmsy8.pfb><C:/Program Files (x86)/MiKTeX 2.9/fonts/type1
-/public/amsfonts/cm/cmti10.pfb><C:/Program Files (x86)/MiKTeX 2.9/fonts/type1/p
-ublic/amsfonts/cm/cmti12.pfb><C:/Program Files (x86)/MiKTeX 2.9/fonts/type1/pub
-lic/amsfonts/cm/cmtt10.pfb><C:/Program Files (x86)/MiKTeX 2.9/fonts/type1/publi
-c/amsfonts/cm/cmtt12.pfb><C:/Program Files (x86)/MiKTeX 2.9/fonts/type1/public/
-amsfonts/symbols/msbm10.pfb>
-Output written on Manuscript_Albert_Ulzega.pdf (11 pages, 1411545 bytes).
+TeX 2.9/fonts/type1/public/amsfonts/cm/cmr8.pfb><C:/Program Files (x86)/MiKTeX 
+2.9/fonts/type1/public/amsfonts/cm/cmsy10.pfb><C:/Program Files (x86)/MiKTeX 2.
+9/fonts/type1/public/amsfonts/cm/cmsy6.pfb><C:/Program Files (x86)/MiKTeX 2.9/f
+onts/type1/public/amsfonts/cm/cmsy8.pfb><C:/Program Files (x86)/MiKTeX 2.9/font
+s/type1/public/amsfonts/cm/cmti10.pfb><C:/Program Files (x86)/MiKTeX 2.9/fonts/
+type1/public/amsfonts/cm/cmti12.pfb><C:/Program Files (x86)/MiKTeX 2.9/fonts/ty
+pe1/public/amsfonts/cm/cmtt10.pfb><C:/Program Files (x86)/MiKTeX 2.9/fonts/type
+1/public/amsfonts/symbols/msbm10.pfb>
+Output written on Manuscript_Albert_Ulzega.pdf (13 pages, 1389253 bytes).
 PDF statistics:
- 276 PDF objects out of 1000 (max. 8388607)
- 73 named destinations out of 1000 (max. 500000)
- 76 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 313 PDF objects out of 1000 (max. 8388607)
+ 88 named destinations out of 1000 (max. 500000)
+ 79 words of extra memory for PDF output out of 10000 (max. 10000000)
 
