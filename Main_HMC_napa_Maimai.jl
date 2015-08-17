@@ -53,10 +53,10 @@ const dt = T/(N-1)                         # Time step
 const ty = iround(linspace(1, N, n+1))     # Indeces of "boundary" beads (= measurement points)     
 
 const nsample_burnin = 0                   # Number of points in the MCMC
-const nsample_eff    = 20000
+const nsample_eff    = 50000
 const nsample        = nsample_eff + nsample_burnin
 
-const dtau           = 0.025               # MD time step
+const dtau           = 0.02                # MD time step
 const n_napa         = 5                   # Number of NAPA time steps
 # nn = 16  ; deltatau = dtau / nn          # Short time steps in RESPA --> NOT NEEDED IN THE NAPA IMPLEMENTATION
 
@@ -81,7 +81,7 @@ theta = [bet, gam]
 K_min   = 0.0
 gam_min = 0.0
 K_max   = 1000.0
-gam_max = 10.0
+gam_max = 1.0
 ##                 
 ## ============================================================================================
 ## Initialization of arrays
