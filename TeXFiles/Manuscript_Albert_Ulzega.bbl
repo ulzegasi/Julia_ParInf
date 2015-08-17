@@ -1,35 +1,112 @@
-\begin{thebibliography}{1}
+\begin{thebibliography}{10}
 
-\bibitem{lau_2007}
-A.~W.~C. Lau and T.~C. Lubensky.
-\newblock State-dependent diffusion: thermodynamic consistency and its path
-  integral formulation.
-\newblock {\em Phys.~Rev.~E}, 76(1):011123, 2007.
+\bibitem{vonToussaint2011bayesian}
+U.~von Toussaint.
+\newblock Bayesian inference in physics.
+\newblock {\em Rev. Mod. Phys.}, 83(3):943, 2011.
 
-\bibitem{duane_1987}
-S.~Duane, A.~D. Kennedy, B.~J. Pendleton, and D.~Roweth.
+\bibitem{chopin_2013_SMC2}
+N.~Chopin, P.~E. Jacob, and O.~Papaspiliopoulos.
+\newblock {SMC2: an efficient algorithm for sequential analysis of state space
+  models}.
+\newblock {\em {J. Roy. Stat. Soc. B}}, {75}({3}):{397--426}, {2013}.
+
+\bibitem{tomassini_2009_smoothing}
+L.~Tomassini, P.~Reichert, H.~R. K{\"u}nsch, C.~Buser, R.~Knutti, and M.~E.
+  Borsuk.
+\newblock A smoothing algorithm for estimating stochastic, continuous time
+  model parameters and its application to a simple climate model.
+\newblock {\em J. Roy. Stat. Soc. C}, 58(5):679--704, 2009.
+
+\bibitem{reichert_2009_timedepParameters}
+P.~Reichert and J.~Mieleitner.
+\newblock {Analyzing input and structural uncertainty of nonlinear dynamic
+  models with stochastic, time-dependent parameters}.
+\newblock {\em {Water Resources Res.}}, {45}, {2009}.
+
+\bibitem{Albert_2013_ABC}
+C.~Albert, HR. K\"unsch, and A.~Scheidegger.
+\newblock {A Simulated Annealing Approach to Approximate Bayes Computations}.
+\newblock {\em Stat. Comput.}, pages 1--16, 2014.
+
+\bibitem{duane_1987_HMC}
+S.~Duane, A.D. Kennedy, B.J. Pendleton, and D.~Roweth.
 \newblock {Hybrid Monte Carlo}.
-\newblock {\em {Phys.~Lett.~B}}, {195}({2}):{216--222}, {1987}.
+\newblock {\em {Phys. Lett. B}}, {195}({2}):{216--222}, {1987}.
 
-\bibitem{metropolis_1953}
-N.~Metropolis, A.~W. Rosenbluth, M.~N. Rosenbluth, A.~H. Teller, and E.~Teller.
-\newblock Equation of state calculations by fast computing machines.
-\newblock {\em {J.~Chem.~Phys.}}, {21}({6}):{1087--1092}, {1953}.
+\bibitem{girolami_2011_HMC}
+M.~Girolami and B.~Calderhead.
+\newblock {Riemann manifold Langevin and Hamiltonian Monte Carlo methods}.
+\newblock {\em J. Roy. Stat. Soc. B}, {73}({Part 2}):{123--214}, 2011.
 
-\bibitem{doll_1985}
-J.~D. Doll, R.~D. Coalson, and D.~L. Freeman.
-\newblock Fourier path-integral monte carlo methods: Partial averaging.
-\newblock {\em {Phys.~Rev.~Lett.}}, {55}({1}):{1--4}, {1985}.
-
-\bibitem{tuckerman_1992}
-M.~Tuckerman, B.~J. Berne, and G.~J. Martyna.
-\newblock Reversible multiple time scale molecular dynamics.
-\newblock {\em J.~Chem.~Phys.}, 97(3):1990--2001, 1992.
-
-\bibitem{tuckerman_1993}
+\bibitem{tuckerman1993efficient}
 M.~E. Tuckerman, B.~J. Berne, G.~J. Martyna, and M.~L. Klein.
 \newblock Efficient molecular dynamics and hybrid monte carlo algorithms for
   path integrals.
-\newblock {\em J.~Chem.~Phys.}, 99(4):2796--2808, 1993.
+\newblock {\em J. Chem. Phys.}, 99(4):2796--2808, 1993.
+
+\bibitem{breinholt_2011_SDE}
+A.~Breinholt, F.O. Thordarson, J.K. Moller, M.~Grum, P.S. Mikkelsen, and
+  H.~Madsen.
+\newblock {Grey-box modelling of flow in sewer systems with state-dependent
+  diffusion}.
+\newblock {\em {Environmetrics}}, {22}({8}):{946--961}, {2011}.
+
+\bibitem{dutre_1977_SDE}
+WL~Dutr{\'e} and AF~Debosscher.
+\newblock Exact statistical analysis of nonlinear dynamic nuclear-power reactor
+  models by the fokker-planck method—part i: Reactor with direct power
+  feedback.
+\newblock {\em Nuclear Science and Engineering}, 62(3):355--363, 1977.
+
+\bibitem{fujisaka_1986_intermittency}
+Hirokazu Fujisaka, Hiroaki Ishii, Masayoshi Inoue, and Tomoji Yamada.
+\newblock Intermittency caused by chaotic modulation. ii—lyapunov exponent,
+  fractal structure and power spectrum—.
+\newblock {\em Progress of theoretical physics}, 76(6):1198--1209, 1986.
+
+\bibitem{lau_2007_StateDepDiff}
+Andy~WC Lau and Tom~C Lubensky.
+\newblock State-dependent diffusion: thermodynamic consistency and its path
+  integral formulation.
+\newblock {\em Physical Review E}, 76(1):011123, 2007.
+
+\bibitem{metropolis_1953_MRT2}
+N.~Metropolis, A.W. Rosenbluth, M.N. Rosenbluth, A.H. Teller, and E.~Teller.
+\newblock Equation of state calculations by fast computing machines.
+\newblock {\em {J. Chem. Phys.}}, {21}({6}):{1087--1092}, {1953}.
+
+\bibitem{Alder_1959_MD}
+B.~J. {Alder} and T.~E. {Wainwright}.
+\newblock {Studies in Molecular Dynamics. I. General Method}.
+\newblock {\em J. Chem. Phys.}, 31:459--466, August 1959.
+
+\bibitem{Rahman_1964_MD}
+A.~{Rahman}.
+\newblock {Correlations in the Motion of Atoms in Liquid Argon}.
+\newblock {\em Physical Review}, 136:405--411, October 1964.
+
+\bibitem{doll_1985_fourier}
+JD~Doll, Rob~D Coalson, and David~L Freeman.
+\newblock Fourier path-integral monte carlo methods: Partial averaging.
+\newblock {\em Physical review letters}, 55(1):1, 1985.
+
+\bibitem{tuckerman1992reversible}
+MBBJM Tuckerman, Bruce~J Berne, and Glenn~J Martyna.
+\newblock Reversible multiple time scale molecular dynamics.
+\newblock {\em The Journal of chemical physics}, 97(3):1990--2001, 1992.
+
+\bibitem{Trotter_1959_product}
+H.~F. Trotter.
+\newblock On the product of semi-groups of operators.
+\newblock {\em Proceedings of the American Mathematical Society},
+  10(4):545--551, 1959.
+
+\bibitem{Swope_1982_Verlet}
+W.~C. Swope, H.~C. Andersen, P.~H. Berens, and K.~R. Wilson.
+\newblock A computer simulation method for the calculation of equilibrium
+  constants for the formation of physical clusters of molecules: Application to
+  small water clusters.
+\newblock {\em J. Chem. Phys.}, 76(1):637--649, 1982.
 
 \end{thebibliography}

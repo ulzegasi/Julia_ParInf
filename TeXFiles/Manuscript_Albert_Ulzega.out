@@ -1,5 +1,6 @@
 \BOOKMARK [1][-]{section.1}{Introduction}{}% 1
-\BOOKMARK [1][-]{section.2}{Results and discussions}{}% 2
-\BOOKMARK [2][-]{subsection.2.1}{Sample subsection}{section.2}% 3
-\BOOKMARK [3][-]{subsubsection.2.1.1}{Sample subsubsection}{subsection.2.1}% 4
-\BOOKMARK [2][-]{subsection.2.2}{Simplified coding and extra features for tables}{section.2}% 5
+\BOOKMARK [1][-]{section.2}{An Exemplary SDE Model}{}% 2
+\BOOKMARK [1][-]{section.3}{Inference Algorithm}{}% 3
+\BOOKMARK [1][-]{section.4}{Implementation}{}% 4
+\BOOKMARK [1][-]{section.5}{Numerical Results}{}% 5
+\BOOKMARK [1][-]{section.6}{Conclusions}{}% 6
