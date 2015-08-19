@@ -45,6 +45,8 @@
 \usepackage{iopams}
 \usepackage{graphicx}
 \usepackage[breaklinks=true,colorlinks=true,linkcolor=blue,urlcolor=blue,citecolor=blue]{hyperref}
+\usepackage{url}
+\usepackage{caption}
 %\usepackage{amsmath,amssymb,amsthm,amscd}
 %\usepackage{natbib}
 
@@ -328,7 +330,7 @@ If we denote the parameter vector $\bt=(\beta,\gamma)^T$ and assume a flat prior
   {\mathcal Dq}
   \,.
 \end{equation}
-On the right-hand side of the above equation, the first term describes the probability distribution of model outputs, given model parameters, rain inputs and a system realization $q(t_s)$. The second term is the probability of a system realization $q$ and the path-integral extends over all possible system realizations.
+On the right-hand side of the above equation, the first term describes the probability distribution of model outputs, given model parameters, rain inputs and a system realization $q(t_s)$. The second term is the probability of the given system realization $q$ and the path-integral extends over all possible system realizations. Instead of undertaking an often prohibitive numerical computation of such integral, we apply a Hamiltonian Monte Carlo method, outlined in the next section, to sample parameter vectors from a joint distribution of system realizations and model parameters given by an appropriate discretization of the action of the path-integral.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -336,7 +338,7 @@ On the right-hand side of the above equation, the first term describes the proba
 \section{Inference Algorithm}
 
 In order to derive an efficient algorithm to draw parameter samples from (\ref{posterior_pathint}) we interpret it as the partition function of a 1D statistical mechanical system and simulate the dynamics of the latter, employing the so-called {\em Hamiltonian Monte Carlo} (HMC) algorithm \cite{duane_1987}.
-The model parameters $\bt$ are interpreted as additional dynamical degrees of freedom coupling to the field $q(t)$.
+The model parameters $\bt$ are interpreted as additional dynamical degrees of freedom coupling to the system variables $q(t)$.
 Each degree of freedom, $q(t)$ and $\bt$ in our case, is paired with a conjugate variable, $p(t)$ and ${\pmb\pi}$, respectively, and the system is defined by the  Hamiltonian
 \begin{equation}\label{Hamiltonian}
     \mathcal{H}_{\mbox{\tiny HMC}}(q,\bt; p,{\pmb\pi})
@@ -351,7 +353,7 @@ where
    + \sum_{\alpha=1}^2\frac{\pi_\alpha^2}{2m_\alpha}\,,
 \end{equation}
 and $V( q,\bt)$ is the negative logarithm of the kernel of (\ref{posterior_pathint}).
-The posterior (\ref{posterior_pathint}) is expressed by the phase space path integral
+The posterior (\ref{posterior_pathint}) can then be expressed by the phase space path integral
 \begin{equation}\label{phaseSpacePathInt}
     f_{\mbox{\small post}}(\bt | \vc y)
   \propto
@@ -366,18 +368,19 @@ The posterior (\ref{posterior_pathint}) is expressed by the phase space path int
 The HMC method, which is a combination of the {\em Metropolis algorithm} \cite{metropolis_1953} and {\em molecular dynamics} methods \cite{alder_1959_MD, rahman_1964_MD}, iterates the following steps:
 \begin{enumerate}
   \item
-  Momenta are sampled from the Gaussian distribution defined by (\ref{K}).
+  Momenta $p$ and $\pi$ are sampled from the Gaussian distributions defined by eq.~(\ref{K}).
   \item
-  The system is integrated by means of a volume-preserving and time-reversible solution of a discretization of Hamilton's equations.
+  The system is then allowed to evolve in $\left(q,\bt; p,{\pmb\pi}\right)$-phase space for an arbitrary time interval $\tau$ according to a volume-preserving and time-reversible solution of a discretization of Hamilton's equations.
+  %The system is integrated by means of a volume-preserving and time-reversible %solution of a discretization of Hamilton's equations.
   \item
   The discretization error on the energy preservation due to the previous step is corrected by a Metropolis acceptance/rejection step.
 \end{enumerate}
-The last step is the standard Metropolis algorithm, while the first two steps allow us to make arbitrarily large jumps in phase space while maintaining an arbitrarily large acceptance rate.
+The last step is the standard Metropolis algorithm, while the first two steps allow us to make arbitrarily large jumps in phase space while maintaining an arbitrarily large acceptance rate. Each new phase space configuration corresponds to a well-defined combination of model parameters $\bt$. Thus, the simulated succession of configurations represent a Markov chain of sampled parameter vectors that naturally leads to the sought probability distribution for the system parameters.
 
-In order to simulate the dynamics of Hamiltonian (\ref{Hamiltonian}), we need to discretize the path-integral (\ref{phaseSpacePathInt}).
+In order to simulate the dynamics of the Hamiltonian (\ref{Hamiltonian}), we first need to discretize the path-integral (\ref{phaseSpacePathInt}).
 Therefore, let us assume that the measurement time points $\left\{ y_s \right\}_{s=1,\dots, n+1}$ of the time series (\ref{data}) are equidistantly distributed on the time interval $[0,T]$, with $t_1=0$ and $t_{n+1}=T$.
 Each interval between two consecutive data points is further partitioned into $j$ bins, such that we have a total of $nj+1=N>>1$ discretization points.
-Path-integral (\ref{phaseSpacePathInt}) is approximated by an ordinary integral, with the approximate path-measure
+The path-integral (\ref{phaseSpacePathInt}) is then approximated by an ordinary integral, with the approximate path-measure
 \begin{equation}
   \mathcal Dp\mathcal Dq
   \approx
@@ -430,10 +433,18 @@ and
 \end{equation}
 Note that we've neglected terms of order $\mathcal O(N^{-1/2})$ in the action (\ref{Vdisc}).
 
-The discretized Hamiltonian describes a {\em classical polymer chain} with harmonic bonds between neighbouring beads in an external field. The latter consists of two parts, a field that results from the dynamics of the original equations (\ref{sde}) and is felt by all the beads, and a field that results from the measurements and is felt by the measurement beads only.
+The discretized Hamiltonian describes a {\em classical polymer chain} of $N$ beads with harmonic bonds between neighbouring beads in an external field. The latter consists of two parts, a field that results from the dynamics of the original equations (\ref{sde}) and is felt by all the beads, and a field that results from the measurements and is felt by the measurement beads only. The masses $m_q$ and $m_{\alpha}$ are tunable parameters of the algorithm. A good strategy consists in assigning larger weights to the beads associated with measurement points than to the intermediate beads. The dynamics of the system will be therefore mostly dependent on the lighter intermediate particles, while the heavy measurement beads will be constrained in the vicinity of the measured data points. We thus reduce the original Bayesian inference problem to simulating the dynamics of a linear polymer, as sketched in Fig.~(\ref{fig:polymer}). In this context the physical time (horizontal axis) is interpreted as a spatial dimension while a fictitious simulation time is introduced (vertical axis). Each \emph{state} of this fictitious molecule corresponds to a well-defined configuration in the original phase space, characterized by a set of system variables $\left\{q_i\right\}_{i=1,\dots,N}$ and a parameter vector $\bt$.
+
+\begin{figure}[htb!]
+    \centering
+    \captionsetup{justification=justified}
+    \includegraphics[width=0.7\textwidth]{Figs/FigPolymer.png}
+    \caption{Simulated dynamics of a polymer chain with $n+1=11$ data points (large filled circles) and $j-1=9$ intermediate beads (small empty circles). All other parameters are discussed in Section~\ref{numerical_results}. Top: initial state. The intermediate beads represent a linear interpolation to the data points. Bottom: polymer configuration after 1000 iterations of the propagation algorithm. The dotted line represents the initial configuration. It is evident that the new configuration is mostly determined by the dynamics of the low-mass intermediate beads, while the heavy-mass data points barely move from their initial positions.}
+    \label{fig:polymer}
+\end{figure}
 
 The potential (\ref{Vdisc}) contains terms with different scaling in the potentially large numbers $N$ and $n$, which describe dynamics on different time-scales.
-In particular, for large $N$, $V(q,\bt)$ is dominated by its harmonic part and a brute force numerical integration of Hamilton's equations in step (iii) of the HMC algorithm would require a very small discretization time-step to sufficiently resolve its dynamics.
+In particular, for large $N$, $V(q,\bt)$ is dominated by its harmonic part and a brute force numerical integration of Hamilton's equations in step (ii) of the HMC algorithm would require a very small discretization time-step to sufficiently resolve its dynamics.
 An interesting approximative approach would be to employ a partial averaging of the fast Fourier modes as described in \cite{doll_1985_fourier}.
 We choose an exact approach and employ a multiple time scale integration based on Trotter's formula \cite{tuckerman_1993}.
 
@@ -461,18 +472,23 @@ with
   \frac{(k-1)q_{(s-1)j+k+1} + q_{(s-1)j+1} }{k}
   \,.
 \end{equation}
-We apply the coordinate transformation
+We apply the coordinate transformations
 \begin{equation}
-  u_{sj+1} = q_{sj+1}\,,\quad
-  u_{sj+k} = q_{sj+k} - q^*_{sj+k}\,,
+  u_{sj+1} = q_{sj+1}\,, \qquad\qquad s=0,\dots,n\, ,
 \end{equation}
-with its inverse given by
+for the boundary beads, corresponding to the original measurement points, and
 \begin{equation}
-  q_{sj+1} = u_{sj+1}\,,\quad
+  u_{sj+k} = q_{sj+k} - q^*_{sj+k}\,, \quad s=0,\dots,n-1\, , \quad k=2,\dots,j\, ,
+\end{equation}
+for the intermediate staging beads.
+The inverse transformations are given by
+\begin{eqnarray}
+  q_{sj+1} = u_{sj+1}\,,
+  \\
   q_{sj+k} = \sum_{l=k}^{j+1}\frac{k-1}{l-1}u_{sj+l}
-  +\frac{j-k+1}{j}u_{sj+1}\,,
-\end{equation}
-or, equivalently, by the recursive relation
+  +\frac{j-k+1}{j}u_{sj+1}\,.
+\end{eqnarray}
+The latter can be equivalently expressed by the recursive relation
 \begin{equation}
   q_{sj+k} = u_{sj+k} + \frac{k-1}{k} q_{sj+k+1}+ \frac{1}{k}u_{sj+1} \,.
 \end{equation}
@@ -550,20 +566,20 @@ In order to design an appropriate partition of the Hamiltonian, we need to disti
   \item[\it iii.]
   $\mathcal H_N >> \mathcal H_n >> \mathcal H_1$.
 \end{enumerate}
-Here, we restrict ourselves to regime ($ii$), i.e., we assume that we do not have too many measurements and/or the measurement error is not too small.
+Here, we restrict ourselves to regime ($ii$), i.e., we assume that the number of measurements $n$ is small and/or the measurement error $\sigma$ is large.
 The generalization of the method to the other schemes is straightforward.
 In regime ($ii$) we simply separate the harmonic part of the action, for the staging beads, from the rest and write
 \begin{equation}
   \mathcal{H}_{\mbox{\tiny HMC}}=\mathcal H_N + \mathcal H'\,.
 \end{equation}
-In order to design a reversible integrator, for the associated Hamiltonian equations, we define the Liouville operators
+In order to design a reversible integrator for the associated Hamilton equations, we define the Liouville operators
 \begin{equation}
   iL_N=\{\cdot\,,\,\mathcal H_N\}\,,\quad
   iL'=\{\cdot\,,\,\mathcal H'\}\,,
 \end{equation}
 where $\{\cdot\,,\,\cdot\}$ denotes the Poisson brackets that are defined on functions on the phase space.
 Trotter's formula \cite{trotter_1959} allows us to write the Hamiltonian propagator as
-\begin{equation}
+\begin{equation}\label{propagator}
   e^{i(L_N+L')\tau}
   =
   (e^{iL_N(\Delta\tau/2)}e^{iL'\Delta\tau}e^{iL_N(\Delta\tau/2)})^P
@@ -571,8 +587,7 @@ Trotter's formula \cite{trotter_1959} allows us to write the Hamiltonian propaga
   \mathcal O(\tau^3/P^{2})\,,
 \end{equation}
 for $\tau =P\Delta \tau$.
-In regime ($ii$) the outer propagator $\exp[iL_N(\Delta \tau/2)]$ describes a much faster dynamics than the inner one.
-However, it is the dynamics of uncoupled harmonic oscillators, which we can readily solve.
+In regime ($ii$) the outer propagator $\exp[iL_N(\Delta \tau/2)]$ describes much faster dynamics than the inner one. However, it is the dynamics of uncoupled harmonic oscillators, which we can readily solve.
 Masses and frequencies of the oscillators are derived from (\ref{H_N}) as
 \begin{equation}
   m=m_q/\Delta t\,,\quad
@@ -611,8 +626,8 @@ For the boundary beads, it reads
   F_{(s-1)j+1}[\vc u(\Delta\tau),{\pmb\theta}(\Delta\tau)]
   )\,,
 \end{eqnarray}
-where $F_i[\vc u,{\pmb\theta}]$ denotes the partial derivative of $\mathcal H'[\vc u,{\pmb\theta}]$ w.r.t. $u_i$.
-For the model parameters, analogous equations apply.
+with $s=1,\dots,n+1$ and where $F_i[\vc u,{\pmb\theta}]$ denotes the partial derivative of $\mathcal H'[\vc u,{\pmb\theta}]$ w.r.t. $u_i$.
+For the model parameters $\bt$ and their momenta ${\pmb\pi}$, analogous equations apply.
 When it comes to the staging beads, however, only the momenta have to be updated, because the associated kinetic term is not part of $\mathcal H'$ but of $\mathcal H_N$.
 Thus,
 \begin{eqnarray}
@@ -626,60 +641,75 @@ Thus,
   +
   F_{(s-1)j+k}[\vc u(\Delta\tau),{\pmb\theta}(\Delta\tau)]
   )
-  \,.
+  \,,
 \end{eqnarray}
+with $s=1,\dots,n$ and $k=2,\dots,j$. The above propagators are applied sequentially $P$ times to calculate the system evolution over the time $\tau$.
 
 
-\section{Implementation}
 
-AD
+\section{Numerical Results}\label{numerical_results}
 
-parallelization
+The algorithm described above was implemented using the free and open-source programming language \emph{Julia} (version 0.3.9)~\cite{julia_web}. One of the attractive features of the language is its (fast growing) library of over 600 packages for numerical and scientific applications.
+In our case, we made extensive use of the \emph{ReverseDiffSource} package, which provides a powerful tool for reverse-mode automated differentiation (AD) of arbitrarily complex user-defined expressions. Our algorithm benefits greatly from the use of AD. Indeed, it gives us the possibility to modify the model of eq.~(\ref{sde}) and therefore the action~(\ref{action}) leaving the implementation of the algorithm unaltered. This clearly gives our program significant flexibility making it suitable for a much broader range of applications than the simple exemplary SDE model described here.
 
-\section{Numerical Results}
+We have run preliminary simulations on a 64-bit laptop computer equipped with a Windows 7 operating system, a double-core 1.6~GHz CPU (Intel i5-4200U) and 8~GB of RAM. We have initially used a serial implementation of the algorithm. We assumed $n+1 = 11$ measurement points and $j = 10, 20,\dots, 50$ intermediate staging beads, with a total number of discretization points $N = 101, 201, \dots, 501$. We have set $\Delta\tau = 0.25$ (arbitrary units of time) and $P = 3$ in the Hamiltonian propagator~(\ref{propagator}), with a constant total observation time $T = 833$ (arbitrary units of time). The "true" values of the parameters to be inferred were set to $K_{\mbox{\small true}}=50$~(arbitrary units of time) and $\gamma_{\mbox{\small true}} = 0.2$. Their initial values in our simulations were set to $K=200$~(arbitrary units of time) and $\gamma = 0.5$.
 
-The results shown in the figures refer to synthetic data obtained assuming a simple sinusoidal model for the rain input. The experimental data were then generated using the "true" parameter values $K=200$ and $\gamma = 0.2$. We considered $n=51$ data points, $j=10$ staging points, and therefore $N=501$ discretization points. The total time $T$ is $\approx 833$ [units of time], so that the discretization points are separated by a time interval $\Delta t \approx 1.6 $ [units of time]. Following the RESPA method described above, we used a long time step $\Delta \tau = 0.02$ [units of time] for the evolution of the slow (long-range) potential, further subdivided in 16 smaller steps for the evolution of the fast (short-range) potential.
+The results shown here were obtained assuming a simple sinusoidal input $r(t) = \sin^2 \left( 0.01 t \right) + 0.1$.
+A system realization was first obtained from eq.~(\ref{sde}) using $K_{\mbox{\small true}}$ and $\gamma_{\mbox{\small true}}$. Such system realization was then used to generate a synthetic time series of observed data according to eq.~(\ref{data}). The error $\sigma$ was set to $0.1$.
+The input signal, the "true" system realization and the data time series are shown in Fig.~(\ref{fig:rain_data_S})
 
 \begin{figure}[htb!]
     \centering
-    \includegraphics[width=0.4\textwidth]{Figs/FigRainData.png}
-    \caption{\label{fig:rain_data_S}Rain input (dashed), system realization (solid line) and synthetic experimental data. The system output and the observed data were generated using $K=200$ and $\gamma = 0.2$.}
+    \includegraphics[width=0.6\textwidth]{Figs/FigRainData.png}
+    \caption{\label{fig:rain_data_S}Sinusoidal input $r(t)$ (dashed line), "true" system realization with parameters $K_{\mbox{\small true}} = 50$ and $\gamma_{\mbox{\small true}} = 0.2$ (solid line) and synthetic observed data. One may notice how the system response follows the oscillations of the input signal.}
 \end{figure}
 
+We observed a reasonably linear dependence of the total computing time on the number of discretization points $N$. In a typical case with $j=30$ (i.e., $N = 301$ discretization points) a complete run with 20000 iterations required about 13 minutes. A set of 200 simulated system realizations is shown in Fig.~(\ref{fig:spaghetti}) together with the synthetic data generated as described above. In the simulation the masses were set to 720 for the boundary beads, 130 for the staging beads and 150 for both the dimensionless parameters $\beta$ and $\gamma$. The different dynamics of the heavy boundary beads and the light staging beads can be appreciated in Fig.~(\ref{fig:spaghetti}).
+
 \begin{figure}[htb!]
     \centering
-    \includegraphics[width=0.5\textwidth]{Figs/FigSpaghetti.png}
-    \caption{Simulated system realizations and synthetic experimental data obtained assuming a simple sinusoidal model for the rain input. In the inset one may appreciate the different dynamics of the heavy data-point beads and the light staging beads.}
+    \includegraphics[width=0.7\textwidth]{Figs/FigSpaghetti.png}
+    \caption{Simulated system realizations and corresponding synthetic data generated as described in the text. In the inset one may appreciate the different dynamics of heavy data-point and light staging beads.}
     \label{fig:spaghetti}
 \end{figure}
 
 \begin{figure}[htb!]
     \centering
-    \includegraphics[width=0.3\textwidth]{Figs/FigFinalState.png}
-    \caption{PDF for the system final state expressed via the coordinate set $\left\{ q_N \right\}$. The dashed curve represents a normal distribution with the same mean and variance. The final state is basically normally distributed.}
-    \label{fig:final_state}
+    \includegraphics[width=0.7\textwidth]{Figs/FigChainK.png}
+    \caption{Markov chain for the inferred parameter $K$.}
+    \label{fig:chainK}
 \end{figure}
 
 \begin{figure}[htb!]
     \centering
-    \includegraphics[width=0.4\textwidth]{Figs/FigChains.png}
-    \caption{Markov chains for the two parameters $K$ (top) and $\gamma$ (bottom).}
-    \label{fig:chains}
+    \includegraphics[width=0.7\textwidth]{Figs/FigChainG.png}
+    \caption{Markov chain for the inferred parameter $\gamma$.}
+    \label{fig:chainG}
 \end{figure}
+
+The Markov chains for 50000 iterations for the parameters $K$ and $\gamma$ are shown in Figs.~(\ref{fig:chainK}) and (\ref{fig:chainG}), respectively. Both of them are clearly compatible with the parameter values $K_{\mbox{\small true}} = 50$~(arbitrary units of time) and $\gamma_{\mbox{\small true}} = 0.2$. The system evolution in phase space $K-\gamma$ is shown in Fig.~(\ref{fig:phase_space_evol}). 
+
+
+%\begin{figure}[htb!]
+%    \centering
+%    \includegraphics[width=0.3\textwidth]{Figs/FigFinalState.png}
+%    \caption{PDF for the system final state expressed via the coordinate set $\left\{ q_N \right\}$. The dashed curve represents a normal distribution with the same mean and variance. The final state is basically normally distributed.}
+%    \label{fig:final_state}
+%\end{figure}
 
 \begin{figure}[htb!]
     \centering
-    \includegraphics[width=0.5\textwidth]{Figs/FigPhaseSpaceEvol.png}
-    \caption{System dynamics in the phase space $K-\gamma$. The green dot is the initial state, the red dot is the final state, the yellow dots are the last 50 states of the HMC chain, and the orange square corresponds to the true parameter values used to generate the data.}
+    \includegraphics[width=0.7\textwidth]{Figs/FigPhaseSpaceEvol.png}
+    \caption{System dynamics in the phase space $K-\gamma$. The empty circle is the initial state, while the square corresponds to the true parameter values used to generate the data.}
     \label{fig:phase_space_evol}
 \end{figure}
 
-\begin{figure}[htb!]
-    \centering
-    \includegraphics[width=0.5\textwidth]{Figs/FigKg.png}
-    \caption{PDF for the parameters $K$ (left) and $\gamma$ (right). The true values used to generate the data are $K=200$ and $\gamma = 0.2$. The initial values used in the simulations were $K=50$ and $\gamma = 0.4$.}
-    \label{fig:K_distr}
-\end{figure}
+%\begin{figure}[htb!]
+%    \centering
+%    \includegraphics[width=0.5\textwidth]{Figs/FigKg.png}
+%    \caption{PDF for the parameters $K$ (left) and $\gamma$ (right). The true values used to generate the data are $K=200$ and $\gamma = 0.2$. The initial values used in the simulations were $K=50$ and $\gamma = 0.4$.}
+%    \label{fig:K_distr}
+%\end{figure}
 
 \section{Conclusions}
 

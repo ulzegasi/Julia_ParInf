@@ -55,7 +55,7 @@ const dt = T/(N-1)                         # Time step
 const ty = iround(linspace(1, N, n+1))     # Indeces of "boundary" beads (= measurement points)     
 
 const nsample_burnin = 0                   # Number of points in the MCMC
-const nsample_eff    = 50000
+const nsample_eff    = 20000
 const nsample        = nsample_eff + nsample_burnin
 
 const dtau           = 0.25                # MD time step
@@ -289,9 +289,9 @@ m_bdy_burnin   = m_bdy
 m_stg_burnin   = m_stg
 m_theta_burnin = m_theta
 
-m_bdy    = 680                      # m = m_q / dt
-m_stg    = 300                      # we assume m_q prop. to dt ==> m = costant     
-m_theta  = [150, 150]
+m_bdy    = 800                      # m = m_q / dt
+m_stg    = 120                      # we assume m_q prop. to dt ==> m = costant     
+m_theta  = [130, 130]
 
 mp[1:nparams] = m_theta
 for s = 1:n  
@@ -414,7 +414,7 @@ end
 ## Save parameters and results
 ## ============================================================================================
 ##
-fname = string("_sinr_680_150") 
+fname = string("_sinr800_120") 
 
 param_names  = vcat("N", "j", "n", "t[1]", "dt", "nparams", "true_K", "true_gam", "sigma", "K", "gam", 
 	"nsample_burnin", "nsample_eff", "m_bdy_burnin", "m_bdy", "m_theta_burnin", "m_theta_bet", 
