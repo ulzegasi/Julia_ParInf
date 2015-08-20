@@ -152,7 +152,7 @@ where $r(t)$ denotes the time varying rain input and $\eta(t)$ denotes white noi
 \end{equation}
 Eq.~(\ref{sde}) is to be understood in the Stratonovich sense~\cite{stratonovich_1968}.
 Our parametrization is such that, for constant rain input $r(t)=r_0$ and in the long-time limit, the mean of $S$ converges to the equilibrium solution of the unperturbed ($\gamma=0$) system, $S_{\eq}=Kr_0$ (see Eq.~(\ref{equilibrium_mean}) below).
-Scale-invariance of the model of Eq.~(\ref{sde}) for large $S$ leads to power law tails in the system state probability distribution (see Eq.~(\ref{inverse_gamma})), which is in line with the observation that errors in hydrological models are often fat-tailed (ref \textbf{FF}).
+Scale-invariance of the model of Eq.~(\ref{sde}) for large $S$ leads to power law tails in the system state probability distribution (see Eq.~(\ref{inverse_gamma})), which is in line with the observation that errors in hydrological models are often fat-tailed~\cite{thyer_2009_fattails}.
 
 Conceptual models of this kind are commonly used in hydrology, for the purpose of predicting rainfall-runoff behaviour, for natural and urban catchments (see, e.g., \cite{breinholt_2011_SDE}).
 Furthermore, by means of the transformation $S(t)=1/n(t)$, eq. (\ref{sde}) turns into a model that has been suggested as a phenomenological description of the dynamics of the neutron density in nuclear reactors and extensively studied \cite{dutre_1977_SDE, fujisaka_1986_intermittency}.
@@ -655,7 +655,7 @@ In our case, we made extensive use of the \emph{ReverseDiffSource} package, whic
 \begin{figure}[htb!]
     \centering
     \includegraphics[width=0.7\textwidth]{Figs/FigRainData.png}
-    \caption{\label{fig:rain_data_S}Sinusoidal input $r(t)$ (dashed line), "true" system realization with parameters $K_{\mbox{\small true}} = 50$ and $\gamma_{\mbox{\small true}} = 0.2$ (solid line) and synthetic observed data. One may notice how the system response follows the oscillations of the input signal.}
+    \caption{\label{fig:rain_data_S}Sinusoidal input $r(t)$ (dashed line), "true" system realization with parameters $K_{\mbox{\small true}} = 50$ (in some arbitrary units of time) and $\gamma_{\mbox{\small true}} = 0.2$ (solid line) and synthetic observed data. One may notice how the system response follows the oscillations of the input signal.}
 \end{figure}
 
 We have run preliminary simulations on a 64-bit laptop computer equipped with a Windows 7 operating system, a double-core 1.6~GHz CPU (Intel i5-4200U) and 8~GB of RAM. We have initially used a serial implementation of the algorithm. We assumed $n+1 = 11$ measurement points and $j = 10, 20,\dots, 50$ intermediate staging beads, with a total number of discretization points $N = 101, 201, \dots, 501$. We have set $\Delta\tau = 0.25$ (arbitrary units of time) and $P = 3$ in the Hamiltonian propagator~(\ref{propagator}), with a constant total observation time $T = 833$ (arbitrary units of time). The "true" values of the parameters to be inferred were set to $K_{\mbox{\small true}}=50$~(arbitrary units of time) and $\gamma_{\mbox{\small true}} = 0.2$. Their initial values in the simulations were set to $K=200$~(arbitrary units of time) and $\gamma = 0.5$.
@@ -686,7 +686,7 @@ Within the investigated range of parameters we observed a reasonably linear depe
     \label{fig:chainG}
 \end{figure}
 
-The Markov chains for the parameters $K$ and $\gamma$ generated after 50000 iterations of the HMC algorithm are shown in Figs.~(\ref{fig:chainK}) and (\ref{fig:chainG}), respectively. Both of them are clearly compatible with the true parameter values $K_{\mbox{\small true}} = 50$~(arbitrary units of time) and $\gamma_{\mbox{\small true}}=0.2$. 
+The Markov chains for the parameters $K$ and $\gamma$ generated after 50000 iterations of the HMC algorithm are shown in Figs.~(\ref{fig:chainK}) and (\ref{fig:chainG}), respectively. Both of them are clearly compatible with the true parameter values $K_{\mbox{\small true}} = 50$~(arbitrary units of time) and $\gamma_{\mbox{\small true}}=0.2$.
 The efficiency of the algorithm can be best appreciated by inspecting the system evolution in the phase space $K-\gamma$, as shown in Fig.~(\ref{fig:phase_space_evol}). The very first step of the algorithm takes already the system in the vicinity of the true parameter values, where most of its dynamics then occur. A few excursions away from such values are immediately compensated by the algorithm.
 %\begin{figure}[htb!]
 %    \centering

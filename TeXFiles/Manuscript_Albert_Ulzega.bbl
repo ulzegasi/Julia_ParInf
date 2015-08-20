@@ -51,6 +51,13 @@ R.~L. Stratonovich.
   of Optimal Control}.
 \newblock Elsevier, New York, 1968.
 
+\bibitem{thyer_2009_fattails}
+M.~Thyer, B.~Renard, D.~Kavetski, G.~Kuczera, S.~W. Franks, and S.~Srikanthan.
+\newblock Critical evaluation of parameter consistency and predictive
+  uncertainty in hydrological modeling: A case study using bayesian total error
+  analysis.
+\newblock {\em Water~Resources~Res.}, 45(12), 2009.
+
 \bibitem{breinholt_2011_SDE}
 A.~Breinholt, F.~O. Thordarson, J~K. Moller, M.~Grum, P.~S. Mikkelsen, and
   H.~Madsen.

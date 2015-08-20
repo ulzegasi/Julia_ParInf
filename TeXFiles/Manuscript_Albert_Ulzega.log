@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.1415926-2.5-1.40.14 (MiKTeX 2.9) (preloaded format=pdflatex 2014.11.28)  20 AUG 2015 12:16
+This is pdfTeX, Version 3.1415926-2.5-1.40.14 (MiKTeX 2.9) (preloaded format=pdflatex 2014.11.28)  20 AUG 2015 16:13
 entering extended mode
 **C:/Users/ulzegasi/Julia_files/ParInf_HMC/TeXFiles/Manuscript_Albert_Ulzega.te
 x
@@ -425,7 +425,7 @@ Overfull \hbox (1.2549pt too wide) in alignment at lines 254--285
  [] [] [] [] 
  []
 
-[5] [6] [7] <Figs/FigPolymer.png, id=159, 853.68938pt x 569.12625pt>
+[5] [6] [7] <Figs/FigPolymer.png, id=161, 853.68938pt x 569.12625pt>
 File: Figs/FigPolymer.png Graphic file (type png)
 
 <use Figs/FigPolymer.png>
@@ -433,35 +433,35 @@ Package pdftex.def Info: Figs/FigPolymer.png used on input line 441.
 (pdftex.def)             Requested size: 312.4786pt x 208.32422pt.
  [8 <C:/Users/ulzegasi/Julia_files/ParInf_HMC/TeXFiles/Figs/FigPolymer.png>] [9
 ] [10]
-<Figs/FigRainData.png, id=208, 853.68938pt x 569.12625pt>
+<Figs/FigRainData.png, id=210, 853.68938pt x 569.12625pt>
 File: Figs/FigRainData.png Graphic file (type png)
 
 <use Figs/FigRainData.png>
 Package pdftex.def Info: Figs/FigRainData.png used on input line 657.
 (pdftex.def)             Requested size: 312.4786pt x 208.32422pt.
 
-<Figs/FigSpaghetti.png, id=210, 722.7pt x 542.025pt>
+<Figs/FigSpaghetti.png, id=212, 722.7pt x 542.025pt>
 File: Figs/FigSpaghetti.png Graphic file (type png)
 
 <use Figs/FigSpaghetti.png>
 Package pdftex.def Info: Figs/FigSpaghetti.png used on input line 665.
 (pdftex.def)             Requested size: 312.4786pt x 234.35641pt.
- [11]
-<Figs/FigChainK.png, id=224, 722.7pt x 454.69875pt>
+ [11] [12 <C:/Users/ulzegasi/Julia_files/ParInf_HMC/TeXFiles/Figs/FigRainData.p
+ng> <C:/Users/ulzegasi/Julia_files/ParInf_HMC/TeXFiles/Figs/FigSpaghetti.png>] 
+<Figs/FigChainK.png, id=234, 722.7pt x 454.69875pt>
 File: Figs/FigChainK.png Graphic file (type png)
- <use Figs/FigChainK.png>
+
+<use Figs/FigChainK.png>
 Package pdftex.def Info: Figs/FigChainK.png used on input line 677.
 (pdftex.def)             Requested size: 312.4786pt x 196.599pt.
-
-<Figs/FigChainG.png, id=225, 722.7pt x 454.69875pt>
+ <Figs/FigChainG.png, id=235, 722.7pt x 454.69875pt>
 File: Figs/FigChainG.png Graphic file (type png)
- <use Figs/FigChainG.png>
+
+<use Figs/FigChainG.png>
 Package pdftex.def Info: Figs/FigChainG.png used on input line 684.
 (pdftex.def)             Requested size: 312.4786pt x 196.599pt.
 
-[12 <C:/Users/ulzegasi/Julia_files/ParInf_HMC/TeXFiles/Figs/FigRainData.png> <C
-:/Users/ulzegasi/Julia_files/ParInf_HMC/TeXFiles/Figs/FigSpaghetti.png>]
-<Figs/FigPhaseSpaceEvol.png, id=237, 722.7pt x 483.30562pt>
+<Figs/FigPhaseSpaceEvol.png, id=239, 722.7pt x 483.30562pt>
 File: Figs/FigPhaseSpaceEvol.png Graphic file (type png)
 
 <use Figs/FigPhaseSpaceEvol.png>
@@ -469,7 +469,7 @@ Package pdftex.def Info: Figs/FigPhaseSpaceEvol.png used on input line 700.
 (pdftex.def)             Requested size: 312.4786pt x 208.9678pt.
  [13 <C:/Users/ulzegasi/Julia_files/ParInf_HMC/TeXFiles/Figs/FigChainK.png> <C:
 /Users/ulzegasi/Julia_files/ParInf_HMC/TeXFiles/Figs/FigChainG.png>] <Figs/FigK
-g.png, id=250, 1251.92719pt x 398.23781pt>
+g.png, id=252, 1251.92719pt x 398.23781pt>
 File: Figs/FigKg.png Graphic file (type png)
 
 <use Figs/FigKg.png>
@@ -504,13 +504,13 @@ d.
 Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 744.
  ) 
 Here is how much of TeX's memory you used:
- 9483 strings out of 493921
- 134903 string characters out of 3144866
- 270877 words of memory out of 3000000
- 12545 multiletter control sequences out of 15000+200000
+ 9485 strings out of 493921
+ 134948 string characters out of 3144866
+ 270953 words of memory out of 3000000
+ 12546 multiletter control sequences out of 15000+200000
  16800 words of font info for 66 fonts, out of 3000000 for 9000
  841 hyphenation exceptions out of 8191
- 36i,11n,38p,3312b,453s stack positions out of 5000i,500n,10000p,200000b,50000s
+ 36i,11n,38p,3312b,451s stack positions out of 5000i,500n,10000p,200000b,50000s
 <C:/Program Files (x86)/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmbx10.pfb>
 <C:/Program Files (x86)/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmbx12.pfb><C
 :/Program Files (x86)/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmex10.pfb><C:/
@@ -528,9 +528,9 @@ eX 2.9/fonts/type1/public/amsfonts/cm/cmsy6.pfb><C:/Program Files (x86)/MiKTeX
 onts/type1/public/amsfonts/cm/cmti12.pfb><C:/Program Files (x86)/MiKTeX 2.9/fon
 ts/type1/public/amsfonts/cm/cmtt10.pfb><C:/Program Files (x86)/MiKTeX 2.9/fonts
 /type1/public/amsfonts/symbols/msbm10.pfb>
-Output written on Manuscript_Albert_Ulzega.pdf (16 pages, 1190658 bytes).
+Output written on Manuscript_Albert_Ulzega.pdf (16 pages, 1191056 bytes).
 PDF statistics:
- 344 PDF objects out of 1000 (max. 8388607)
- 95 named destinations out of 1000 (max. 500000)
+ 346 PDF objects out of 1000 (max. 8388607)
+ 96 named destinations out of 1000 (max. 500000)
  76 words of extra memory for PDF output out of 10000 (max. 10000000)
 
