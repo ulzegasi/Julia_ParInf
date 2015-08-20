@@ -45,6 +45,12 @@ M.~E. Tuckerman, B.~J. Berne, G.~J. Martyna, and M.~L. Klein.
   path integrals.
 \newblock {\em J.~Chem.~Phys.}, 99(4):2796--2808, 1993.
 
+\bibitem{stratonovich_1968}
+R.~L. Stratonovich.
+\newblock {\em Conditional Markov Processes and Their Application to the Theory
+  of Optimal Control}.
+\newblock Elsevier, New York, 1968.
+
 \bibitem{breinholt_2011_SDE}
 A.~Breinholt, F.~O. Thordarson, J~K. Moller, M.~Grum, P.~S. Mikkelsen, and
   H.~Madsen.

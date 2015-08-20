@@ -42,7 +42,7 @@ tdat  = float64(readdlm("$dir/t.dat")[range,2]) # Time points t.dat
 
 const nparams = 2              # Number of system parameters (k, gamma)
 const n = 10                  # n+1 -> "end point" beads (see Tuckerman '93), n -> number of segments
-const j = 30                  # n(j-1) -> total number of staging beads, j-1 -> staging beads per segment
+const j = 10                  # n(j-1) -> total number of staging beads, j-1 -> staging beads per segment
 const N = int64(n*j+1)        # Total number of discrete time points = n*j + 1
                               # IMPORTANT: (N-1)/j = integer = n (measurement points)
 if  ((N-1)%j) != 0 
@@ -55,7 +55,7 @@ const dt = T/(N-1)                         # Time step
 const ty = iround(linspace(1, N, n+1))     # Indeces of "boundary" beads (= measurement points)     
 
 const nsample_burnin = 0                   # Number of points in the MCMC
-const nsample_eff    = 20000
+const nsample_eff    = 1000
 const nsample        = nsample_eff + nsample_burnin
 
 const dtau           = 0.25                # MD time step

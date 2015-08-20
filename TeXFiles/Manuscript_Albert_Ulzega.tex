@@ -150,9 +150,9 @@ where $r(t)$ denotes the time varying rain input and $\eta(t)$ denotes white noi
 \begin{equation}\label{whitenoise}
 \langle\eta(t)\eta(t')\rangle = \delta(t-t')\,.
 \end{equation}
-Eq.~(\ref{sde}) is to be understood in the {\em Stratonovich} sense (ref \textbf{Stratonovich}).
-Our parametrization is such that, for constant rain input $r(t)=r_0$ and in the long-time limit, the mean of $S$ converges to the equilibrium solution of the unperturbed ($\gamma=0$) system, $S_{\eq}=Kr_0$ (see eq. (\ref{equilibrium_mean}) below).
-Scale-invariance of the model of eq.~(\ref{sde}) for large $S$ leads to power law tails in the system state probability distribution (see eq.~(\ref{inverse_gamma})), which is in line with the observation that errors in hydrological models are often fat-tailed (ref \textbf{FF}).
+Eq.~(\ref{sde}) is to be understood in the Stratonovich sense~\cite{stratonovich_1968}.
+Our parametrization is such that, for constant rain input $r(t)=r_0$ and in the long-time limit, the mean of $S$ converges to the equilibrium solution of the unperturbed ($\gamma=0$) system, $S_{\eq}=Kr_0$ (see Eq.~(\ref{equilibrium_mean}) below).
+Scale-invariance of the model of Eq.~(\ref{sde}) for large $S$ leads to power law tails in the system state probability distribution (see Eq.~(\ref{inverse_gamma})), which is in line with the observation that errors in hydrological models are often fat-tailed (ref \textbf{FF}).
 
 Conceptual models of this kind are commonly used in hydrology, for the purpose of predicting rainfall-runoff behaviour, for natural and urban catchments (see, e.g., \cite{breinholt_2011_SDE}).
 Furthermore, by means of the transformation $S(t)=1/n(t)$, eq. (\ref{sde}) turns into a model that has been suggested as a phenomenological description of the dynamics of the neutron density in nuclear reactors and extensively studied \cite{dutre_1977_SDE, fujisaka_1986_intermittency}.
@@ -167,7 +167,7 @@ Here we assume the observed time-series, $y_s$, to be the outflow of the reservo
   +
   \sigma\epsilon_s\,,\quad s=1,\dots,n+1\,.
 \end{equation}
-For simplicity, we assume $\sigma$ as well as the input $r(t)$ to be known so that we are left with the task of inferring parameter combinations $(K,\gamma)$ that are compatible with the data given by eq.~(\ref{data}).
+For simplicity, we assume $\sigma$ as well as the input $r(t)$ to be known so that we are left with the task of inferring parameter combinations $(K,\gamma)$ that are compatible with the data given by Eq.~(\ref{data}).
 Here, "compatible" is meant in the Bayesian sense, in which knowledge about parameters is expressed in terms of a probability distribution.
 In general, prior knowledge about parameters, $\bt$, is expressed in terms of a prior probability distribution, $f_{\mbox{\small prior}}(\bt)$, while the posterior distribution, which combines prior knowledge with knowledge gained from data, is calculated by means of Bayes' formula
 \begin{equation}\label{Bayes}
@@ -368,7 +368,7 @@ The posterior (\ref{posterior_pathint}) can then be expressed by the phase space
 The HMC method, which is a combination of the {\em Metropolis algorithm} \cite{metropolis_1953} and {\em molecular dynamics} methods \cite{alder_1959_MD, rahman_1964_MD}, iterates the following steps:
 \begin{enumerate}
   \item
-  Momenta $p$ and $\pi$ are sampled from the Gaussian distributions defined by eq.~(\ref{K}).
+  Momenta $p$ and $\pi$ are sampled from the Gaussian distributions defined by Eq.~(\ref{K}).
   \item
   The system is then allowed to evolve in $\left(q,\bt; p,{\pmb\pi}\right)$-phase space for an arbitrary time interval $\tau$ according to a volume-preserving and time-reversible solution of a discretization of Hamilton's equations.
   %The system is integrated by means of a volume-preserving and time-reversible %solution of a discretization of Hamilton's equations.
@@ -650,36 +650,35 @@ with $s=1,\dots,n$ and $k=2,\dots,j$. The above propagators are applied sequenti
 \section{Numerical Results}\label{numerical_results}
 
 The algorithm described above was implemented using the free and open-source programming language \emph{Julia} (version 0.3.9)~\cite{julia_web}. One of the attractive features of the language is its (fast growing) library of over 600 packages for numerical and scientific applications.
-In our case, we made extensive use of the \emph{ReverseDiffSource} package, which provides a powerful tool for reverse-mode automated differentiation (AD) of arbitrarily complex user-defined expressions. Our algorithm benefits greatly from the use of AD. Indeed, it gives us the possibility to modify the model of eq.~(\ref{sde}) and therefore the action~(\ref{action}) leaving the implementation of the algorithm unaltered. This clearly gives our program significant flexibility making it suitable for a much broader range of applications than the simple exemplary SDE model described here.
-
-We have run preliminary simulations on a 64-bit laptop computer equipped with a Windows 7 operating system, a double-core 1.6~GHz CPU (Intel i5-4200U) and 8~GB of RAM. We have initially used a serial implementation of the algorithm. We assumed $n+1 = 11$ measurement points and $j = 10, 20,\dots, 50$ intermediate staging beads, with a total number of discretization points $N = 101, 201, \dots, 501$. We have set $\Delta\tau = 0.25$ (arbitrary units of time) and $P = 3$ in the Hamiltonian propagator~(\ref{propagator}), with a constant total observation time $T = 833$ (arbitrary units of time). The "true" values of the parameters to be inferred were set to $K_{\mbox{\small true}}=50$~(arbitrary units of time) and $\gamma_{\mbox{\small true}} = 0.2$. Their initial values in our simulations were set to $K=200$~(arbitrary units of time) and $\gamma = 0.5$.
-
-The results shown here were obtained assuming a simple sinusoidal input $r(t) = \sin^2 \left( 0.01 t \right) + 0.1$.
-A system realization was first obtained from eq.~(\ref{sde}) using $K_{\mbox{\small true}}$ and $\gamma_{\mbox{\small true}}$. Such system realization was then used to generate a synthetic time series of observed data according to eq.~(\ref{data}). The error $\sigma$ was set to $0.1$.
-The input signal, the "true" system realization and the data time series are shown in Fig.~(\ref{fig:rain_data_S})
-
+In our case, we made extensive use of the \emph{ReverseDiffSource} package, which provides a powerful tool for reverse-mode automated differentiation (AD) of arbitrarily complex user-defined expressions. Our algorithm benefits greatly from the use of AD. Indeed, it gives us the possibility to modify the model of Eq.~(\ref{sde}) and therefore the action~(\ref{action}) leaving the implementation of the algorithm unaltered. This clearly gives our program significant flexibility making it suitable for a much broader range of applications than the simple exemplary SDE model described here.
+%
 \begin{figure}[htb!]
     \centering
-    \includegraphics[width=0.6\textwidth]{Figs/FigRainData.png}
+    \includegraphics[width=0.7\textwidth]{Figs/FigRainData.png}
     \caption{\label{fig:rain_data_S}Sinusoidal input $r(t)$ (dashed line), "true" system realization with parameters $K_{\mbox{\small true}} = 50$ and $\gamma_{\mbox{\small true}} = 0.2$ (solid line) and synthetic observed data. One may notice how the system response follows the oscillations of the input signal.}
 \end{figure}
 
-We observed a reasonably linear dependence of the total computing time on the number of discretization points $N$. In a typical case with $j=30$ (i.e., $N = 301$ discretization points) a complete run with 20000 iterations required about 13 minutes. A set of 200 simulated system realizations is shown in Fig.~(\ref{fig:spaghetti}) together with the synthetic data generated as described above. In the simulation the masses were set to 720 for the boundary beads, 130 for the staging beads and 150 for both the dimensionless parameters $\beta$ and $\gamma$. The different dynamics of the heavy boundary beads and the light staging beads can be appreciated in Fig.~(\ref{fig:spaghetti}).
-
+We have run preliminary simulations on a 64-bit laptop computer equipped with a Windows 7 operating system, a double-core 1.6~GHz CPU (Intel i5-4200U) and 8~GB of RAM. We have initially used a serial implementation of the algorithm. We assumed $n+1 = 11$ measurement points and $j = 10, 20,\dots, 50$ intermediate staging beads, with a total number of discretization points $N = 101, 201, \dots, 501$. We have set $\Delta\tau = 0.25$ (arbitrary units of time) and $P = 3$ in the Hamiltonian propagator~(\ref{propagator}), with a constant total observation time $T = 833$ (arbitrary units of time). The "true" values of the parameters to be inferred were set to $K_{\mbox{\small true}}=50$~(arbitrary units of time) and $\gamma_{\mbox{\small true}} = 0.2$. Their initial values in the simulations were set to $K=200$~(arbitrary units of time) and $\gamma = 0.5$.
+%
 \begin{figure}[htb!]
     \centering
     \includegraphics[width=0.7\textwidth]{Figs/FigSpaghetti.png}
-    \caption{Simulated system realizations and corresponding synthetic data generated as described in the text. In the inset one may appreciate the different dynamics of heavy data-point and light staging beads.}
+    \caption{Simulated system realizations and corresponding synthetic data generated as described in the text with $j=30$ staging beads and therefore $N=301$ discretization points. In the inset one may appreciate the different dynamics of heavy data points and light staging beads.}
     \label{fig:spaghetti}
 \end{figure}
 
+We have assumed a simple sinusoidal input $r(t) = \sin^2 \left( 0.01 t \right) + 0.1$. A system realization was first obtained from Eq.~(\ref{sde}) using $K_{\mbox{\small true}}$ and $\gamma_{\mbox{\small true}}$. Such system realization was then used to generate a synthetic time series of observed data according to Eq.~(\ref{data}). The error $\sigma$ was set to $0.1$. The input signal, the "true" system realization and the corresponding data time series are shown in Fig.~(\ref{fig:rain_data_S})
+
+
+Within the investigated range of parameters we observed a reasonably linear dependence of the total computing time on the number of discretization points $N$. For example, with $j=30$ (i.e., $N = 301$ discretization points) a complete run with 20000 iterations required about 13 minutes. A set of 200 simulated system realizations with $j=30$ is shown in Fig.~(\ref{fig:spaghetti}) together with the synthetic data generated as described above. In the simulation the masses were set (in arbitrary units) to 720 for the boundary beads, 130 for the staging beads and 150 for both the dimensionless parameters $\beta$ and $\gamma$. The different dynamics of the heavy boundary beads and the light staging beads can be appreciated in Fig.~(\ref{fig:spaghetti}).
+%
 \begin{figure}[htb!]
     \centering
     \includegraphics[width=0.7\textwidth]{Figs/FigChainK.png}
     \caption{Markov chain for the inferred parameter $K$.}
     \label{fig:chainK}
 \end{figure}
-
+%
 \begin{figure}[htb!]
     \centering
     \includegraphics[width=0.7\textwidth]{Figs/FigChainG.png}
@@ -687,29 +686,45 @@ We observed a reasonably linear dependence of the total computing time on the nu
     \label{fig:chainG}
 \end{figure}
 
-The Markov chains for 50000 iterations for the parameters $K$ and $\gamma$ are shown in Figs.~(\ref{fig:chainK}) and (\ref{fig:chainG}), respectively. Both of them are clearly compatible with the parameter values $K_{\mbox{\small true}} = 50$~(arbitrary units of time) and $\gamma_{\mbox{\small true}} = 0.2$. The system evolution in phase space $K-\gamma$ is shown in Fig.~(\ref{fig:phase_space_evol}). 
-
-
+The Markov chains for the parameters $K$ and $\gamma$ generated after 50000 iterations of the HMC algorithm are shown in Figs.~(\ref{fig:chainK}) and (\ref{fig:chainG}), respectively. Both of them are clearly compatible with the true parameter values $K_{\mbox{\small true}} = 50$~(arbitrary units of time) and $\gamma_{\mbox{\small true}}=0.2$. 
+The efficiency of the algorithm can be best appreciated by inspecting the system evolution in the phase space $K-\gamma$, as shown in Fig.~(\ref{fig:phase_space_evol}). The very first step of the algorithm takes already the system in the vicinity of the true parameter values, where most of its dynamics then occur. A few excursions away from such values are immediately compensated by the algorithm.
 %\begin{figure}[htb!]
 %    \centering
 %    \includegraphics[width=0.3\textwidth]{Figs/FigFinalState.png}
 %    \caption{PDF for the system final state expressed via the coordinate set $\left\{ q_N \right\}$. The dashed curve represents a normal distribution with the same mean and variance. The final state is basically normally distributed.}
 %    \label{fig:final_state}
 %\end{figure}
-
+%
 \begin{figure}[htb!]
     \centering
     \includegraphics[width=0.7\textwidth]{Figs/FigPhaseSpaceEvol.png}
-    \caption{System dynamics in the phase space $K-\gamma$. The empty circle is the initial state, while the square corresponds to the true parameter values used to generate the data.}
+    \caption{System dynamics in the phase space $K-\gamma$. The empty circle represents the initial state, while the square corresponds to the true parameter values used to generate the data.}
     \label{fig:phase_space_evol}
 \end{figure}
 
 %\begin{figure}[htb!]
 %    \centering
-%    \includegraphics[width=0.5\textwidth]{Figs/FigKg.png}
-%    \caption{PDF for the parameters $K$ (left) and $\gamma$ (right). The true values used to generate the data are $K=200$ and $\gamma = 0.2$. The initial values used in the simulations were $K=50$ and $\gamma = 0.4$.}
+%    \includegraphics[width=0.7\textwidth]{Figs/FigK.png}
+%    \caption{Probability density function for the inferred parameter $K$. The true value used to generate the data, $K_{\mbox{\small true}}=50$, is represented by the dotted vertical line.}
 %    \label{fig:K_distr}
 %\end{figure}
+%
+%\begin{figure}[htb!]
+%    \centering
+%    \includegraphics[width=0.65\textwidth]{Figs/FigG.png}
+%    \caption{Probability density function for the inferred parameter $\gamma$. The true value used to generate the data, $K_{\mbox{\small true}}=50$, is represented by the dotted vertical line.}
+%    \label{fig:G_distr}
+%\end{figure}
+The Markov chains of Figs.~(\ref{fig:chainK}) and (\ref{fig:chainG}) naturally lead to the probability density functions (PDF) for the two parameters of interest, $K$ and $\gamma$, respectively. These functions were calculated using the built-in kernel density estimator provided by Mathematica (version 10) and are shown in Fig.~(\ref{fig:KG_distr}).
+\begin{figure}[htb!]
+    \centering
+    \includegraphics[width=1.0\textwidth]{Figs/FigKg.png}
+    \caption{Probability density functions for the inferred parameters $K$ (left) and $\gamma$ (right). The true values used to generate the data, $K_{\mbox{\small true}}=50$ and $\gamma_{\mbox{\small true}}=0.2$, are represented by the dotted vertical lines.}
+    \label{fig:KG_distr}
+\end{figure}
+
+The structure of the HMC algorithm is well suited to be parallelized. We tested the built-in Julia multiprocessing environment to run the program on two separate processes, but we observed a much slower performance compared to the serial implementation. This should not be surprising since with the small number of discretization points used so far, not more than a few hundreds, the overheads associated with the communication between the parallel processes significantly exceeded their advantages. Nevertheless, the method might be applied to systems requiring a much larger number of points. In hydrology, for instance, typical time series corresponding to hourly observations of precipitations and river discharges may contain several tens of thousands of measurements. In such cases a parallel version of the program would definitely improve the performance of the method. However, it is interesting to observe that Julia might not be the best option for parallelization. Indeed, the multiprocessing environment provided by Julia is strongly task oriented, while our problem is fundamentally data oriented. In view of a future parallelization of the HMC algorithm it is therefore advisable to investigate also alternative programming languages, such as C++. This issue will be discussed in a forthcoming publication.
+
 
 \section{Conclusions}
 
