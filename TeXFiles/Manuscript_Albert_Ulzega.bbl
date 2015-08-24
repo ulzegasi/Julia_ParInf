@@ -24,6 +24,11 @@ P.~Reichert and J.~Mieleitner.
   models with stochastic, time-dependent parameters.
 \newblock {\em Water~Resources~Res.}, 45, 2009.
 
+\bibitem{marin_2012_ABC}
+J.M. Marin, P.~Pudlo, C.P. Robert, and R.J. Ryder.
+\newblock {Approximate Bayesian computational methods}.
+\newblock {\em {Statistics and Computing}}, {22}({6, SI}):{1167--1180}, {2012}.
+
 \bibitem{Albert_2014_ABC}
 C.~Albert, H.~R. K\"unsch, and A.~Scheidegger.
 \newblock A simulated annealing approach to approximate bayes computations.
@@ -33,6 +38,21 @@ C.~Albert, H.~R. K\"unsch, and A.~Scheidegger.
 S.~Duane, A.~D. Kennedy, B.~J. Pendleton, and D.~Roweth.
 \newblock {Hybrid Monte Carlo}.
 \newblock {\em {Phys.~Lett.~B}}, {195}({2}):{216--222}, {1987}.
+
+\bibitem{alder_1959_MD}
+B.~J. Alder and T.~E. Wainwright.
+\newblock {Studies in Molecular Dynamics. I. General Method}.
+\newblock {\em J.~Chem.~Phys.}, 31:459--466, 1959.
+
+\bibitem{rahman_1964_MD}
+A.~Rahman.
+\newblock Correlations in the motion of atoms in liquid argon.
+\newblock {\em Physical~Review}, 136:405--411, 1964.
+
+\bibitem{metropolis_1953}
+N.~Metropolis, A.~W. Rosenbluth, M.~N. Rosenbluth, A.~H. Teller, and E.~Teller.
+\newblock Equation of state calculations by fast computing machines.
+\newblock {\em {J.~Chem.~Phys.}}, {21}({6}):{1087--1092}, {1953}.
 
 \bibitem{girolami_2011_HMC}
 M.~Girolami and B.~Calderhead.
@@ -89,21 +109,6 @@ A.~W.~C. Lau and T.~C. Lubensky.
 \newblock State-dependent diffusion: thermodynamic consistency and its path
   integral formulation.
 \newblock {\em Phys.~Rev.~E}, 76(1):011123, 2007.
-
-\bibitem{metropolis_1953}
-N.~Metropolis, A.~W. Rosenbluth, M.~N. Rosenbluth, A.~H. Teller, and E.~Teller.
-\newblock Equation of state calculations by fast computing machines.
-\newblock {\em {J.~Chem.~Phys.}}, {21}({6}):{1087--1092}, {1953}.
-
-\bibitem{alder_1959_MD}
-B.~J. Alder and T.~E. Wainwright.
-\newblock {Studies in Molecular Dynamics. I. General Method}.
-\newblock {\em J.~Chem.~Phys.}, 31:459--466, 1959.
-
-\bibitem{rahman_1964_MD}
-A.~Rahman.
-\newblock Correlations in the motion of atoms in liquid argon.
-\newblock {\em Physical~Review}, 136:405--411, 1964.
 
 \bibitem{doll_1985_fourier}
 J.~D. Doll, R.~D. Coalson, and D.~L. Freeman.

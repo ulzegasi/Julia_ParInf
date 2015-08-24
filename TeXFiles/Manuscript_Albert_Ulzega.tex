@@ -61,7 +61,7 @@
 
 \begin{document}
 
-\title[Parameter inference with stochastic models]{Bayesian Parameter Inference for Nonlinear Stochastic Differential Equation Models}
+\title[Parameter inference with stochastic models]{Bayesian Parameter Inference for 1D Nonlinear Stochastic Differential Equation Models}
 
 \author[cor1]{Carlo Albert}%$^{1,2}$
 \address{Eawag, Swiss Federal Institute of Aquatic Science and Technology, 8600 D\"ubendorf, Switzerland}
@@ -78,12 +78,12 @@
 
 
 \begin{abstract}
-Bayesian statistics has become an indispensable tool in many applied sciences for the purpose of uncertainty analysis.
-Inferring parametric uncertainty for stochastic differential equation (SDE) models, however, is a computationally hard problem due to the high dimensional integrals that have to be calculated.
-Here we present a Monte Carlo-based method for Bayesian parameter inference with one dimensional SDE models to tackle the generic problems of calibrating the model to given data time series while simultaneously quantifying the ensuing parametric uncertainty.
-%Here, we consider the generic problem of calibrating a one dimensional SDE model to %time series and quantifying the ensuing parametric uncertainty.
-We re-interpret the Bayesian posterior distribution for model parameters as the partition function of a statistical mechanical system and employ a Hamiltonian Monte Carlo algorithm to calculate it.
-Depending on the number of discretization points and the number of measurement points the dynamics of this system happen on very different time scales.
+Bayesian statistics has become an indispensable tool in many applied sciences, in particular, for the purpose of uncertainty analysis.
+Inferring parametric uncertainty, for stochastic differential equation (SDE) models, however, is a computationally hard problem due to the high dimensional integrals that have to be calculated.
+%Here we present a Monte Carlo-based method for Bayesian parameter inference with generic one dimensional SDE models to tackle the generic problems of calibrating the model to given data time series while simultaneously quantifying the ensuing parametric uncertainty.
+Here, we consider the generic problem of calibrating a one dimensional SDE model to time series and quantifying the ensuing parametric uncertainty.
+We re-interpret the Bayesian posterior distribution, for model parameters, as the partition function of a statistical mechanical system and employ a Hamiltonian Monte Carlo algorithm to sample from it.
+Depending on the number of discretization points and the number of measurement points the dynamics of this system happens on very different time scales.
 Thus, we employ a multiple time scale integration together with a suitable re-parametrization to derive an efficient inference algorithm.
 While the algorithm is presented by means of a simple SDE model from hydrology, it is readily applicable to a wide range of inference problems. Furthermore the algorithm is highly parallelizable.
 
@@ -93,7 +93,7 @@ While the algorithm is presented by means of a simple SDE model from hydrology, 
 \pacs{00.00, 20.00, 42.10}
 % Keywords required only for MST, PB, PMB, PM, JOA, JOB?
 \vspace{2pc}
-\noindent{\it Keywords}: Bayesian parameter inference, Hamiltonian Monte Carlo, time series analysis, stochastic differential equations
+\noindent{\it Keywords}: Bayesian parameter inference, Hamiltonian Monte Carlo, time series analysis, stochastic differential equations, path-integrals
 
 % Uncomment for Submitted to journal title message
 \submitto{\NJP}
@@ -117,28 +117,31 @@ Bayesian parameter inference for SDE models is computationally very expensive, a
 Problems of this kind are commonly solved by means of {\em Monte Carlo} methods that are based on simulating model realizations and comparing them to the data. Algorithms of this kind are {\em particle filters} \cite{chopin_2013_SMC2}. For the case of linear SDEs that are coupled to nonlinear deterministic ordinary differential equations (ODEs), more efficient algorithms of this kind can be derived \cite{tomassini_2009_smoothing, reichert_2009_timedepParameters}.
 The problem with these simulation-based methods is their inefficiency in the presence of many data points.
 One solution is to map the output space to a smaller dimensional space of {\em summary statistics}, and acccept/reject proposed model parameters depending on how compatible associated model runs are with the data in terms of these summary statistics.
-Such {\em Approximate Bayes Computations} \cite{Albert_2014_ABC} are relatively easy to apply as they only require us to run the simulator. However, it is largely an unsolved problem how to choose the summary statistics so as to achieve a sufficient approximation of the posterior parameter distribution.
+Such {\em Approximate Bayes Computations} \cite{marin_2012_ABC, Albert_2014_ABC} are relatively easy to apply as they only require us to run the simulator. However, it is largely an unsolved problem how to choose the summary statistics so as to achieve a sufficient approximation of the posterior parameter distribution.
 
 Exact inference algorithms of high efficiency can be derived from a reinterpretation of the posterior distribution as the partition function of a statistical mechanical system and by simulating the dynamics of the latter.
-Such {\em Hamiltonian Monte Carlo} (HMC) algorithms \cite{duane_1987} incorporate the data points for the suggestion of new parameters, whereby much higher acceptance rates are achieved.
+Upon discretizing time of the original problem we are led to the statistical mechanics of a polymer with harmonic bonds in an exterior potential. The measurements are interpreted as an additional exterior potential acting on the measurement beads of the polymer only.
+Furthermore, model parameters are interpreted as additional degrees of freedom coupling to all the beads of the polymer.
+To simulate the dynamics of this system we apply the {\em Hamiltonian Monte Carlo} (HMC) algorithm \cite{duane_1987}, which combines Molecular Dynamics (MD) \cite{alder_1959_MD, rahman_1964_MD} with the Metropolis algorithm \cite{metropolis_1953}.
+Compared to filtering methods, we achieve much higher acceptance rates since data points are already used for the suggestion of new parameters, and thus model realizations that are incompatible with the data are never even considered.
 The drawback of these methods is that the model equations need to be known and derivatives have to be calculated. The latter problem, however, is largely remedied by the use of automated differentiation algorithms.
 
 Tuning of HMC algorithms is a non-trivial matter.
-Two sorts of tuning parameters need to be adjusted: (i) those of the {\em kinetic energy} of the statistical mechanical system and (ii) those of the numerical integration scheme of Hamilton's equation in the molecular dynamics part of the HMC algorithm.
+Two sorts of tuning parameters need to be adjusted: (i) those of the {\em kinetic energy} of the statistical mechanical system and (ii) those of the {\em numerical integration} scheme of Hamilton's equation in the molecular dynamics part of the HMC algorithm.
 It has been shown that efficiency is gained when the kinetic term is made dependent on the configuration of the statistical mechanical system \cite{girolami_2011_HMC}.
 Here we explore a different, computationally simper route.
-Depending on the number of discretization points needed to approximate the original SDE system and the number of measurement points, the dynamics of the statistical mechanical system happen on very different time scales.
+Depending on the number of discretization points needed to approximate the original SDE system and the number of measurement points, the dynamics of the statistical mechanical system happens on very different time scales.
 Thus, we employ a multiple time scale integration technique for the simulation of the statistical mechanical system \cite{tuckerman_1993}.
-At least for 1D SDEs we always find a parametrization, which allows to partly uncouple the dominant harmonic part of the Hamiltonian in the form of harmonic oscillators and integrate them analytically.
+At least for 1D SDEs we always find a parametrization, which, to some extent, decouples harmonic modes in between measurement points from both the measurement points and the model parameters, and allows for an efficient analytical solution of their dynamics.
 
 The resulting algorithm is very efficient and, through the use of automated differentiation, easily applicable to a wide range of inference problems with SDEs.
 Furthermore, it is easily parallelizable.
 
-\section{An Exemplary SDE Model}
+\section{An Exemplary Inference Problem}
 
 The methods we present are generic and applicable to a wide range of SDE models.
 However, with later applications in mind and to make things concrete, we present them by means of a simple yet non-trivial model from hydrology.
-Consider a hydrological catchment whose dynamics at the observation time scale is well described by a linear reservoir and whose other processes happen at much shorter time scales so that they can be described by white noise.
+Consider, for simplicity, a hydrological catchment whose dynamics at the observation time scale is well described by a linear reservoir and whose other processes happen at much shorter time scales so that they can be described by white noise.
 Furthermore, assume this noise to scale linearly with the system state, $S(t)$, which is the water content in the reservoir.
 The model equation is thus given by the SDE
 \begin{equation}\label{sde}
@@ -151,35 +154,38 @@ where $r(t)$ denotes the time varying rain input and $\eta(t)$ denotes white noi
 \langle\eta(t)\eta(t')\rangle = \delta(t-t')\,.
 \end{equation}
 Eq.~(\ref{sde}) is to be understood in the Stratonovich sense~\cite{stratonovich_1968}.
-Our parametrization is such that, for constant rain input $r(t)=r_0$ and in the long-time limit, the mean of $S$ converges to the equilibrium solution of the unperturbed ($\gamma=0$) system, $S_{\eq}=Kr_0$ (see Eq.~(\ref{equilibrium_mean}) below).
-Scale-invariance of the model of Eq.~(\ref{sde}) for large $S$ leads to power law tails in the system state probability distribution (see Eq.~(\ref{inverse_gamma})), which is in line with the observation that errors in hydrological models are often fat-tailed~\cite{thyer_2009_fattails}.
+Our parametrization is such that, for constant rain input $r(t)=r_0$ and in the long-time limit, the mean of $S(t)$ converges to the equilibrium solution of the unperturbed ($\gamma=0$) system, $S_{\eq}=Kr_0$ (see Eq.~(\ref{equilibrium_mean}) below).
+Scale-invariance of eq. (\ref{sde}), for large $S$, leads to power law tails in the system state probability distribution (see Eq.~(\ref{inverse_gamma})), which is in line with the observation that errors in hydrological models are often fat-tailed~\cite{thyer_2009_fattails}.
 
 Conceptual models of this kind are commonly used in hydrology, for the purpose of predicting rainfall-runoff behaviour, for natural and urban catchments (see, e.g., \cite{breinholt_2011_SDE}).
-Furthermore, by means of the transformation $S(t)=1/n(t)$, eq. (\ref{sde}) turns into a model that has been suggested as a phenomenological description of the dynamics of the neutron density in nuclear reactors and extensively studied \cite{dutre_1977_SDE, fujisaka_1986_intermittency}.
+Furthermore, by means of the transformation $S(t)=1/n(t)$, eq. (\ref{sde}) turns into a model that has been suggested as a phenomenological description of the dynamics of the neutron density in nuclear reactors \cite{dutre_1977_SDE} and extensively studied, from a theoretical point of view \cite{fujisaka_1986_intermittency}.
 
 Here, we consider the input $r(t)$ to be a smooth and nowhere vanishing function. Realistic multi-fractal rain inputs \cite{tessier_1996} will be studied elsewhere.
-Indeed, the focus of this work is not on hydrological modeling, but on generic methods for parameter inference with SDE models that are calibrated to observed time-series.
+Indeed, the focus of this work is not on hydrological modeling, but on generic methods for parameter inference with nonlinear SDE models that are calibrated to observed time-series.
 Here we assume the observed time-series, $y_s$, to be the outflow of the reservoir, $S(t)/K$, observed at times $0=t_1<t_2<\dots < t_{n+1}=T$, with multiplicative independent log-normal errors, i.e.,
 \begin{equation}\label{data}
   \ln \left( y_s \right)
   =
   \ln \left( \frac{S(t_s)}{K} \right)
   +
-  \sigma\epsilon_s\,,\quad s=1,\dots,n+1\,.
+  \sigma\epsilon_s\,,\quad s=1,\dots,n+1\,,
 \end{equation}
+where the $\epsilon_i$ are uncorrelated standard normal errors.
+
 For simplicity, we assume $\sigma$ as well as the input $r(t)$ to be known so that we are left with the task of inferring parameter combinations $(K,\gamma)$ that are compatible with the data given by Eq.~(\ref{data}).
-Here, "compatible" is meant in the Bayesian sense, in which knowledge about parameters is expressed in terms of a probability distribution.
-In general, prior knowledge about parameters, $\bt$, is expressed in terms of a prior probability distribution, $f_{\mbox{\small prior}}(\bt)$, while the posterior distribution, which combines prior knowledge with knowledge gained from data, is calculated by means of Bayes' formula
+Here, "compatible" is meant in the Bayesian sense, in which knowledge about parameters, $\bt$, is expressed in terms of probability distributions.
+Assume we have prior knowledge in the form of a probability distribution, $f_{\mbox{\small prior}}(\bt)$, and measured data, $\vc y$, which is believed to be a realization of the model.
+The posterior knowledge, combining prior knowledge with the one acquired from data, is calculated by means of eq.
 \begin{equation}\label{Bayes}
   f_{\mbox{\small post}}(\bt|\vc y)
   =
   \frac{f_{\mbox{\small prior}}(\bt)L(\vc y|\bt)}
   {\int f_{\mbox{\small prior}}(\bt')L(\vc y|\bt')d\bt'}\,,
 \end{equation}
-where $L(\vc y|\bt)$ is the so-called {\em likelihood function}, that is, the probability distribution for model outputs given model parameters, evaluated at the measured data.
-Here, we assume prior knowledge to be that parameters must be non-negative, but otherwise we assume the prior to be flat on an area large enough to encompass the area where the likelihood function is significantly different from zero. That is, the posterior is data-driven.
+where $L(\vc y|\bt)$ is the so-called {\em likelihood function}, that is, the probability distribution, for model outputs given model parameters, evaluated at the measured data.
+Here, we assume prior knowledge to be that parameters must be non-negative, but otherwise we assume the prior influence to be negligible. That is, we assume the posterior to be data-driven.
 
-Before we set out to derive the likelihood function from the model equations (\ref{sde}) through (\ref{data}) let us express the parameters and state variable with dimensionless quantities.
+Before we set out to derive the likelihood function, from the model equations (\ref{sde}) through (\ref{data}), let us express the parameters and state variable with dimensionless quantities.
 The noise parameter $\gamma$ is already dimensionless due to scale-invariance of the noise term.
 We replace the state variable $S(t)$ and parameter $K$ by dimensionless quantities $q(t)$ and $\beta$, respectively, by means of the transformations
 \begin{equation}
@@ -204,7 +210,7 @@ with
   +
   \frac{(2+\gamma)\beta}{2\gamma}\,.
 \end{equation}
-For our algorithm it is important to have the model equation in a form where the noise term does not depend on neither the state variables nor the parameters that have to be inferred. In a one dimensional model this can always be achieved through re-parametrization.
+For our algorithm it is important to have the model equation in a form where the noise term does neither depend on the state variables nor the parameters that have to be inferred. In a one dimensional model this can always be achieved through re-parametrization.
 
 The probability $P(q_1,T|q_0,0)$ of finding the system in a state $q_1$ at time $t = T$ given that it was in an initial state $q_0$ at time $t = 0$, is expressed in the form of a {\em path-integral} as
 \begin{equation}\label{pathint}
@@ -243,7 +249,6 @@ The {\em action} is a functional on the space of paths and reads as \cite{lau_20
 \right\} \,.
 \end{equation}
 Note that the action includes the Jacobian that arises when changing coordinates from ${\eta(t)}$ to $q(t)$.
-
 We introduce the time-dependent {\em Hamiltonian}
 \begin{equation}\label{H}
   \mathcal{H}(q,t)
@@ -314,7 +319,7 @@ and whose variance, for $\gamma< 2$, is given by
 and diverges, for $\gamma\geq 2$.
 The power-law decay of the inverse gamma distribution is reminiscent of the scale-invariance of the error model.
 
-If we denote the parameter vector $\bt=(\beta,\gamma)^T$ and assume a flat prior as described above, the posterior (\ref{Bayes}), as a function of $\bt$, is proportional to the likelihood function, which is expressed as a path-integral as follows
+If we denote the parameter vector $\bt=(\beta,\gamma)^T$ and assume a flat prior, the posterior (\ref{Bayes}), as a function of $\bt$, is proportional to the likelihood function, which is expressed as the path-integral
 \begin{equation}\label{posterior_pathint}
   f_{\mbox{\small post}}(\bt | \vc y)
   \propto
@@ -330,7 +335,7 @@ If we denote the parameter vector $\bt=(\beta,\gamma)^T$ and assume a flat prior
   {\mathcal Dq}
   \,.
 \end{equation}
-On the right-hand side of the above equation, the first term describes the probability distribution of model outputs, given model parameters, rain inputs and a system realization $q(t_s)$. The second term is the probability of the given system realization $q$ and the path-integral extends over all possible system realizations. Instead of undertaking an often prohibitive numerical computation of such integral, we apply a Hamiltonian Monte Carlo method, outlined in the next section, to sample parameter vectors from a joint distribution of system realizations and model parameters given by an appropriate discretization of the action of the path-integral.
+The first term in the exponent describes the log-probability distribution of model outputs, given model parameters, inputs and a system realization $q(t_s)$. The second term is the log-probability of a system realization $q(t)$ and the path-integral extends over all possible system realizations. Instead of undertaking an often prohibitive numerical computation of such integral, we apply a Hamiltonian Monte Carlo method, outlined in the next section, to sample parameter vectors from a joint distribution of system realizations and model parameters given by an appropriate discretization of the action of the path-integral.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -368,16 +373,16 @@ The posterior (\ref{posterior_pathint}) can then be expressed by the phase space
 The HMC method, which is a combination of the {\em Metropolis algorithm} \cite{metropolis_1953} and {\em molecular dynamics} methods \cite{alder_1959_MD, rahman_1964_MD}, iterates the following steps:
 \begin{enumerate}
   \item
-  Momenta $p$ and $\pi$ are sampled from the Gaussian distributions defined by Eq.~(\ref{K}).
+  Momenta $p(t)$ and $\pi$ are sampled from the Gaussian distributions defined by Eq.~(\ref{K}).
   \item
   The system is then allowed to evolve in $\left(q,\bt; p,{\pmb\pi}\right)$-phase space for an arbitrary time interval $\tau$ according to a volume-preserving and time-reversible solution of a discretization of Hamilton's equations.
   %The system is integrated by means of a volume-preserving and time-reversible %solution of a discretization of Hamilton's equations.
   \item
   The discretization error on the energy preservation due to the previous step is corrected by a Metropolis acceptance/rejection step.
 \end{enumerate}
-The last step is the standard Metropolis algorithm, while the first two steps allow us to make arbitrarily large jumps in phase space while maintaining an arbitrarily large acceptance rate. Each new phase space configuration corresponds to a well-defined combination of model parameters $\bt$. Thus, the simulated succession of configurations represent a Markov chain of sampled parameter vectors that naturally leads to the sought probability distribution for the system parameters.
+The last step is the standard Metropolis algorithm, while the first two steps allow us to make arbitrarily large jumps in phase space while maintaining an arbitrarily large acceptance rate. Each new phase space configuration is associated with a combination of model parameters $\bt$, which is compatible with the data in the Bayesian sense. Thus, the parameter marginal of the simulated Markov chain of configurations represents a sample of the posterior probability distribution.
 
-In order to simulate the dynamics of the Hamiltonian (\ref{Hamiltonian}), we first need to discretize the path-integral (\ref{phaseSpacePathInt}).
+In order to simulate the dynamics of Hamiltonian (\ref{Hamiltonian}), we first need to discretize path-integral (\ref{phaseSpacePathInt}).
 Therefore, let us assume that the measurement time points $\left\{ y_s \right\}_{s=1,\dots, n+1}$ of the time series (\ref{data}) are equidistantly distributed on the time interval $[0,T]$, with $t_1=0$ and $t_{n+1}=T$.
 Each interval between two consecutive data points is further partitioned into $j$ bins, such that we have a total of $nj+1=N>>1$ discretization points.
 The path-integral (\ref{phaseSpacePathInt}) is then approximated by an ordinary integral, with the approximate path-measure
@@ -386,11 +391,11 @@ The path-integral (\ref{phaseSpacePathInt}) is then approximated by an ordinary 
   \approx
   \prod_i dp_i dq_i
 \end{equation}
-and the discretized versions of $K( p,{\pmb\pi})$ and $V( q,\bt)$
+and the discretized versions of $K( p,{\pmb\pi})$ and $V( q,\bt)$ are given by eqs.
 \begin{eqnarray}
    K( p,{\pmb\pi}) \approx
    \sum_{i=1}^N
-   \frac{ p_i^2}{2m_q}\Delta t
+   \frac{ p_i^2}{2m_i}\Delta t
    +
    \sum_{\alpha=1}^2\frac{\pi_\alpha^2}{2m_\alpha}\,,\label{Kdisc}
    \\
@@ -433,7 +438,13 @@ and
 \end{equation}
 Note that we've neglected terms of order $\mathcal O(N^{-1/2})$ in the action (\ref{Vdisc}).
 
-The discretized Hamiltonian describes a {\em classical polymer chain} of $N$ beads with harmonic bonds between neighbouring beads in an external field. The latter consists of two parts, a field that results from the dynamics of the original equations (\ref{sde}) and is felt by all the beads, and a field that results from the measurements and is felt by the measurement beads only. The masses $m_q$ and $m_{\alpha}$ are tunable parameters of the algorithm. A good strategy consists in assigning larger weights to the beads associated with measurement points than to the intermediate beads. The dynamics of the system will be therefore mostly dependent on the lighter intermediate particles, while the heavy measurement beads will be constrained in the vicinity of the measured data points. We thus reduce the original Bayesian inference problem to simulating the dynamics of a linear polymer, as sketched in Fig.~(\ref{fig:polymer}). In this context the physical time (horizontal axis) is interpreted as a spatial dimension while a fictitious simulation time is introduced (vertical axis). Each \emph{state} of this fictitious molecule corresponds to a well-defined configuration in the original phase space, characterized by a set of system variables $\left\{q_i\right\}_{i=1,\dots,N}$ and a parameter vector $\bt$.
+The discretized Hamiltonian describes a {\em classical polymer chain} of $N$ beads with harmonic bonds between neighbouring beads in an external field. The latter consists of two parts, a field that results from the dynamics of the original Eq. (\ref{sde}) and is felt by all the beads, and a field that results from the measurements and is felt by the measurement beads only. The masses $m_i$ and $m_{\alpha}$ are tunable parameters of the algorithm.
+Since measurement beads are constrained more than intermediate beads we will assign larger masses to the former.
+Fig. (\ref{fig:polymer}) shows a typical realization of the dynamics of the polymer. 
+The physical time (horizontal axis) is interpreted as a spatial dimension while a fictitious simulation time is introduced (vertical axis).
+Measurements beads only move within the measurement uncertainty whilst the intermediate beads explore much larger regions of phase space.
+
+%The dynamics of the system will be therefore mostly dependent on the lighter intermediate particles, while the heavy measurement beads will be constrained in the vicinity of the measured data points. We thus reduce the original Bayesian inference problem to simulating the dynamics of a linear polymer, as sketched in Fig.~(\ref{fig:polymer}). Each \emph{state} of this fictitious molecule corresponds to a well-defined configuration in the original phase space, characterized by a set of system variables $\left\{q_i\right\}_{i=1,\dots,N}$ and a parameter vector $\bt$.
 
 \begin{figure}[htb!]
     \centering
@@ -444,7 +455,7 @@ The discretized Hamiltonian describes a {\em classical polymer chain} of $N$ bea
 \end{figure}
 
 The potential (\ref{Vdisc}) contains terms with different scaling in the potentially large numbers $N$ and $n$, which describe dynamics on different time-scales.
-In particular, for large $N$, $V(q,\bt)$ is dominated by its harmonic part and a brute force numerical integration of Hamilton's equations in step (ii) of the HMC algorithm would require a very small discretization time-step to sufficiently resolve its dynamics.
+In particular, for large $N$, $V(q,\bt)$ is dominated by its harmonic part and a brute force numerical integration of Hamilton's equations in step ($ii$) of the HMC algorithm would require a very small discretization time-step to sufficiently resolve its dynamics.
 An interesting approximative approach would be to employ a partial averaging of the fast Fourier modes as described in \cite{doll_1985_fourier}.
 We choose an exact approach and employ a multiple time scale integration based on Trotter's formula \cite{tuckerman_1993}.
 
@@ -505,7 +516,7 @@ where
   \sum_{s=1}^{n}
   \sum_{k=2}^j
   \left\{
-    \frac{\Delta t}{m_q}p_{(s-1)j+k}^2
+    \frac{\Delta t}{m'}p_{(s-1)j+k}^2
     +
     \frac{Tk}{\Delta t(k-1)}
     u_{(s-1)j+k}^2
@@ -515,7 +526,7 @@ where
   \frac{1}{2}
   \sum_{s=1}^{n+1}
   \left\{
-   \frac{\Delta t }{m_q}p_{(s-1)j+1}^2
+   \frac{\Delta t }{M}p_{(s-1)j+1}^2
     +
     \frac{(\ln(y_s/r_{(s-1)j+1}) - {\beta u_{(s-1)j+1}})^2}{\sigma^2}
    \right\} \nonumber
@@ -553,8 +564,9 @@ where
   -
   q_1 \rho_{1} \,. \label{H_1}
 \end{eqnarray}
+We have introduced two different masses, $M$ and $m'$, for the boundary and staging beads, respectively. 
 The harmonic part for the staging beads given in Eq.~(\ref{H_N}) scales linearly with $N$. The terms of Eq.~(\ref{H_n}), including both the harmonic part for the boundary beads and the measurement term, scale linearly with $n$. Finally, Eq.~(\ref{H_1}) does not scale with neither $n$ nor $N$.
-Thanks to the staging variables $\mathcal H_N$ decouples completely from $\mathcal H_n$.
+Thanks to the staging variables, $\mathcal H_N$ decouples completely from $\mathcal H_n$.
 
 We use the Trotter formula according to \cite{tuckerman_1992} in order to design a reversible molecular dynamics integrator that takes these different time scales into account.
 In order to design an appropriate partition of the Hamiltonian, we need to distinguish different regimes, such as
@@ -566,7 +578,7 @@ In order to design an appropriate partition of the Hamiltonian, we need to disti
   \item[\it iii.]
   $\mathcal H_N >> \mathcal H_n >> \mathcal H_1$.
 \end{enumerate}
-Here, we restrict ourselves to regime ($ii$), i.e., we assume that the number of measurements $n$ is small and/or the measurement error $\sigma$ is large.
+Here, we restrict ourselves to regime ($ii$), i.e., we assume that the number of measurements $n$ is not too large and/or the measurement error $\sigma$ is not too small.
 The generalization of the method to the other schemes is straightforward.
 In regime ($ii$) we simply separate the harmonic part of the action, for the staging beads, from the rest and write
 \begin{equation}
@@ -590,7 +602,7 @@ for $\tau =P\Delta \tau$.
 In regime ($ii$) the outer propagator $\exp[iL_N(\Delta \tau/2)]$ describes much faster dynamics than the inner one. However, it is the dynamics of uncoupled harmonic oscillators, which we can readily solve.
 Masses and frequencies of the oscillators are derived from (\ref{H_N}) as
 \begin{equation}
-  m=m_q/\Delta t\,,\quad
+  m=m'/\Delta t\,,\quad
   \omega_k=\sqrt{\frac{Nk}{(k-1)m}}\,.
 \end{equation}
 The fast outer propagator is then given by the equations,
@@ -612,9 +624,9 @@ For the boundary beads, it reads
   u_{(s-1)j+1}(\Delta\tau) \nonumber \\
   = u_{(s-1)j+1}(0)
   +
-  \frac{\Delta\tau}{m} p_{(s-1)j+1}(0)
+  \frac{\Delta\tau}{M} p_{(s-1)j+1}(0)
   +
-  \frac{\Delta \tau^2}{2m}
+  \frac{\Delta \tau^2}{2M}
   F_{(s-1)j+1}[\vc u(0),{\pmb\theta}(0)]\,,\\
   p_{(s-1)j+1}(\Delta\tau) \nonumber \\
   = p_{(s-1)j+1}(0)
@@ -644,13 +656,20 @@ Thus,
   \,,
 \end{eqnarray}
 with $s=1,\dots,n$ and $k=2,\dots,j$. The above propagators are applied sequentially $P$ times to calculate the system evolution over the time $\tau$.
-
-
+After $P$ steps, the proposed configuration, $(\vc u',\bt';\vc p',{\pmb\pi}')$ is accepted with the Metropolis probability
+\begin{equation}
+  \min
+  \left(
+    1,
+    e^{\mathcal{H}_{\mbox{\tiny HMC}}(\vc u,\bt;\vc p,{\pmb\pi}) - \mathcal{H}_{\mbox{\tiny HMC}}(\vc u',\bt';\vc p',{\pmb\pi}')}
+  \right)\,,
+\end{equation}
+and the next iteration starts with sampling an new momentum vector $(\vc p,{\pmb\pi})$.
 
 \section{Numerical Results}\label{numerical_results}
 
 The algorithm described above was implemented using the free and open-source programming language \emph{Julia} (version 0.3.9)~\cite{julia_web}. One of the attractive features of the language is its (fast growing) library of over 600 packages for numerical and scientific applications.
-In our case, we made extensive use of the \emph{ReverseDiffSource} package, which provides a powerful tool for reverse-mode automated differentiation (AD) of arbitrarily complex user-defined expressions. Our algorithm benefits greatly from the use of AD. Indeed, it gives us the possibility to modify the model of Eq.~(\ref{sde}) and therefore the action~(\ref{action}) leaving the implementation of the algorithm unaltered. This clearly gives our program significant flexibility making it suitable for a much broader range of applications than the simple exemplary SDE model described here.
+In our case, we made extensive use of the \emph{ReverseDiffSource} package, which provides a powerful tool for reverse-mode automated differentiation (AD) of arbitrarily complex user-defined expressions. Our algorithm benefits greatly from the use of AD. Indeed, it gives us the possibility to modify Eq.~(\ref{sde}) and therefore the action~(\ref{action}) leaving the implementation of the algorithm unaltered. This clearly gives our program significant flexibility making it suitable for a much broader range of applications than the simple exemplary SDE model described here.
 %
 \begin{figure}[htb!]
     \centering
@@ -658,7 +677,7 @@ In our case, we made extensive use of the \emph{ReverseDiffSource} package, whic
     \caption{\label{fig:rain_data_S}Sinusoidal input $r(t)$ (dashed line), "true" system realization with parameters $K_{\mbox{\small true}} = 50$ (in some arbitrary units of time) and $\gamma_{\mbox{\small true}} = 0.2$ (solid line) and synthetic observed data. One may notice how the system response follows the oscillations of the input signal.}
 \end{figure}
 
-We have run preliminary simulations on a 64-bit laptop computer equipped with a Windows 7 operating system, a double-core 1.6~GHz CPU (Intel i5-4200U) and 8~GB of RAM. We have initially used a serial implementation of the algorithm. We assumed $n+1 = 11$ measurement points and $j = 10, 20,\dots, 50$ intermediate staging beads, with a total number of discretization points $N = 101, 201, \dots, 501$. We have set $\Delta\tau = 0.25$ (arbitrary units of time) and $P = 3$ in the Hamiltonian propagator~(\ref{propagator}), with a constant total observation time $T = 833$ (arbitrary units of time). The "true" values of the parameters to be inferred were set to $K_{\mbox{\small true}}=50$~(arbitrary units of time) and $\gamma_{\mbox{\small true}} = 0.2$. Their initial values in the simulations were set to $K=200$~(arbitrary units of time) and $\gamma = 0.5$.
+We have run preliminary simulations on a 64-bit laptop computer equipped with a Windows 7 operating system, a double-core 1.6~GHz CPU (Intel i5-4200U) and 8~GB of RAM. We have used a serial implementation of the algorithm. We assumed $n+1 = 11$ measurement points and $j = 10, 20,\dots, 50$ intermediate staging beads, with a total number of discretization points $N = 101, 201, \dots, 501$. We have set $\Delta\tau = 0.25$ and $P = 3$ in the Hamiltonian propagator~(\ref{propagator}), with a constant total observation time $T = 833$ (arbitrary units of time). The "true" values of the parameters to be inferred were set to $K_{\mbox{\small true}}=50$ (arbitrary units of time) and $\gamma_{\mbox{\small true}} = 0.2$. Their initial values in the simulations were set to $K=200$ and $\gamma = 0.5$.
 %
 \begin{figure}[htb!]
     \centering
@@ -670,7 +689,7 @@ We have run preliminary simulations on a 64-bit laptop computer equipped with a 
 We have assumed a simple sinusoidal input $r(t) = \sin^2 \left( 0.01 t \right) + 0.1$. A system realization was first obtained from Eq.~(\ref{sde}) using $K_{\mbox{\small true}}$ and $\gamma_{\mbox{\small true}}$. Such system realization was then used to generate a synthetic time series of observed data according to Eq.~(\ref{data}). The error $\sigma$ was set to $0.1$. The input signal, the "true" system realization and the corresponding data time series are shown in Fig.~(\ref{fig:rain_data_S})
 
 
-Within the investigated range of parameters we observed a reasonably linear dependence of the total computing time on the number of discretization points $N$. For example, with $j=30$ (i.e., $N = 301$ discretization points) a complete run with 20000 iterations required about 13 minutes. A set of 200 simulated system realizations with $j=30$ is shown in Fig.~(\ref{fig:spaghetti}) together with the synthetic data generated as described above. In the simulation the masses were set (in arbitrary units) to 720 for the boundary beads, 130 for the staging beads and 150 for both the dimensionless parameters $\beta$ and $\gamma$. The different dynamics of the heavy boundary beads and the light staging beads can be appreciated in Fig.~(\ref{fig:spaghetti}).
+Within the investigated range of parameters we observed a reasonably linear dependence of the total computing time on the number of discretization points $N$. For example, with $j=30$ (i.e., $N = 301$ discretization points) a complete run with 20000 iterations required about 13 minutes. A set of 200 simulated system realizations with $j=30$ is shown in Fig.~(\ref{fig:spaghetti}) together with the synthetic data generated as described above. In the simulation the masses were set (in arbitrary units) to $M=720$, for the boundary beads, $m=130$, for the staging beads and $m_\alpha=150$, for both the dimensionless parameters $\beta$ and $\gamma$. The different dynamics of the heavy boundary beads and the light staging beads can be appreciated in Fig.~(\ref{fig:spaghetti}).
 %
 \begin{figure}[htb!]
     \centering
@@ -686,8 +705,8 @@ Within the investigated range of parameters we observed a reasonably linear depe
     \label{fig:chainG}
 \end{figure}
 
-The Markov chains for the parameters $K$ and $\gamma$ generated after 50000 iterations of the HMC algorithm are shown in Figs.~(\ref{fig:chainK}) and (\ref{fig:chainG}), respectively. Both of them are clearly compatible with the true parameter values $K_{\mbox{\small true}} = 50$~(arbitrary units of time) and $\gamma_{\mbox{\small true}}=0.2$.
-The efficiency of the algorithm can be best appreciated by inspecting the system evolution in the phase space $K-\gamma$, as shown in Fig.~(\ref{fig:phase_space_evol}). The very first step of the algorithm takes already the system in the vicinity of the true parameter values, where most of its dynamics then occur. A few excursions away from such values are immediately compensated by the algorithm.
+The Markov chains for the parameters $K$ and $\gamma$ generated after 50000 iterations of the HMC algorithm are shown in Figs.~(\ref{fig:chainK}) and (\ref{fig:chainG}), respectively. Both of them are clearly compatible with the true parameter values $K_{\mbox{\small true}} = 50$ and $\gamma_{\mbox{\small true}}=0.2$.
+The efficiency of the algorithm can be best appreciated by inspecting the system evolution in the phase space $K-\gamma$, as shown in Fig.~(\ref{fig:phase_space_evol}). The very first step of the algorithm already takes the system to the vicinity of the true parameter values, where most of its dynamics then occurs. Few excursions far away from the true parameter values explore the heavy tails of the posterior parameter distribution.
 %\begin{figure}[htb!]
 %    \centering
 %    \includegraphics[width=0.3\textwidth]{Figs/FigFinalState.png}
@@ -723,14 +742,17 @@ The Markov chains of Figs.~(\ref{fig:chainK}) and (\ref{fig:chainG}) naturally l
     \label{fig:KG_distr}
 \end{figure}
 
-The structure of the HMC algorithm is well suited to be parallelized. We tested the built-in Julia multiprocessing environment to run the program on two separate processes, but we observed a much slower performance compared to the serial implementation. This should not be surprising since with the small number of discretization points used so far, not more than a few hundreds, the overheads associated with the communication between the parallel processes significantly exceeded their advantages. Nevertheless, the method might be applied to systems requiring a much larger number of points. In hydrology, for instance, typical time series corresponding to hourly observations of precipitations and river discharges may contain several tens of thousands of measurements. In such cases a parallel version of the program would definitely improve the performance of the method. However, it is interesting to observe that Julia might not be the best option for parallelization. Indeed, the multiprocessing environment provided by Julia is strongly task oriented, while our problem is fundamentally data oriented. In view of a future parallelization of the HMC algorithm it is therefore advisable to investigate also alternative programming languages, such as C++. This issue will be discussed in a forthcoming publication.
+The structure of the HMC algorithm is well suited to be parallelized. 
+For hydrological applications, where the number of measurement points are often in the tens of thousands, this is an important advantage.
+
+%We tested the built-in Julia multiprocessing environment to run the program on two separate processes, but we observed a much slower performance compared to the serial implementation. This should not be surprising since with the small number of discretization points used so far, not more than a few hundreds, the overheads associated with the communication between the parallel processes significantly exceeded their advantages. Nevertheless, the method might be applied to systems requiring a much larger number of points. In hydrology, for instance, typical time series corresponding to hourly observations of precipitations and river discharges may contain several tens of thousands of measurements. In such cases a parallel version of the program would definitely improve the performance of the method. However, it is interesting to observe that Julia might not be the best option for parallelization. Indeed, the multiprocessing environment provided by Julia is strongly task oriented, while our problem is fundamentally data oriented. In view of a future parallelization of the HMC algorithm it is therefore advisable to investigate also alternative programming languages, such as C++. This issue will be discussed in a forthcoming publication.
 
 
 \section{Conclusions}
 
 We've presented a new algorithm, for the generation of posterior parameter samples, for ordinary 1D SDE models that are calibrated to time-series.
 The algorithm is derived from a re-interpretation of the posterior distribution as a partition function of a 1D statistical mechanical system and employs a Hamiltonian Monte Carlo approach combined with a multiple time-scale integration.
-Furthermore, a generic re-parametrization is suggested, which decouples harmonic modes in between measurement points from both the measurement potential and the model parameters, and allows for an efficient analytical integration of these modes.
+Furthermore, a generic re-parametrization is suggested, which, to some extent, decouples harmonic modes in between measurement points from both the measurement points and the model parameters, and allows for an efficient analytical solution of their dynamics.
 The algorithm can be implemented in an efficient and generic fashion using automated differentiation and parallelization.
 Furthermore, it can easily be adapted to other inference problems.
 In particular, it can be adapted to higher dimensional SDEs and SDEs coupled to ODEs.
