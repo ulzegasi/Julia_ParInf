@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.1415926-2.5-1.40.14 (MiKTeX 2.9) (preloaded format=pdflatex 2014.4.3)  24 AUG 2015 15:05
+This is pdfTeX, Version 3.1415926-2.5-1.40.14 (MiKTeX 2.9) (preloaded format=pdflatex 2014.4.3)  16 SEP 2015 11:19
 entering extended mode
 **C:/Users/albertca/github/Julia_ParInf/TeXFiles/Manuscript_Albert_Ulzega.tex
 (C:/Users/albertca/github/Julia_ParInf/TeXFiles/Manuscript_Albert_Ulzega.tex
@@ -415,7 +415,7 @@ File: umsb.fd 2013/01/14 v3.01 AMS symbols B
 )
 Package xypdf Info: Line width: 0.47998pt on input line 62.
 
-Underfull \hbox (badness 1881) in paragraph at lines 80--89
+Underfull \hbox (badness 1881) in paragraph at lines 80--88
 \OT1/cmr/m/n/10 uncertainty, for stochastic differential equation (SDE) models,
  however, is a
  []
@@ -428,7 +428,7 @@ Overfull \hbox (1.2549pt too wide) in alignment at lines 259--290
  [] [] [] [] 
  []
 
-[5] [6] [7] <Figs/FigPolymer.png, id=165, 853.68938pt x 569.12625pt>
+[5] [6] [7] <Figs/FigPolymer.png, id=169, 853.68938pt x 569.12625pt>
 File: Figs/FigPolymer.png Graphic file (type png)
 
 <use Figs/FigPolymer.png>
@@ -436,49 +436,50 @@ Package pdftex.def Info: Figs/FigPolymer.png used on input line 452.
 (pdftex.def)             Requested size: 312.4786pt x 208.32422pt.
  [8 <C:/Users/albertca/github/Julia_ParInf/TeXFiles/Figs/FigPolymer.png>] [9] [
 10]
-<Figs/FigRainData.png, id=214, 853.68938pt x 569.12625pt>
+<Figs/FigRainData.png, id=218, 853.68938pt x 569.12625pt>
 File: Figs/FigRainData.png Graphic file (type png)
 
 <use Figs/FigRainData.png>
 Package pdftex.def Info: Figs/FigRainData.png used on input line 676.
 (pdftex.def)             Requested size: 312.4786pt x 208.32422pt.
 
-<Figs/FigSpaghetti.png, id=216, 722.7pt x 542.025pt>
+<Figs/FigSpaghetti.png, id=220, 722.7pt x 542.025pt>
 File: Figs/FigSpaghetti.png Graphic file (type png)
 
 <use Figs/FigSpaghetti.png>
 Package pdftex.def Info: Figs/FigSpaghetti.png used on input line 684.
 (pdftex.def)             Requested size: 312.4786pt x 234.35641pt.
- [11]
-<Figs/FigChainK.png, id=233, 722.7pt x 454.69875pt>
+ [11] [12 <C:/Users/albertca/github/Julia_ParInf/TeXFiles/Figs/FigRainData.png>
+ <C:/Users/albertca/github/Julia_ParInf/TeXFiles/Figs/FigSpaghetti.png>] <Figs/
+FigChainK.png, id=244, 722.7pt x 454.69875pt>
 File: Figs/FigChainK.png Graphic file (type png)
- <use Figs/FigChainK.png>
+
+<use Figs/FigChainK.png>
 Package pdftex.def Info: Figs/FigChainK.png used on input line 696.
 (pdftex.def)             Requested size: 312.4786pt x 196.599pt.
-
-<Figs/FigChainG.png, id=234, 722.7pt x 454.69875pt>
+ <Figs/FigChainG.png, id=245, 722.7pt x 454.69875pt>
 File: Figs/FigChainG.png Graphic file (type png)
- <use Figs/FigChainG.png>
+
+<use Figs/FigChainG.png>
 Package pdftex.def Info: Figs/FigChainG.png used on input line 703.
 (pdftex.def)             Requested size: 312.4786pt x 196.599pt.
 
-<Figs/FigPhaseSpaceEvol.png, id=238, 722.7pt x 483.30562pt>
+<Figs/FigPhaseSpaceEvol.png, id=249, 722.7pt x 483.30562pt>
 File: Figs/FigPhaseSpaceEvol.png Graphic file (type png)
 
 <use Figs/FigPhaseSpaceEvol.png>
 Package pdftex.def Info: Figs/FigPhaseSpaceEvol.png used on input line 719.
 (pdftex.def)             Requested size: 312.4786pt x 208.9678pt.
- [12 <C:/Users/albertca/github/Julia_ParInf/TeXFiles/Figs/FigRainData.png>] [13
- <C:/Users/albertca/github/Julia_ParInf/TeXFiles/Figs/FigSpaghetti.png> <C:/Use
-rs/albertca/github/Julia_ParInf/TeXFiles/Figs/FigChainK.png>] <Figs/FigKg.png, 
-id=259, 1251.92719pt x 398.23781pt>
-File: Figs/FigKg.png Graphic file (type png)
 
-<use Figs/FigKg.png>
+<Figs/FigKg.png, id=253, 1251.92719pt x 398.23781pt>
+File: Figs/FigKg.png Graphic file (type png)
+ <use Figs/FigKg.png>
 Package pdftex.def Info: Figs/FigKg.png used on input line 740.
 (pdftex.def)             Requested size: 446.39996pt x 141.99826pt.
- [14 <C:/Users/albertca/github/Julia_ParInf/TeXFiles/Figs/FigChainG.png> <C:/Us
-ers/albertca/github/Julia_ParInf/TeXFiles/Figs/FigPhaseSpaceEvol.png>]
+
+[13 <C:/Users/albertca/github/Julia_ParInf/TeXFiles/Figs/FigChainK.png>]
+[14 <C:/Users/albertca/github/Julia_ParInf/TeXFiles/Figs/FigChainG.png> <C:/Use
+rs/albertca/github/Julia_ParInf/TeXFiles/Figs/FigPhaseSpaceEvol.png>]
 (C:\Users\albertca\github\Julia_ParInf\TeXFiles\Manuscript_Albert_Ulzega.bbl
 [15 <C:/Users/albertca/github/Julia_ParInf/TeXFiles/Figs/FigKg.png>]
 Missing character: There is no â in font cmr10!
@@ -487,27 +488,24 @@ Missing character: There is no ” in font cmr10!
 Missing character: There is no â in font cmr10!
 Missing character: There is no € in font cmr10!
 Missing character: There is no ” in font cmr10!
-Missing character: There is no â in font cmr10!
-Missing character: There is no € in font cmr10!
-Missing character: There is no ” in font cmr10!
 )
-Package atveryend Info: Empty hook `BeforeClearDocument' on input line 766.
+Package atveryend Info: Empty hook `BeforeClearDocument' on input line 769.
  [16]
-Package atveryend Info: Empty hook `AfterLastShipout' on input line 766.
+Package atveryend Info: Empty hook `AfterLastShipout' on input line 769.
 
 (C:\Users\albertca\github\Julia_ParInf\TeXFiles\Manuscript_Albert_Ulzega.aux)
-Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 766.
-Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 766.
+Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 769.
+Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 769.
 Package rerunfilecheck Info: File `Manuscript_Albert_Ulzega.out' has not change
 d.
 (rerunfilecheck)             Checksum: F424EA045C5D43AF086100D463D2E809;269.
-Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 766.
+Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 769.
  ) 
 Here is how much of TeX's memory you used:
- 9488 strings out of 493921
- 134939 string characters out of 3144868
- 271104 words of memory out of 3000000
- 12547 multiletter control sequences out of 15000+200000
+ 9491 strings out of 493921
+ 135010 string characters out of 3144868
+ 271152 words of memory out of 3000000
+ 12548 multiletter control sequences out of 15000+200000
  16800 words of font info for 66 fonts, out of 3000000 for 9000
  841 hyphenation exceptions out of 8191
  36i,11n,38p,3309b,451s stack positions out of 5000i,500n,10000p,200000b,50000s
@@ -529,9 +527,9 @@ nts/type1/public/amsfonts/cm/cmti10.pfb><C:/Program Files (x86)/MiKTeX 2.9/font
 s/type1/public/amsfonts/cm/cmti12.pfb><C:/Program Files (x86)/MiKTeX 2.9/fonts/
 type1/public/amsfonts/cm/cmtt10.pfb><C:/Program Files (x86)/MiKTeX 2.9/fonts/ty
 pe1/public/amsfonts/symbols/msbm10.pfb>
-Output written on Manuscript_Albert_Ulzega.pdf (16 pages, 1200721 bytes).
+Output written on Manuscript_Albert_Ulzega.pdf (16 pages, 1201779 bytes).
 PDF statistics:
- 357 PDF objects out of 1000 (max. 8388607)
- 98 named destinations out of 1000 (max. 500000)
+ 361 PDF objects out of 1000 (max. 8388607)
+ 100 named destinations out of 1000 (max. 500000)
  76 words of extra memory for PDF output out of 10000 (max. 10000000)
 
