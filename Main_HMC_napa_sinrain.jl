@@ -42,7 +42,7 @@ tdat  = float64(readdlm("$dir/t.dat")[range,2]) # Time points t.dat
 
 const nparams = 2              # Number of system parameters (k, gamma)
 const n = 10                  # n+1 -> "end point" beads (see Tuckerman '93), n -> number of segments
-const j = 10                  # n(j-1) -> total number of staging beads, j-1 -> staging beads per segment
+const j = 30                  # n(j-1) -> total number of staging beads, j-1 -> staging beads per segment
 const N = int64(n*j+1)        # Total number of discrete time points = n*j + 1
                               # IMPORTANT: (N-1)/j = integer = n (measurement points)
 if  ((N-1)%j) != 0 
@@ -89,7 +89,7 @@ gam_max = 5.0
 ## ============================================================================================
 ##
 ## Data
-lnr_der = Array(Float64,N)      # Log derivative of (smoothed) rain input
+lnr_der = zeros(Float64,N)      # Log derivative of (smoothed) rain input
 ## System coordinates/modes
 q       = Array(Float64,N)       
 u       = Array(Float64,N)       
@@ -289,9 +289,9 @@ m_bdy_burnin   = m_bdy
 m_stg_burnin   = m_stg
 m_theta_burnin = m_theta
 
-m_bdy    = 800                      # m = m_q / dt
-m_stg    = 120                      # we assume m_q prop. to dt ==> m = costant     
-m_theta  = [130, 130]
+m_bdy    = 680                      # m = m_q / dt
+m_stg    = 300                      # we assume m_q prop. to dt ==> m = costant     
+m_theta  = [150, 130]
 
 mp[1:nparams] = m_theta
 for s = 1:n  
@@ -414,7 +414,7 @@ end
 ## Save parameters and results
 ## ============================================================================================
 ##
-fname = string("_sinr800_120") 
+fname = string("_juliatest") 
 
 param_names  = vcat("N", "j", "n", "t[1]", "dt", "nparams", "true_K", "true_gam", "sigma", "K", "gam", 
 	"nsample_burnin", "nsample_eff", "m_bdy_burnin", "m_bdy", "m_theta_burnin", "m_theta_bet", 
