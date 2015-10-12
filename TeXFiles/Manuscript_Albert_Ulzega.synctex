@@ -1,8 +1,8 @@
 SyncTeX Version:1
-Input:1:C:/Users/albertca/github/Julia_ParInf/TeXFiles/Manuscript_Albert_Ulzega.tex
-Input:2:C:\Users\albertca\github\Julia_ParInf\TeXFiles\iopart.cls
-Input:3:C:\Users\albertca\github\Julia_ParInf\TeXFiles\iopart12.clo
-Input:4:C:\Users\albertca\github\Julia_ParInf\TeXFiles\iopams.sty
+Input:1:C:/Users/ulzegasi/Julia_files/ParInf_HMC/TeXFiles/Manuscript_Albert_Ulzega.tex
+Input:2:C:\Users\ulzegasi\Julia_files\ParInf_HMC\TeXFiles\iopart.cls
+Input:3:C:\Users\ulzegasi\Julia_files\ParInf_HMC\TeXFiles\iopart12.clo
+Input:4:C:\Users\ulzegasi\Julia_files\ParInf_HMC\TeXFiles\iopams.sty
 Input:5:C:\Program Files (x86)\MiKTeX 2.9\tex\latex\amsmath\amsgen.sty
 Input:6:C:\Program Files (x86)\MiKTeX 2.9\tex\latex\amsfonts\amsfonts.sty
 Input:7:C:\Program Files (x86)\MiKTeX 2.9\tex\latex\amsfonts\amssymb.sty
@@ -23,11 +23,11 @@ Input:21:C:\Program Files (x86)\MiKTeX 2.9\tex\latex\oberdiek\auxhook.sty
 Input:22:C:\Program Files (x86)\MiKTeX 2.9\tex\latex\oberdiek\kvoptions.sty
 Input:23:C:\Program Files (x86)\MiKTeX 2.9\tex\latex\hyperref\pd1enc.def
 Input:24:C:\Program Files (x86)\MiKTeX 2.9\tex\latex\00miktex\hyperref.cfg
-Input:25:C:\Users\albertca\AppData\Roaming\MiKTeX\2.9\tex\latex\url\url.sty
+Input:25:C:\Users\ulzegasi\AppData\Roaming\MiKTeX\2.9\tex\latex\url\url.sty
 Input:26:C:\Program Files (x86)\MiKTeX 2.9\tex\latex\hyperref\hpdftex.def
 Input:27:C:\Program Files (x86)\MiKTeX 2.9\tex\latex\oberdiek\rerunfilecheck.sty
-Input:28:C:\Users\albertca\AppData\Roaming\MiKTeX\2.9\tex\latex\caption\caption.sty
-Input:29:C:\Users\albertca\AppData\Roaming\MiKTeX\2.9\tex\latex\caption\caption3.sty
+Input:28:C:\Users\ulzegasi\AppData\Roaming\MiKTeX\2.9\tex\latex\caption\caption.sty
+Input:29:C:\Users\ulzegasi\AppData\Roaming\MiKTeX\2.9\tex\latex\caption\caption3.sty
 Input:30:C:\Program Files (x86)\MiKTeX 2.9\tex\generic\xypic\xy.sty
 Input:31:C:\Program Files (x86)\MiKTeX 2.9\tex\generic\xypic\xy.tex
 Input:32:C:\Program Files (x86)\MiKTeX 2.9\tex\generic\xypic\xyrecat.tex
@@ -49,14 +49,14 @@ Input:47:C:\Program Files (x86)\MiKTeX 2.9\tex\generic\xypic\xypdf-cu.tex
 Input:48:C:\Program Files (x86)\MiKTeX 2.9\tex\generic\xypic\xypdf-fr.tex
 Input:49:C:\Program Files (x86)\MiKTeX 2.9\tex\generic\xypic\xypdf-li.tex
 Input:50:C:\Program Files (x86)\MiKTeX 2.9\tex\generic\xypic\xypdf-ro.tex
-Input:51:C:\Users\albertca\github\Julia_ParInf\TeXFiles\Manuscript_Albert_Ulzega.aux
-Input:52:C:\Users\albertca\AppData\Roaming\MiKTeX\2.9\tex\context\base\supp-pdf.mkii
+Input:51:C:\Users\ulzegasi\Julia_files\ParInf_HMC\TeXFiles\Manuscript_Albert_Ulzega.aux
+Input:52:C:\Users\ulzegasi\AppData\Roaming\MiKTeX\2.9\tex\context\base\supp-pdf.mkii
 Input:53:C:\Program Files (x86)\MiKTeX 2.9\tex\latex\graphics\color.sty
 Input:54:C:\Program Files (x86)\MiKTeX 2.9\tex\latex\00miktex\color.cfg
 Input:55:C:\Program Files (x86)\MiKTeX 2.9\tex\latex\hyperref\nameref.sty
 Input:56:C:\Program Files (x86)\MiKTeX 2.9\tex\generic\oberdiek\gettitlestring.sty
-Input:57:C:\Users\albertca\github\Julia_ParInf\TeXFiles\Manuscript_Albert_Ulzega.out
-Input:58:C:\Users\albertca\github\Julia_ParInf\TeXFiles\Manuscript_Albert_Ulzega.out
+Input:57:C:\Users\ulzegasi\Julia_files\ParInf_HMC\TeXFiles\Manuscript_Albert_Ulzega.out
+Input:58:C:\Users\ulzegasi\Julia_files\ParInf_HMC\TeXFiles\Manuscript_Albert_Ulzega.out
 Input:59:C:\Program Files (x86)\MiKTeX 2.9\tex\latex\amsfonts\umsa.fd
 Input:60:C:\Program Files (x86)\MiKTeX 2.9\tex\latex\amsfonts\umsb.fd
 Output:pdf
@@ -65,7 +65,7 @@ Unit:1
 X Offset:0
 Y Offset:0
 Content:
-!4577
+!4598
 {1
 [1,107:4736286,51397918:29255268,46661632,0
 h1,107:4736286,4736286:0,0,0
@@ -19632,8 +19632,8 @@ h1,760:4736286,51397918:29255268,0,0
 ]
 !10549
 }14
-Input:61:C:\Users\albertca\github\Julia_ParInf\TeXFiles\Manuscript_Albert_Ulzega.bbl
-!96
+Input:61:C:\Users\ulzegasi\Julia_files\ParInf_HMC\TeXFiles\Manuscript_Albert_Ulzega.bbl
+!99
 {15
 [61,47:4736286,51397918:29255268,46661632,0
 [61,47:4736286,4736286:0,0,0
@@ -22114,8 +22114,8 @@ h1,769:4736286,51397918:29255268,0,0
 ]
 !38645
 }16
-Input:62:C:\Users\albertca\github\Julia_ParInf\TeXFiles\Manuscript_Albert_Ulzega.aux
-!96
+Input:62:C:\Users\ulzegasi\Julia_files\ParInf_HMC\TeXFiles\Manuscript_Albert_Ulzega.aux
+!99
 Postamble:
 Count:13099
 !27

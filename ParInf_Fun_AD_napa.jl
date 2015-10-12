@@ -49,8 +49,8 @@ function V_1_fun(theta,u)
 
     rho = (2+gam)*bet/(2*gam)
 
-    out = (1/gam)*exp(- bet*u[N]) + u[N]* ((T/bet) * lnr_der[N] + rho ) -
-            (1/gam)*exp(- bet*u[1]) - u[1]* ((T/bet) * lnr_der[2] + rho ) #=+
+    out = (1/gam)*exp(- bet*u[N]) + u[N]* ((T/bet) * lnr_der[N-1] + rho ) -
+            (1/gam)*exp(- bet*u[1]) - u[1]* ((T/bet) * lnr_der[1] + rho ) #=+
             (dt/T) * (1/2) * ( (T/bet) * lnr_der[2] + rho -
             (bet/gam)*exp(-bet*u[1]) )^2 - (dt/T) * (1/2) * (bet^2/gam) * exp(-bet*u[1]) -
             (dt/T) * T * u[1] * (1/dt) * (T/bet) * (lnr_der[3] - lnr_der[2])=#
@@ -130,8 +130,8 @@ V_1 = quote
     # K   = T*gam/(bet^2)
     rho = (2+gam)*bet/(2*gam)
     out_1    = 0.0
-    out_temp = (1/gam)*exp(- bet*u[N]) + u[N]* ((T/bet) * lnr_der[N] + rho ) -
-            (1/gam)*exp(- bet*u[1]) - u[1]* ((T/bet) * lnr_der[2] + rho ) #=+
+    out_temp = (1/gam)*exp(- bet*u[N]) + u[N]* ((T/bet) * lnr_der[N-1] + rho ) -
+            (1/gam)*exp(- bet*u[1]) - u[1]* ((T/bet) * lnr_der[1] + rho ) #=+
             (dt/T) * (1/2) * ( (T/bet) * lnr_der[2] + rho -
             (bet/gam)*exp(-bet*u[1]) )^2 - (dt/T) * (1/2) * (bet^2/gam) * exp(-bet*u[1]) -
             (dt/T) * T * u[1] * (1/dt) * (T/bet) * (lnr_der[3] - lnr_der[2])=#
