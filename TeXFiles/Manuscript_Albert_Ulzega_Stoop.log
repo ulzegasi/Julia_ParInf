@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.1415926-2.5-1.40.14 (MiKTeX 2.9) (preloaded format=pdflatex 2014.11.28)  12 OCT 2015 10:26
+This is pdfTeX, Version 3.1415926-2.5-1.40.14 (MiKTeX 2.9) (preloaded format=pdflatex 2014.11.28)  26 OCT 2015 12:55
 entering extended mode
 **C:/Users/ulzegasi/Julia_files/ParInf_HMC/TeXFiles/Manuscript_Albert_Ulzega_St
 oop.tex
@@ -319,27 +319,33 @@ File: umsb.fd 2013/01/14 v3.01 AMS symbols B
 )
 Package xypdf Info: Line width: 0.43799pt on input line 93.
 
+<neuron.pdf, id=1, 502.5445pt x 241.23424pt>
+File: neuron.pdf Graphic file (type pdf)
+ <use neuron.pdf>
+Package pdftex.def Info: neuron.pdf used on input line 119.
+(pdftex.def)             Requested size: 442.65375pt x 212.48923pt.
 
-LaTeX Warning: Reference `neural' on page 1 undefined on input line 116.
+
+LaTeX Warning: `h' float specifier changed to `ht'.
 
 [1
 
 {C:/Users/ulzegasi/AppData/Local/MiKTeX/2.9/pdftex/config/pdftex.map}]
-[2]
+[2 <C:/Users/ulzegasi/Julia_files/ParInf_HMC/TeXFiles/neuron.pdf>] [3]
 Missing character: There is no â in font cmr10!
 Missing character: There is no € in font cmr10!
 Missing character: There is no ˜ in font cmr10!
 Missing character: There is no â in font cmr10!
 Missing character: There is no € in font cmr10!
 Missing character: There is no ™ in font cmr10!
- [3] [4] [5] <FigPolymer2.pdf, id=33, 482.28984pt x 327.14923pt>
+ [4]
+[5] [6] <FigPolymer2.pdf, id=63, 482.28984pt x 327.14923pt>
 File: FigPolymer2.pdf Graphic file (type pdf)
 
 <use FigPolymer2.pdf>
-Package pdftex.def Info: FigPolymer2.pdf used on input line 411.
+Package pdftex.def Info: FigPolymer2.pdf used on input line 413.
 (pdftex.def)             Requested size: 309.85626pt x 210.18347pt.
- [6] [7 <C:/Users/ulzegasi/Julia_files/ParInf_HMC/TeXFiles/FigPolymer2.pdf>] [8
-]
+ [7 <C:/Users/ulzegasi/Julia_files/ParInf_HMC/TeXFiles/FigPolymer2.pdf>] [8]
 Missing character: There is no â in font cmr8!
 Missing character: There is no € in font cmr8!
 Missing character: There is no ¦ in font cmr8!
@@ -352,91 +358,88 @@ Missing character: There is no ¦ in font cmr8!
 Missing character: There is no â in font cmr8!
 Missing character: There is no € in font cmr8!
 Missing character: There is no ¦ in font cmr8!
- <Fig2.pdf, id=122, 1059.96pt x 650.43pt>
+ <Fig2.pdf, id=148, 1059.96pt x 650.43pt>
 File: Fig2.pdf Graphic file (type pdf)
  <use Fig2.pdf>
-Package pdftex.def Info: Fig2.pdf used on input line 617.
+Package pdftex.def Info: Fig2.pdf used on input line 619.
 (pdftex.def)             Requested size: 309.85626pt x 190.13835pt.
 
-<Fig3.pdf, id=123, 1063.975pt x 658.46pt>
+<Fig3.pdf, id=149, 1063.975pt x 658.46pt>
 File: Fig3.pdf Graphic file (type pdf)
  <use Fig3.pdf>
-Package pdftex.def Info: Fig3.pdf used on input line 629.
+Package pdftex.def Info: Fig3.pdf used on input line 631.
 (pdftex.def)             Requested size: 309.85626pt x 191.75229pt.
-
-<Fig4.pdf, id=124, 999.83737pt x 626.40323pt>
+ [9]
+<Fig4.pdf, id=154, 999.83737pt x 626.40323pt>
 File: Fig4.pdf Graphic file (type pdf)
  <use Fig4.pdf>
-Package pdftex.def Info: Fig4.pdf used on input line 641.
+Package pdftex.def Info: Fig4.pdf used on input line 643.
 (pdftex.def)             Requested size: 309.85626pt x 194.12564pt.
 
-<Fig5.pdf, id=125, 980.11269pt x 624.80325pt>
+<Fig5.pdf, id=155, 980.11269pt x 624.80325pt>
 File: Fig5.pdf Graphic file (type pdf)
  <use Fig5.pdf>
-Package pdftex.def Info: Fig5.pdf used on input line 648.
+Package pdftex.def Info: Fig5.pdf used on input line 650.
 (pdftex.def)             Requested size: 309.85626pt x 197.52908pt.
 
-<Fig6.pdf, id=126, 1013.23544pt x 656.41936pt>
+<Fig6.pdf, id=156, 1013.23544pt x 656.41936pt>
 File: Fig6.pdf Graphic file (type pdf)
  <use Fig6.pdf>
-Package pdftex.def Info: Fig6.pdf used on input line 663.
+Package pdftex.def Info: Fig6.pdf used on input line 665.
 (pdftex.def)             Requested size: 309.85626pt x 200.73346pt.
- [9]
-<Fig77.pdf, id=131, 2138.19824pt x 665.55247pt>
+
+<Fig77.pdf, id=157, 2138.19824pt x 665.55247pt>
 File: Fig77.pdf Graphic file (type pdf)
  <use Fig77.pdf>
-Package pdftex.def Info: Fig77.pdf used on input line 672.
+Package pdftex.def Info: Fig77.pdf used on input line 674.
 (pdftex.def)             Requested size: 442.65375pt x 137.77966pt.
- [10 <C:/Users/ulzegasi/Julia_files/ParInf_HMC/TeXFiles/Fig2.pdf> <C:/Users/ulz
-egasi/Julia_files/ParInf_HMC/TeXFiles/Fig3.pdf>] [11 <C:/Users/ulzegasi/Julia_f
-iles/ParInf_HMC/TeXFiles/Fig4.pdf> <C:/Users/ulzegasi/Julia_files/ParInf_HMC/Te
-XFiles/Fig5.pdf>] [12 <C:/Users/ulzegasi/Julia_files/ParInf_HMC/TeXFiles/Fig6.p
-df> <C:/Users/ulzegasi/Julia_files/ParInf_HMC/TeXFiles/Fig77.pdf>]
+ [10 <C:/Users/ulzegasi/Julia_files/ParInf_HMC/TeXFiles/Fig2.pdf>] [11 <C:/User
+s/ulzegasi/Julia_files/ParInf_HMC/TeXFiles/Fig3.pdf> <C:/Users/ulzegasi/Julia_f
+iles/ParInf_HMC/TeXFiles/Fig4.pdf>] [12 <C:/Users/ulzegasi/Julia_files/ParInf_H
+MC/TeXFiles/Fig5.pdf> <C:/Users/ulzegasi/Julia_files/ParInf_HMC/TeXFiles/Fig6.p
+df>]
 (C:\Users\ulzegasi\Julia_files\ParInf_HMC\TeXFiles\Manuscript_Albert_Ulzega_Sto
-op.bbl [13]
+op.bbl [13 <C:/Users/ulzegasi/Julia_files/ParInf_HMC/TeXFiles/Fig77.pdf>]
 Missing character: There is no â in font cmr10!
 Missing character: There is no € in font cmr10!
 Missing character: There is no ” in font cmr10!
 Missing character: There is no â in font cmr10!
 Missing character: There is no € in font cmr10!
 Missing character: There is no ” in font cmr10!
-) [14]
+
+[14]) [15]
 (C:\Users\ulzegasi\Julia_files\ParInf_HMC\TeXFiles\Manuscript_Albert_Ulzega_Sto
-op.aux)
-
-LaTeX Warning: There were undefined references.
-
- ) 
+op.aux) ) 
 Here is how much of TeX's memory you used:
- 4985 strings out of 493921
- 62144 string characters out of 3144866
- 167130 words of memory out of 3000000
- 8178 multiletter control sequences out of 15000+200000
+ 4993 strings out of 493921
+ 62292 string characters out of 3144866
+ 169151 words of memory out of 3000000
+ 8185 multiletter control sequences out of 15000+200000
  15959 words of font info for 64 fonts, out of 3000000 for 9000
  841 hyphenation exceptions out of 8191
  30i,13n,26p,3291b,294s stack positions out of 5000i,500n,10000p,200000b,50000s
-<C:/Program Files (x86)/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmbx10.pfb>
-<C:/Program Files (x86)/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmbx12.pfb><C
-:/Program Files (x86)/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmbx8.pfb><C:/P
-rogram Files (x86)/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmex10.pfb><C:/Pro
-gram Files (x86)/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmmi10.pfb><C:/Progr
-am Files (x86)/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmmi6.pfb><C:/Program 
-Files (x86)/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmmi8.pfb><C:/Program Fil
-es (x86)/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmr10.pfb><C:/Program Files 
-(x86)/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmr12.pfb><C:/Program Files (x8
-6)/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmr17.pfb><C:/Program Files (x86)/
-MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmr6.pfb><C:/Program Files (x86)/MiKT
-eX 2.9/fonts/type1/public/amsfonts/cm/cmr8.pfb><C:/Program Files (x86)/MiKTeX 2
-.9/fonts/type1/public/amsfonts/cm/cmr9.pfb><C:/Program Files (x86)/MiKTeX 2.9/f
-onts/type1/public/amsfonts/cm/cmsy10.pfb><C:/Program Files (x86)/MiKTeX 2.9/fon
-ts/type1/public/amsfonts/cm/cmsy6.pfb><C:/Program Files (x86)/MiKTeX 2.9/fonts/
-type1/public/amsfonts/cm/cmsy8.pfb><C:/Program Files (x86)/MiKTeX 2.9/fonts/typ
-e1/public/amsfonts/cm/cmti10.pfb><C:/Program Files (x86)/MiKTeX 2.9/fonts/type1
-/public/amsfonts/symbols/msbm10.pfb>
-Output written on Manuscript_Albert_Ulzega_Stoop.pdf (14 pages, 3806573 bytes).
+<C:/Program Files (x86)/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmbx
+10.pfb><C:/Program Files (x86)/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmbx12
+.pfb><C:/Program Files (x86)/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmbx8.pf
+b><C:/Program Files (x86)/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmex10.pfb>
+<C:/Program Files (x86)/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmmi10.pfb><C
+:/Program Files (x86)/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmmi6.pfb><C:/P
+rogram Files (x86)/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmmi8.pfb><C:/Prog
+ram Files (x86)/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmr10.pfb><C:/Program
+ Files (x86)/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmr12.pfb><C:/Program Fi
+les (x86)/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmr17.pfb><C:/Program Files
+ (x86)/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmr6.pfb><C:/Program Files (x8
+6)/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmr8.pfb><C:/Program Files (x86)/M
+iKTeX 2.9/fonts/type1/public/amsfonts/cm/cmr9.pfb><C:/Program Files (x86)/MiKTe
+X 2.9/fonts/type1/public/amsfonts/cm/cmsy10.pfb><C:/Program Files (x86)/MiKTeX 
+2.9/fonts/type1/public/amsfonts/cm/cmsy6.pfb><C:/Program Files (x86)/MiKTeX 2.9
+/fonts/type1/public/amsfonts/cm/cmsy8.pfb><C:/Program Files (x86)/MiKTeX 2.9/fo
+nts/type1/public/amsfonts/cm/cmti10.pfb><C:/Program Files (x86)/MiKTeX 2.9/font
+s/type1/public/amsfonts/symbols/msbm10.pfb>
+Output written on Manuscript_Albert_Ulzega_Stoop.pdf (15 pages, 4094690 bytes).
 
 PDF statistics:
- 402 PDF objects out of 1000 (max. 8388607)
+ 431 PDF objects out of 1000 (max. 8388607)
  0 named destinations out of 1000 (max. 500000)
- 36 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 41 words of extra memory for PDF output out of 10000 (max. 10000000)
 

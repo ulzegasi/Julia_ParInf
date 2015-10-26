@@ -113,7 +113,7 @@ Our approach is applicable to a wide range of inference problems and is highly p
 \section{Introduction}
 
 Modeling a dynamical process starts with a basic model that is usually obtained from more or less deep insight into the nature of the process. The next step then is the determination of the parameters of the model, based on observed data, which is generally a highly nontrivial task, in particular when complex behavior of such systems needs to be predicted, or when the measurements are noisy.
-A minimal example is a perceptron [XXX], the basic element of a neuronal network, that predicts the double cosine value associated with the input of the corresponding sine function plus the sine's value at a fixed earlier time. While this task can easily be achieved for clean data using gradient descent learning, for noisy input data, this is largely impossible, as noise cannot be learned. The result is a distribution of potential parameter values (Fig.~(\ref{neural})).
+A minimal example is a perceptron [XXX], the basic element of a neuronal network, that predicts the double cosine value associated with the input of the corresponding sine function plus the sine's value at a fixed earlier time. While this task can easily be achieved for clean data using gradient descent learning, for noisy input data this is largely impossible, as noise cannot be learned. The result is a distribution of potential parameter values (Fig.~(\ref{neural})).
 \begin{figure}[h]
     \centering
     \includegraphics[width=1.0\textwidth]{neuron.pdf}
@@ -151,12 +151,12 @@ explore a computationally simpler approach, which, to our knowledge, has never b
 Depending on the number of discretization points needed to approximate the original SDE system and the number of measurement points, the dynamics of the statistical mechanics system happen on very different time scales. This suggests a multiple time scale integration technique for the simulation of the statistical mechanics system \cite{tuckerman_1993}.
 We will show that for 1D SDEs we can always find a parametrization, which decouples the harmonic modes in between measurement points from both the measurement points and the model parameters and allows for an analytical time-saving solution of the fastest part of the dynamics.
 Whilst for higher dimensional problems it is not always possible to solve part of the dynamics analytically, we believe that scale separation alone will render many SDEs amenable to a full-fledged Bayesian inference with time-series.
-In fact, scale separation appears to be a generic feature if the dynamics of the SDE requires a large number of discretizaion points.
+In fact, scale separation appears to be a generic feature if the dynamics of the SDE requires a large number of discretization points.
 %Our approach can be combined with the approach in \cite{girolami_2011_HMC}.
 
 \section{Inference problem setting}
 
-Consider, for simplicity and concreteness, a reservoir dynamics S(t) that on the observation time-scale is linear, with other (inflow and outflow) processes happening at much shorter time scales, so that they can be described by white noise. Furthermore, assume that this noise scales linearly with the system state S(t). The model equation is thus given by the SDE
+Consider, for simplicity and concreteness, a reservoir dynamics $S(t)$ that on the observation time-scale is linear, with other (inflow and outflow) processes happening at much shorter time scales, so that they can be described by white noise. Furthermore, assume that this noise scales linearly with the system state $S(t)$. The model equation is thus given by the SDE
 
 \begin{equation}\label{sde}
 \dot{S}(t) = r(t) - \frac{1}{K}\left(1+\frac{\gamma}{2}\right) S(t)
@@ -624,7 +624,7 @@ Such system realization was then used to generate a synthetic time series of obs
 %    Measured system realization (filled circles) and synthetic observed data (solid line and deviation bars attached to the circles evaluated across a longer time interval.). The system response closely follows time-delayed the oscillations of the sinusoidal input (dashed), with larger error bars where the prediction is less faithful. Parameters for this figure and all following figures: $K_{\mbox{\small true}} = 50$ and $\gamma_{\mbox{\small true}} = 0.2$.
 }
 \end{figure}
-Within the investigated range of parameters, we observed a reasonably linear dependence of the total computing time on the number of discretization points $N$. For example, a complete run with 20000 iterations with $j=30$ (i.e., $N = 301$ discretization points) required about 13 minutes (for implementation details see the next section). A set of 200 simulated system realizations based on $j=30$ is shown in Fig.~(\ref{fig:spaghetti}), together with the generated synthetic data. In the simulation, the masses were set (in arbitrary units) to $M=720$ for the boundary beads, to $m=130$ for the staging beads, and to $m_\alpha=150$ for both the dimensionless parameters $\beta$ and $\gamma$. The different dynamics of the heavy boundary beads and the light staging beads can be appreciated in Fig.~(\ref{fig:spaghetti}).
+A complete run with 20000 iterations with $n=10$ and $j=30$ (i.e., $N = 301$ discretization points) required only about 40 seconds (for implementation details see the next section). A set of 200 simulated system realizations based on $j=30$ is shown in Fig.~(\ref{fig:spaghetti}), together with the generated synthetic data. In the simulation, the masses were set (in arbitrary units) to $M=720$ for the boundary beads, to $m=130$ for the staging beads, and to $m_\alpha=150$ for both the dimensionless parameters $\beta$ and $\gamma$. The different dynamics of the heavy boundary beads and the light staging beads can be appreciated in Fig.~(\ref{fig:spaghetti}).
 %
 \begin{figure}[htb!]
     \centering
@@ -679,11 +679,10 @@ The Markov chains (Figs.~(\ref{fig:chainK}) and (\ref{fig:chainG})) determine th
 
 \section{Physical computational implementation}
 
-The algorithm was implemented using the free and open-source programming language \emph{Julia} (version 0.3.9, http:\/\/julialang.org\/). One of the attractive features of this language is its large and dynamic library for numerical and scientific applications.
-From this, we made extensive use of the \emph{ReverseDiffSource} package, which provides a powerful tool for reverse-mode automated differentiation (AD) of arbitrarily complex user-defined expressions. Our algorithm benefits greatly from the use of AD. This gives us the possibility to modify Eq.~(\ref{sde}) and therefore the action~(\ref{action}), while leaving the implementation of the algorithm unaltered. This makes our program extremely flexible and suitable for a much broader range of applications than the simple exemplary SDE model described here.
+The algorithm was implemented in C++ (version C++11) using the open source \emph{Adept} library (version 1.1)~\cite{Hogan_2014_adept}, which provides a powerful tool for fast reverse-mode automated differentiation (AD). Our algorithm benefits greatly from the use of AD. This gives us the possibility to modify Eq.~(\ref{sde}) and therefore the action~(\ref{action}), while leaving the implementation of the algorithm unaltered. This makes our program extremely flexible and suitable for a much broader range of applications than the simple exemplary SDE model described here.
 %
 
-The simulations were run on a serial implementation of the algorithm on a 64-bit laptop computer equipped with a Windows 7 operating system, a double-core 1.6~GHz CPU (Intel i5-4200U) and 8~GB of RAM.  $n+1 = 11$ measurement points and $j = 10, 20,\dots, 50$ intermediate staging beads, with a total number of discretization points $N = 101, 201, \dots, 501$ were taken. In the Hamiltonian propagator~(\ref{propagator}), we set $\Delta\tau = 0.25$ and $P = 3$, with a constant total observation time $T = 833$ (arbitrary units of time).  Their initial values in the simulations were set to $K=200$ and $\gamma = 0.5$.
+The simulations were run on a serial implementation of the algorithm on a 64-bit laptop computer equipped with a Windows 7 operating system, a double-core 1.6~GHz CPU (Intel i5-4200U) and 8~GB of RAM. We used $n+1 = 11$ measurement points and $j = 10, 20,\dots, 50$ intermediate staging beads, with a total number of discretization points $N = 101, 201, \dots, 501$. In the Hamiltonian propagator~(\ref{propagator}), we set $\Delta\tau = 0.25$ and $P = 3$, with a constant total observation time $T = 833$ (arbitrary units of time).  Their initial values in the simulations were set to $K=200$ and $\gamma = 0.5$.
 %
 
 

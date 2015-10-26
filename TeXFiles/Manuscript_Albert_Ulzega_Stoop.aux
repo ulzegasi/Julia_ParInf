@@ -1,82 +1,86 @@
 \relax 
-\@writefile{toc}{\contentsline {section}{\numberline {1}Introduction}{1}}
 \citation{chopin_2013_SMC2}
 \citation{tomassini_2009_smoothing}
 \citation{reichert_2009_timedepParameters}
 \citation{marin_2012_ABC}
 \citation{Albert_2014_ABC}
+\@writefile{toc}{\contentsline {section}{\numberline {1}Introduction}{1}}
 \citation{duane_1987}
 \citation{alder_1959_MD}
 \citation{rahman_1964_MD}
 \citation{metropolis_1953}
 \citation{girolami_2011_HMC}
+\@writefile{lof}{\contentsline {figure}{\numberline {1}{\ignorespaces General problem setting: Parameter estimation (synaptic weights $w_1$,$w_2$) of a perceptron, from a) noiseless, b) noisy data (noise sampled from a flat distribution over the interval $[-0.2,0.2]$). Whereas for noiseless data the estimates perfectly converge, for noisy data the estimates the system attempts to also include the noise, leading to a nontrivial distribution of the parameter estimates, and rendering the extraction of the optimal parameters a nontrivial task. Open circles: location of the optimal parameters in the noiseless case.}}{2}}
+\newlabel{neural}{{1}{2}}
 \citation{tuckerman_1993}
 \citation{stratonovich_1968}
 \citation{breinholt_2011_SDE}
+\citation{livina_2003_dischargeFluctuations}
 \citation{dutre_1977_SDE}
 \citation{schenzle_1979_multStochProc}
 \citation{fujisaka_1986_intermittency}
 \@writefile{toc}{\contentsline {section}{\numberline {2}Inference problem setting}{3}}
 \newlabel{sde}{{1}{3}}
 \newlabel{whitenoise}{{2}{3}}
-\newlabel{data}{{3}{3}}
-\newlabel{Bayes}{{4}{3}}
 \citation{thyer_2009_fattails}
+\citation{risken_1989_FockerPlanck}
 \citation{lau_2007}
+\newlabel{data}{{3}{4}}
+\newlabel{Bayes}{{4}{4}}
+\newlabel{pathint}{{6}{4}}
+\newlabel{action1}{{7}{4}}
 \citation{dutre_1977_SDE}
 \citation{schenzle_1979_multStochProc}
 \citation{fujisaka_1986_intermittency}
-\newlabel{pathint}{{6}{4}}
-\newlabel{action1}{{7}{4}}
-\newlabel{action}{{8}{4}}
-\newlabel{detailed_balance}{{9}{4}}
-\newlabel{inverse_gamma}{{10}{4}}
 \citation{duane_1987}
+\newlabel{action}{{8}{5}}
+\newlabel{detailed_balance}{{9}{5}}
+\newlabel{inverse_gamma}{{10}{5}}
+\newlabel{posterior_pathint}{{11}{5}}
+\@writefile{toc}{\contentsline {section}{\numberline {3}Inference algorithm}{5}}
 \citation{metropolis_1953}
 \citation{alder_1959_MD}
 \citation{rahman_1964_MD}
-\newlabel{posterior_pathint}{{11}{5}}
-\@writefile{toc}{\contentsline {section}{\numberline {3}Inference algorithm}{5}}
-\newlabel{Hamiltonian}{{12}{5}}
-\newlabel{K}{{13}{5}}
-\newlabel{phaseSpacePathInt}{{14}{5}}
-\citation{doll_1985_fourier}
-\citation{tuckerman_1993}
+\newlabel{Hamiltonian}{{12}{6}}
+\newlabel{K}{{13}{6}}
+\newlabel{phaseSpacePathInt}{{14}{6}}
 \newlabel{Kdisc}{{15}{6}}
 \newlabel{Vdisc}{{16}{6}}
-\@writefile{lof}{\contentsline {figure}{\numberline {1}{\ignorespaces Simulated polymer chain dynamics, with $n+1=11$ data points (large circles) and $j-1=9$ intermediate beads (small circles). For other parameters see Section\nobreakspace  {}4\hbox {}. Bottom: initial state, where intermediate beads are on a linear interpolation between data points. Top: polymer after $T=1000$ iterations of the propagation algorithm (dotted line: initial configuration). Clearly the new configuration is mostly determined by the dynamics of the light-mass intermediate beads, while the heavy-mass data points move to a much lesser extent.}}{7}}
-\newlabel{fig:polymer}{{1}{7}}
+\citation{doll_1985_fourier}
+\citation{tuckerman_1993}
+\@writefile{lof}{\contentsline {figure}{\numberline {2}{\ignorespaces Simulated polymer chain dynamics, with $n+1=11$ data points (large circles) and $j-1=9$ intermediate beads (small circles). For other parameters see Section\nobreakspace  {}4\hbox {}. Bottom: initial state, where intermediate beads are on a linear interpolation between data points. Top: polymer after $N_{MC}=1000$ iterations of the propagation algorithm (dotted line: initial configuration). Clearly the new configuration is mostly determined by the dynamics of the light-mass intermediate beads, while the heavy-mass data points move to a much lesser extent.}}{7}}
+\newlabel{fig:polymer}{{2}{7}}
 \citation{tuckerman_1992}
-\citation{trotter_1959}
 \newlabel{H_N}{{22}{8}}
 \newlabel{H_n}{{23}{8}}
 \newlabel{H_1}{{24}{8}}
-\newlabel{propagator}{{26}{8}}
+\citation{trotter_1959}
 \citation{swope_1982_verlet}
-\@writefile{toc}{\contentsline {section}{\numberline {4}Results}{9}}
-\newlabel{numerical_results}{{4}{9}}
-\@writefile{lof}{\contentsline {figure}{\numberline {2}{\ignorespaces  System realization (solid line) with synthetic observations (filled circles, with error bars indicating the assumed measurement uncertainty). The system response closely follows time-delayed the oscillations of the sinusoidal input (dashed). Parameters for this figure and all following figures: $K_{\unhbox \voidb@x \hbox {\relax \fontsize  {10}{12}\selectfont  \abovedisplayskip 10\p@ plus2\p@ minus5\p@ \abovedisplayshortskip \z@ plus3\p@ \belowdisplayshortskip 6\p@ plus3\p@ minus3\p@ \def \leftmargin \leftmargini \parsep 4.5\p@ plus2\p@ minus\p@ \topsep 9\p@ plus3\p@ minus5\p@ \itemsep 4.5\p@ plus2\p@ minus\p@ {\leftmargin \leftmargini \topsep 6\p@ plus2\p@ minus2\p@ \parsep 3\p@ plus2\p@ minus\p@ \itemsep \parsep }\belowdisplayskip \abovedisplayskip true}} = 50$ and $\gamma _{\unhbox \voidb@x \hbox {\relax \fontsize  {10}{12}\selectfont  \abovedisplayskip 10\p@ plus2\p@ minus5\p@ \abovedisplayshortskip \z@ plus3\p@ \belowdisplayshortskip 6\p@ plus3\p@ minus3\p@ \def \leftmargin \leftmargini \parsep 4.5\p@ plus2\p@ minus\p@ \topsep 9\p@ plus3\p@ minus5\p@ \itemsep 4.5\p@ plus2\p@ minus\p@ {\leftmargin \leftmargini \topsep 6\p@ plus2\p@ minus2\p@ \parsep 3\p@ plus2\p@ minus\p@ \itemsep \parsep }\belowdisplayskip \abovedisplayskip true}} = 0.2$. }}{10}}
-\newlabel{fig:rain_data_S}{{2}{10}}
-\@writefile{lof}{\contentsline {figure}{\numberline {3}{\ignorespaces Simulated system realizations associated with synthetic data, based on $n+1 = 11$ measurement points, $j=30$ staging beads and $N=301$ discretization points. }}{10}}
-\newlabel{fig:spaghetti}{{3}{10}}
-\@writefile{lof}{\contentsline {figure}{\numberline {4}{\ignorespaces Markov chain evolution of the inferred parameter $K$.}}{11}}
-\newlabel{fig:chainK}{{4}{11}}
-\@writefile{lof}{\contentsline {figure}{\numberline {5}{\ignorespaces Markov chain evolution of the inferred parameter $\gamma $.}}{11}}
-\newlabel{fig:chainG}{{5}{11}}
+\newlabel{propagator}{{26}{9}}
+\citation{Hogan_2014_adept}
+\@writefile{toc}{\contentsline {section}{\numberline {4}Results}{10}}
+\newlabel{numerical_results}{{4}{10}}
+\@writefile{lof}{\contentsline {figure}{\numberline {3}{\ignorespaces  System realization (solid line) with synthetic observations (filled circles, with error bars indicating the assumed measurement uncertainty). The system response closely follows the oscillations of the sinusoidal input (dashed) in a time-delayed manner. Parameters for this figure and all following figures: $K_{\unhbox \voidb@x \hbox {\relax \fontsize  {10}{12}\selectfont  \abovedisplayskip 10\p@ plus2\p@ minus5\p@ \abovedisplayshortskip \z@ plus3\p@ \belowdisplayshortskip 6\p@ plus3\p@ minus3\p@ \def \leftmargin \leftmargini \parsep 4.5\p@ plus2\p@ minus\p@ \topsep 9\p@ plus3\p@ minus5\p@ \itemsep 4.5\p@ plus2\p@ minus\p@ {\leftmargin \leftmargini \topsep 6\p@ plus2\p@ minus2\p@ \parsep 3\p@ plus2\p@ minus\p@ \itemsep \parsep }\belowdisplayskip \abovedisplayskip true}} = 50$ and $\gamma _{\unhbox \voidb@x \hbox {\relax \fontsize  {10}{12}\selectfont  \abovedisplayskip 10\p@ plus2\p@ minus5\p@ \abovedisplayshortskip \z@ plus3\p@ \belowdisplayshortskip 6\p@ plus3\p@ minus3\p@ \def \leftmargin \leftmargini \parsep 4.5\p@ plus2\p@ minus\p@ \topsep 9\p@ plus3\p@ minus5\p@ \itemsep 4.5\p@ plus2\p@ minus\p@ {\leftmargin \leftmargini \topsep 6\p@ plus2\p@ minus2\p@ \parsep 3\p@ plus2\p@ minus\p@ \itemsep \parsep }\belowdisplayskip \abovedisplayskip true}} = 0.2$. }}{10}}
+\newlabel{fig:rain_data_S}{{3}{10}}
+\@writefile{lof}{\contentsline {figure}{\numberline {4}{\ignorespaces Simulated system realizations associated with synthetic data, based on $n+1 = 11$ measurement points, $j=30$ staging beads and $N=301$ discretization points. }}{11}}
+\newlabel{fig:spaghetti}{{4}{11}}
+\@writefile{lof}{\contentsline {figure}{\numberline {5}{\ignorespaces Markov chain evolution of the inferred parameter $K$.}}{11}}
+\newlabel{fig:chainK}{{5}{11}}
 \@writefile{toc}{\contentsline {section}{\numberline {5}Physical computational implementation}{11}}
-\citation{girolami_2011_HMC}
-\citation{girolami_2011_HMC}
-\citation{girolami_2011_HMC}
-\@writefile{lof}{\contentsline {figure}{\numberline {6}{\ignorespaces System dynamics in the phase space $K-\gamma $. The green circle represents the initial state, while the red square corresponds to the true parameter values used to generate the data.}}{12}}
-\newlabel{fig:phase_space_evol}{{6}{12}}
-\@writefile{lof}{\contentsline {figure}{\numberline {7}{\ignorespaces Probability density functions for the inferred parameters, (a) $K$ and (b) $\gamma $. The true values used to generate the data are represented by the dashed vertical lines.}}{12}}
-\newlabel{fig:KG_distr}{{7}{12}}
+\@writefile{lof}{\contentsline {figure}{\numberline {6}{\ignorespaces Markov chain evolution of the inferred parameter $\gamma $.}}{12}}
+\newlabel{fig:chainG}{{6}{12}}
+\@writefile{lof}{\contentsline {figure}{\numberline {7}{\ignorespaces System dynamics in the phase space $K-\gamma $. The green circle represents the initial state, while the red square corresponds to the true parameter values used to generate the data.}}{12}}
+\newlabel{fig:phase_space_evol}{{7}{12}}
 \@writefile{toc}{\contentsline {section}{\numberline {6}Conclusions}{12}}
+\citation{girolami_2011_HMC}
+\citation{girolami_2011_HMC}
 \bibstyle{unsrt}
 \bibdata{refs}
 \bibcite{chopin_2013_SMC2}{1}
 \bibcite{tomassini_2009_smoothing}{2}
 \bibcite{reichert_2009_timedepParameters}{3}
+\@writefile{lof}{\contentsline {figure}{\numberline {8}{\ignorespaces Probability density functions for the inferred parameters, (a) $K$ and (b) $\gamma $. The true values used to generate the data are represented by the dashed vertical lines.}}{13}}
+\newlabel{fig:KG_distr}{{8}{13}}
 \bibcite{marin_2012_ABC}{4}
 \bibcite{Albert_2014_ABC}{5}
 \bibcite{duane_1987}{6}
@@ -87,12 +91,15 @@
 \bibcite{tuckerman_1993}{11}
 \bibcite{stratonovich_1968}{12}
 \bibcite{breinholt_2011_SDE}{13}
-\bibcite{dutre_1977_SDE}{14}
-\bibcite{schenzle_1979_multStochProc}{15}
-\bibcite{fujisaka_1986_intermittency}{16}
-\bibcite{thyer_2009_fattails}{17}
-\bibcite{lau_2007}{18}
-\bibcite{doll_1985_fourier}{19}
-\bibcite{tuckerman_1992}{20}
-\bibcite{trotter_1959}{21}
-\bibcite{swope_1982_verlet}{22}
+\bibcite{livina_2003_dischargeFluctuations}{14}
+\bibcite{dutre_1977_SDE}{15}
+\bibcite{schenzle_1979_multStochProc}{16}
+\bibcite{fujisaka_1986_intermittency}{17}
+\bibcite{thyer_2009_fattails}{18}
+\bibcite{risken_1989_FockerPlanck}{19}
+\bibcite{lau_2007}{20}
+\bibcite{doll_1985_fourier}{21}
+\bibcite{tuckerman_1992}{22}
+\bibcite{trotter_1959}{23}
+\bibcite{swope_1982_verlet}{24}
+\bibcite{Hogan_2014_adept}{25}
