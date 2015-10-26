@@ -1,10 +1,10 @@
-This is pdfTeX, Version 3.1415926-2.5-1.40.14 (MiKTeX 2.9) (preloaded format=pdflatex 2014.11.28)  26 OCT 2015 12:55
+This is pdfTeX, Version 3.1415926-2.5-1.40.14 (MiKTeX 2.9) (preloaded format=pdflatex 2014.4.3)  26 OCT 2015 13:28
 entering extended mode
-**C:/Users/ulzegasi/Julia_files/ParInf_HMC/TeXFiles/Manuscript_Albert_Ulzega_St
-oop.tex
+**C:/Users/albertca/github/Julia_ParInf/TeXFiles/Manuscript_Albert_Ulzega_Stoop
+.tex
 
-(C:/Users/ulzegasi/Julia_files/ParInf_HMC/TeXFiles/Manuscript_Albert_Ulzega_Sto
-op.tex
+(C:/Users/albertca/github/Julia_ParInf/TeXFiles/Manuscript_Albert_Ulzega_Stoop.
+tex
 LaTeX2e <2011/06/27>
 Babel <v3.8m> and hyphenation patterns for english, afrikaans, ancientgreek, ar
 abic, armenian, assamese, basque, bengali, bokmal, bulgarian, catalan, coptic, 
@@ -33,10 +33,10 @@ File: size11.clo 2007/10/19 v1.4h Standard LaTeX file (size option)
 \belowcaptionskip=\skip42
 \bibindent=\dimen102
 )
-(C:\Users\ulzegasi\AppData\Roaming\MiKTeX\2.9\tex\latex\a4wide\a4wide.sty
+(C:\Users\albertca\AppData\Roaming\MiKTeX\2.9\tex\latex\a4wide\a4wide.sty
 Package: a4wide 1994/08/30
 
-(C:\Users\ulzegasi\AppData\Roaming\MiKTeX\2.9\tex\latex\ntgclass\a4.sty
+(C:\Users\albertca\AppData\Roaming\MiKTeX\2.9\tex\latex\ntgclass\a4.sty
 Package: a4 2004/04/15 v1.2g A4 based page layout
 ))
 ("C:\Program Files (x86)\MiKTeX 2.9\tex\latex\amsmath\amsmath.sty"
@@ -279,8 +279,8 @@ Xy-pic pdf driver: `rotate' extension support
 loaded))
 \c@theorem=\count110
 
-(C:\Users\ulzegasi\Julia_files\ParInf_HMC\TeXFiles\Manuscript_Albert_Ulzega_Sto
-op.aux)
+(C:\Users\albertca\github\Julia_ParInf\TeXFiles\Manuscript_Albert_Ulzega_Stoop.
+aux)
 LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 93.
 LaTeX Font Info:    ... okay on input line 93.
 LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 93.
@@ -294,7 +294,7 @@ LaTeX Font Info:    ... okay on input line 93.
 LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 93.
 LaTeX Font Info:    ... okay on input line 93.
 
-(C:\Users\ulzegasi\AppData\Roaming\MiKTeX\2.9\tex\context\base\supp-pdf.mkii
+(C:\Users\albertca\AppData\Roaming\MiKTeX\2.9\tex\context\base\supp-pdf.mkii
 [Loading MPS to PDF converter (version 2006.09.02).]
 \scratchcounter=\count111
 \scratchdimen=\dimen151
@@ -330,8 +330,8 @@ LaTeX Warning: `h' float specifier changed to `ht'.
 
 [1
 
-{C:/Users/ulzegasi/AppData/Local/MiKTeX/2.9/pdftex/config/pdftex.map}]
-[2 <C:/Users/ulzegasi/Julia_files/ParInf_HMC/TeXFiles/neuron.pdf>] [3]
+{C:/Users/albertca/AppData/Local/MiKTeX/2.9/pdftex/config/pdftex.map}]
+[2 <C:/Users/albertca/github/Julia_ParInf/TeXFiles/neuron.pdf>] [3]
 Missing character: There is no â in font cmr10!
 Missing character: There is no € in font cmr10!
 Missing character: There is no ˜ in font cmr10!
@@ -345,7 +345,7 @@ File: FigPolymer2.pdf Graphic file (type pdf)
 <use FigPolymer2.pdf>
 Package pdftex.def Info: FigPolymer2.pdf used on input line 413.
 (pdftex.def)             Requested size: 309.85626pt x 210.18347pt.
- [7 <C:/Users/ulzegasi/Julia_files/ParInf_HMC/TeXFiles/FigPolymer2.pdf>] [8]
+ [7 <C:/Users/albertca/github/Julia_ParInf/TeXFiles/FigPolymer2.pdf>] [8]
 Missing character: There is no â in font cmr8!
 Missing character: There is no € in font cmr8!
 Missing character: There is no ¦ in font cmr8!
@@ -393,50 +393,49 @@ File: Fig77.pdf Graphic file (type pdf)
  <use Fig77.pdf>
 Package pdftex.def Info: Fig77.pdf used on input line 674.
 (pdftex.def)             Requested size: 442.65375pt x 137.77966pt.
- [10 <C:/Users/ulzegasi/Julia_files/ParInf_HMC/TeXFiles/Fig2.pdf>] [11 <C:/User
-s/ulzegasi/Julia_files/ParInf_HMC/TeXFiles/Fig3.pdf> <C:/Users/ulzegasi/Julia_f
-iles/ParInf_HMC/TeXFiles/Fig4.pdf>] [12 <C:/Users/ulzegasi/Julia_files/ParInf_H
-MC/TeXFiles/Fig5.pdf> <C:/Users/ulzegasi/Julia_files/ParInf_HMC/TeXFiles/Fig6.p
-df>]
-(C:\Users\ulzegasi\Julia_files\ParInf_HMC\TeXFiles\Manuscript_Albert_Ulzega_Sto
-op.bbl [13 <C:/Users/ulzegasi/Julia_files/ParInf_HMC/TeXFiles/Fig77.pdf>]
+ [10 <C:/Users/albertca/github/Julia_ParInf/TeXFiles/Fig2.pdf>] [11 <C:/Users/a
+lbertca/github/Julia_ParInf/TeXFiles/Fig3.pdf> <C:/Users/albertca/github/Julia_
+ParInf/TeXFiles/Fig4.pdf>] [12 <C:/Users/albertca/github/Julia_ParInf/TeXFiles/
+Fig5.pdf> <C:/Users/albertca/github/Julia_ParInf/TeXFiles/Fig6.pdf>]
+(C:\Users\albertca\github\Julia_ParInf\TeXFiles\Manuscript_Albert_Ulzega_Stoop.
+bbl [13 <C:/Users/albertca/github/Julia_ParInf/TeXFiles/Fig77.pdf>] [14]
 Missing character: There is no â in font cmr10!
 Missing character: There is no € in font cmr10!
 Missing character: There is no ” in font cmr10!
 Missing character: There is no â in font cmr10!
 Missing character: There is no € in font cmr10!
 Missing character: There is no ” in font cmr10!
-
-[14]) [15]
-(C:\Users\ulzegasi\Julia_files\ParInf_HMC\TeXFiles\Manuscript_Albert_Ulzega_Sto
-op.aux) ) 
+)
+[15]
+(C:\Users\albertca\github\Julia_ParInf\TeXFiles\Manuscript_Albert_Ulzega_Stoop.
+aux) ) 
 Here is how much of TeX's memory you used:
- 4993 strings out of 493921
- 62292 string characters out of 3144866
- 169151 words of memory out of 3000000
- 8185 multiletter control sequences out of 15000+200000
+ 4997 strings out of 493921
+ 62353 string characters out of 3144868
+ 169167 words of memory out of 3000000
+ 8189 multiletter control sequences out of 15000+200000
  15959 words of font info for 64 fonts, out of 3000000 for 9000
  841 hyphenation exceptions out of 8191
- 30i,13n,26p,3291b,294s stack positions out of 5000i,500n,10000p,200000b,50000s
-<C:/Program Files (x86)/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmbx
-10.pfb><C:/Program Files (x86)/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmbx12
-.pfb><C:/Program Files (x86)/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmbx8.pf
-b><C:/Program Files (x86)/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmex10.pfb>
-<C:/Program Files (x86)/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmmi10.pfb><C
-:/Program Files (x86)/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmmi6.pfb><C:/P
-rogram Files (x86)/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmmi8.pfb><C:/Prog
-ram Files (x86)/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmr10.pfb><C:/Program
- Files (x86)/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmr12.pfb><C:/Program Fi
-les (x86)/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmr17.pfb><C:/Program Files
- (x86)/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmr6.pfb><C:/Program Files (x8
-6)/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmr8.pfb><C:/Program Files (x86)/M
-iKTeX 2.9/fonts/type1/public/amsfonts/cm/cmr9.pfb><C:/Program Files (x86)/MiKTe
-X 2.9/fonts/type1/public/amsfonts/cm/cmsy10.pfb><C:/Program Files (x86)/MiKTeX 
-2.9/fonts/type1/public/amsfonts/cm/cmsy6.pfb><C:/Program Files (x86)/MiKTeX 2.9
-/fonts/type1/public/amsfonts/cm/cmsy8.pfb><C:/Program Files (x86)/MiKTeX 2.9/fo
-nts/type1/public/amsfonts/cm/cmti10.pfb><C:/Program Files (x86)/MiKTeX 2.9/font
-s/type1/public/amsfonts/symbols/msbm10.pfb>
-Output written on Manuscript_Albert_Ulzega_Stoop.pdf (15 pages, 4094690 bytes).
+ 30i,13n,26p,3288b,294s stack positions out of 5000i,500n,10000p,200000b,50000s
+<C:/Program Files (x86)/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmbx10.
+pfb><C:/Program Files (x86)/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmbx12.pf
+b><C:/Program Files (x86)/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmbx8.pfb><
+C:/Program Files (x86)/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmex10.pfb><C:
+/Program Files (x86)/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmmi10.pfb><C:/P
+rogram Files (x86)/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmmi6.pfb><C:/Prog
+ram Files (x86)/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmmi8.pfb><C:/Program
+ Files (x86)/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmr10.pfb><C:/Program Fi
+les (x86)/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmr12.pfb><C:/Program Files
+ (x86)/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmr17.pfb><C:/Program Files (x
+86)/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmr6.pfb><C:/Program Files (x86)/
+MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmr8.pfb><C:/Program Files (x86)/MiKT
+eX 2.9/fonts/type1/public/amsfonts/cm/cmr9.pfb><C:/Program Files (x86)/MiKTeX 2
+.9/fonts/type1/public/amsfonts/cm/cmsy10.pfb><C:/Program Files (x86)/MiKTeX 2.9
+/fonts/type1/public/amsfonts/cm/cmsy6.pfb><C:/Program Files (x86)/MiKTeX 2.9/fo
+nts/type1/public/amsfonts/cm/cmsy8.pfb><C:/Program Files (x86)/MiKTeX 2.9/fonts
+/type1/public/amsfonts/cm/cmti10.pfb><C:/Program Files (x86)/MiKTeX 2.9/fonts/t
+ype1/public/amsfonts/symbols/msbm10.pfb>
+Output written on Manuscript_Albert_Ulzega_Stoop.pdf (15 pages, 4096679 bytes).
 
 PDF statistics:
  431 PDF objects out of 1000 (max. 8388607)

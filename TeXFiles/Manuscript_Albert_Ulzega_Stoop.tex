@@ -92,7 +92,7 @@
 
 \begin{document}
 
-\title{Boosting Bayesian Parameter Inference for Nonlinear Stochastic Differential Equation Models by Hamiltonian Scale Separation}
+\title{Boosting Bayesian Parameter Inference of Nonlinear Stochastic Differential Equation Models by Hamiltonian Scale Separation}
 
 \author{Carlo Albert\footnote{Eawag, Swiss Federal Institute of Aquatic Science and Technology, 8600 D\"ubendorf, Switzerland}, Simone Ulzega\footnotemark[1], Ruedi Stoop\footnote{Institute of Neuroinformatics and Institute of Computational Science UZH/ETHZ, Irchel Campus 8057 Zurich, Switzerland}}
 
@@ -113,7 +113,7 @@ Our approach is applicable to a wide range of inference problems and is highly p
 \section{Introduction}
 
 Modeling a dynamical process starts with a basic model that is usually obtained from more or less deep insight into the nature of the process. The next step then is the determination of the parameters of the model, based on observed data, which is generally a highly nontrivial task, in particular when complex behavior of such systems needs to be predicted, or when the measurements are noisy.
-A minimal example is a perceptron [XXX], the basic element of a neuronal network, that predicts the double cosine value associated with the input of the corresponding sine function plus the sine's value at a fixed earlier time. While this task can easily be achieved for clean data using gradient descent learning, for noisy input data this is largely impossible, as noise cannot be learned. The result is a distribution of potential parameter values (Fig.~(\ref{neural})).
+A minimal example is a perceptron \cite{rosenblatt_1958_perceptron, steeb_2004_problems}, the basic element of a neuronal network, that predicts the double cosine value associated with the input of the corresponding sine function plus the sine's value at a fixed earlier time. While this task can easily be achieved for clean data using gradient descent learning, for noisy input data, this is largely impossible, as noise cannot be learned. The result is a distribution of potential parameter values (Fig.~(\ref{neural})).
 \begin{figure}[h]
     \centering
     \includegraphics[width=1.0\textwidth]{neuron.pdf}
@@ -121,7 +121,7 @@ A minimal example is a perceptron [XXX], the basic element of a neuronal network
     \label{neural}
 \end{figure}
 
-In Bayesian statistics, knowledge about parameters is expressed by probability distributions and learning is implemented as an update rule on these distributions [REF].
+In Bayesian statistics, knowledge about parameters is expressed by probability distributions and learning is implemented as an update rule on these distributions (see, e.g. Ref. \cite{box_2011_bayesian}).
 If a constant noise term is added to the output of a deterministic model, such as in the perceptron example above, Bayesian inference is straightforward.
 If noise enters the formulation of the model equations, however, Bayesian inference all of a sudden becomes computationally very expensive.
 
@@ -129,7 +129,7 @@ In our paper, we demonstrate the calibration of ordinary 1D stochastic different
 
 %Bayesian parameter inference for SDE models is computationally very expensive, as the posterior parameter probability density is a path-integral.
 Problems of this kind are commonly solved by Monte Carlo (MC) methods that are based on simulating model realizations and comparing them to the data. Popular methods are particle filters \cite{chopin_2013_SMC2}, Metropolis-within-Gibbs algorithms \cite{tomassini_2009_smoothing, reichert_2009_timedepParameters} or Approximate Bayes Computations (ABC) \cite{marin_2012_ABC, Albert_2014_ABC}.
-A major problem with these simulation-based methods is, however, their inefficiency in the presence of many data points or high dimensions. One solution is to map the output space to a smaller dimensional space of summary statistics, and accept/reject proposed model parameters depending on how well associated model runs conform with the data in terms of these summary statistics [Ref.]. However, how to choose the summary statistics to achieve a significant representation of the posterior parameter distribution is a largely unsolved problem.
+A major problem with these simulation-based methods is, however, their inefficiency in the presence of many data points or high dimensions. One solution is to map the output space to a smaller dimensional space of summary statistics, and accept/reject proposed model parameters depending on how well associated model runs conform with the data in terms of these summary statistics \cite{Fearnhead_2012_ABC}. However, how to choose the summary statistics to achieve a significant representation of the posterior parameter distribution is a largely unsolved problem.
 
 %In our approach we remedy these difficulties.
 %We start by re-interpreting the posterior distribution as the partition function of a statistical mechanical system, of which we simulate the time evolution.
@@ -151,12 +151,12 @@ explore a computationally simpler approach, which, to our knowledge, has never b
 Depending on the number of discretization points needed to approximate the original SDE system and the number of measurement points, the dynamics of the statistical mechanics system happen on very different time scales. This suggests a multiple time scale integration technique for the simulation of the statistical mechanics system \cite{tuckerman_1993}.
 We will show that for 1D SDEs we can always find a parametrization, which decouples the harmonic modes in between measurement points from both the measurement points and the model parameters and allows for an analytical time-saving solution of the fastest part of the dynamics.
 Whilst for higher dimensional problems it is not always possible to solve part of the dynamics analytically, we believe that scale separation alone will render many SDEs amenable to a full-fledged Bayesian inference with time-series.
-In fact, scale separation appears to be a generic feature if the dynamics of the SDE requires a large number of discretization points.
+In fact, scale separation appears to be a generic feature if the dynamics of the SDE requires a large number of discretizaion points.
 %Our approach can be combined with the approach in \cite{girolami_2011_HMC}.
 
 \section{Inference problem setting}
 
-Consider, for simplicity and concreteness, a reservoir dynamics $S(t)$ that on the observation time-scale is linear, with other (inflow and outflow) processes happening at much shorter time scales, so that they can be described by white noise. Furthermore, assume that this noise scales linearly with the system state $S(t)$. The model equation is thus given by the SDE
+Consider, for simplicity and concreteness, a reservoir dynamics S(t) that on the observation time-scale is linear, with other (inflow and outflow) processes happening at much shorter time scales, so that they can be described by white noise. Furthermore, assume that this noise scales linearly with the system state S(t). The model equation is thus given by the SDE
 
 \begin{equation}\label{sde}
 \dot{S}(t) = r(t) - \frac{1}{K}\left(1+\frac{\gamma}{2}\right) S(t)
@@ -687,6 +687,7 @@ The simulations were run on a serial implementation of the algorithm on a 64-bit
 
 
 
+
 \section{Conclusions}
 
 We presented a novel, extremely efficient and versatile approach for data-based SDE parameter estimation.
@@ -694,12 +695,10 @@ Our algorithm obtains its strength from translating the problem of generating po
 The main novelty in our algorithm is the exploitation of the fact that this dynamics generically happens on very different time scales.
 Furthermore, at least for 1D systems, our approach also allows for an analytical, and therefore computationally efficient, integration of the fastest part of the dynamics.
 
-Our algorithms works with a constant diagonal mass matrix, with reasonable choices of masses - heavier for the measurement beads, lighter for the discretization (staging) beads.
-We expect this to work well in most application cases.
-However, if the curvature of the potential varies strongly, it might be beneficial to adapt the mass matrix to the local curvature as suggested in Ref. \cite{girolami_2011_HMC}.
-This, in turn, comes with some computational overhead, as second derivatives have to be calculated and implicit equations have to be solved.
-Furthermore, we will no longer be able to solve part of the dynamics analytically.
-Nonetheless, for certain applications, a combination of the scale separation method proposed in this paper with a local adaptation of the mass matrix from Ref. \cite{girolami_2011_HMC} might  be the most efficient approach.
+In most application cases, our choice of a fixed diagonal mass matrix, for reasonable choices of masses - heavier for the measurement beads, lighter for the discretization (staging) beads - can be expected to work well.
+Nonetheless, if the curvature of the potential varies strongly, it might be beneficial to adapt the mass matrix to the local curvature as suggested in Ref. \cite{girolami_2011_HMC}. For such cases, a combination of the scale separation method proposed in this paper with the local mass matrix adaptation of Ref. \cite{girolami_2011_HMC} might be the most efficient solution. This extension, however, comes at the price of a computational overhead (second derivatives have to be calculated and implicit equations have to be solved), and we will no longer be able to solve part of the dynamics analytically.
+On a more general level, given the wide field of very distinct applications, optimal parameter inference for SDE models will not be provided by one single approach, but will require a set of tools, to make the optimal choice from. We expect statistical physics to continue making strong contributions toward this aim.
+ 
 
 %We presented a novel, extremely efficient and versatile approach for SDE parameter estimation, based on observed data. Compared to Ref. \cite{girolami_2011_HMC} that proposed an approach designed to remedy similar shortcomings of the traditional approaches, our approach is conceptually and implementation-wise much simpler and faster. Whereas for the former algorithm, locally the solution space metric needs to be evaluated, we only need to make reasonable choices of weights, heavier for the measurement beads, light for the staging beads. Although these choices are uncritical, they could be adapted to and optimized for the specific problem, if necessary. A particular advantage is that a large number of the updates can be done semi-analytically and do not involve the numerical calculation of derivatives. This saves a considerable computational effort.
 %Our approach is much simpler to implement and to monitor, and should, according to the arguments provided, generally be faster.

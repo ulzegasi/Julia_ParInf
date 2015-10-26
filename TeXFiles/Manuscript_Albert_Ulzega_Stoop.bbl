@@ -1,5 +1,22 @@
 \begin{thebibliography}{10}
 
+\bibitem{rosenblatt_1958_perceptron}
+Frank Rosenblatt.
+\newblock The perceptron: a probabilistic model for information storage and
+  organization in the brain.
+\newblock {\em Psychological review}, 65(6):386, 1958.
+
+\bibitem{steeb_2004_problems}
+W-H Steeb.
+\newblock {\em Problems \& Solutions in Scientific Computing: With C++ and Java
+  Simulations}.
+\newblock World Scientific, 2004.
+
+\bibitem{box_2011_bayesian}
+George~EP Box and George~C Tiao.
+\newblock {\em Bayesian inference in statistical analysis}, volume~40.
+\newblock John Wiley \& Sons, 2011.
+
 \bibitem{chopin_2013_SMC2}
 N.~Chopin, P.~E. Jacob, and O.~Papaspiliopoulos.
 \newblock Smc2: an efficient algorithm for sequential analysis of state space
@@ -28,6 +45,12 @@ J.M. Marin, P.~Pudlo, C.P. Robert, and R.J. Ryder.
 C.~Albert, H.~R. K\"unsch, and A.~Scheidegger.
 \newblock A simulated annealing approach to approximate bayes computations.
 \newblock {\em Stat.~Comput.}, pages 1--16, 2014.
+
+\bibitem{Fearnhead_2012_ABC}
+P.~Fearnhead and D.~Prangle.
+\newblock {Constructing summary statistics for approximate Bayesian
+  computation: semi-automatic approximate Bayesian computation}.
+\newblock {\em {J. Roy. Stat. Soc. B}}, {74}({3}):{419--474}, {2012}.
 
 \bibitem{duane_1987}
 S.~Duane, A.~D. Kennedy, B.~J. Pendleton, and D.~Roweth.
