@@ -55,7 +55,7 @@ const dt = T/(N-1)                         # Time step
 const ty = iround(linspace(1, N, n+1))     # Indeces of "boundary" beads (= measurement points)     
 
 const nsample_burnin = 0                   # Number of points in the MCMC
-const nsample_eff    = 1000
+const nsample_eff    = 20000
 const nsample        = nsample_eff + nsample_burnin
 
 const dtau           = 0.25                # MD time step
@@ -186,7 +186,11 @@ plt.plot(t[ty], q[ty], "go",markersize=12)
 for s = 0:(n-1)
     u[s*j+1] = q[s*j+1]
     for k = 2:j
-        u[s*j+k] = q[s*j+k] - ( (k-1)*q[s*j+k+1] + q[s*j+1] )/k
+        # IMPORTANT: the transformation that should be applied is:
+        # u[s*j+k] = q[s*j+k] - ( (k-1)*q[s*j+k+1] + q[s*j+1] )/k
+        # BUT: it is always = 0 when the {q} between data points are linearly distributed
+        # For staging beads as linear interpolation of data points, therefore
+        u[s*j+k] = 0.0
     end
 end
 u[N] = q[N]
@@ -387,7 +391,7 @@ println(string("Fast RESPA in ", round(sum(time_respa_f),6), " seconds \n"))
 ## Back transformations (u -> q):
 ## (Tuckerman et al., JCP 99 (1993), eq. 2.19)
 ## --------------------------------------------------------------------------------------------
-
+#=back_transform_t = time()
 for sample_ind = 1:(nsample+1)
     for s = 1:n
         qs[sample_ind, (s-1)*j+1] = u_sample[sample_ind, (s-1)*j+1]
@@ -399,8 +403,26 @@ for sample_ind = 1:(nsample+1)
         end
     end
     qs[sample_ind, N] = u_sample[sample_ind, N]
-end
+end=#
+# ABOVE is very slow (cache thrashing problem?), BELOW is a much faster version
 # q = (1/bet)*log(S/(K*r))
+
+back_transform_t = time()
+for sample_ind = 1:(nsample+1)
+    for s = 1:n
+        qs[sample_ind, (s-1)*j+1] = u_sample[sample_ind, (s-1)*j+1]
+    end
+    qs[sample_ind, N] = u_sample[sample_ind, N]
+end
+
+for sample_ind = 1:(nsample+1)
+    for s = n:-1:1
+        for k = j:-1:2 
+            qs[sample_ind, (s-1)*j+k] = u_sample[sample_ind, (s-1)*j+k] +
+                (k-1.0)/k*qs[sample_ind, (s-1)*j+k+1] + (1.0/k)*u_sample[sample_ind, (s-1)*j+1] 
+        end
+    end
+end
 
 for sample_ind = 1:(nsample+1)
     for ind = 1:N
@@ -408,6 +430,8 @@ for sample_ind = 1:(nsample+1)
     end
 end
 # y = r*exp(bet*q)
+
+println(string("\nBack transforms completed in ", round(time()-back_transform_t,6), " seconds \n"))
 
 ##
 ## ============================================================================================
