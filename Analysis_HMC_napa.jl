@@ -86,7 +86,7 @@ u3       = int64(u_chains[1,3])
 u4       = int64(u_chains[1,4])
 u_chains = u_chains[2:end,:]
 
-using PyPlot, Winston, ForwardDiff, Distributions, KernelDensity
+using PyPlot, PyCall, Winston, ForwardDiff, Distributions, KernelDensity
 pygui(true)
 
 ##
