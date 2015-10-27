@@ -39,7 +39,7 @@ P.~Reichert and J.~Mieleitner.
 \bibitem{marin_2012_ABC}
 J.M. Marin, P.~Pudlo, C.P. Robert, and R.J. Ryder.
 \newblock {Approximate Bayesian computational methods}.
-\newblock {\em {Statistics and Computing}}, {22}({6, SI}):{1167--1180}, {2012}.
+\newblock {\em {Stat. Comput.}}, {22}({6, SI}):{1167--1180}, {2012}.
 
 \bibitem{Albert_2014_ABC}
 C.~Albert, H.~R. K\"unsch, and A.~Scheidegger.
@@ -51,6 +51,12 @@ P.~Fearnhead and D.~Prangle.
 \newblock {Constructing summary statistics for approximate Bayesian
   computation: semi-automatic approximate Bayesian computation}.
 \newblock {\em {J. Roy. Stat. Soc. B}}, {74}({3}):{419--474}, {2012}.
+
+\bibitem{chandler_1981_polymer}
+David Chandler and Peter~G Wolynes.
+\newblock Exploiting the isomorphism between quantum theory and classical
+  statistical mechanics of polyatomic fluids.
+\newblock {\em J. Chem. Phys.}, 74(7):4078--4095, 1981.
 
 \bibitem{duane_1987}
 S.~Duane, A.~D. Kennedy, B.~J. Pendleton, and D.~Roweth.
@@ -127,12 +133,6 @@ M.~Thyer, B.~Renard, D.~Kavetski, G.~Kuczera, S.~W. Franks, and S.~Srikanthan.
   analysis.
 \newblock {\em Water~Resources~Res.}, 45(12), 2009.
 
-\bibitem{risken_1989_FockerPlanck}
-Hannes Risken.
-\newblock The fokker-planck equation. methods of solution and applications,
-  vol. 18 of.
-\newblock {\em Springer Series in Synergetics}, 1989.
-
 \bibitem{lau_2007}
 A.~W.~C. Lau and T.~C. Lubensky.
 \newblock State-dependent diffusion: thermodynamic consistency and its path
@@ -161,10 +161,16 @@ W.~C. Swope, H.~C. Andersen, P.~H. Berens, and K.~R. Wilson.
   small water clusters.
 \newblock {\em J.~Chem.~Phys.}, 76(1):637--649, 1982.
 
+\bibitem{risken_1989_FockerPlanck}
+Hannes Risken.
+\newblock The fokker-planck equation. methods of solution and applications,
+  vol. 18 of.
+\newblock {\em Springer Series in Synergetics}, 1989.
+
 \bibitem{Hogan_2014_adept}
 R.~J. Hogan.
-\newblock Fast reverse-mode automatic differentiation using expression
-  templates in c++.
+\newblock {Fast reverse-mode automatic differentiation using expression
+  templates in C++}.
 \newblock {\em ACM~Trans.~Math.~Softw.}, 40(4):1--16, 2014.
 
 \end{thebibliography}

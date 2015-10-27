@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.1415926-2.5-1.40.14 (MiKTeX 2.9) (preloaded format=pdflatex 2014.4.3)  26 OCT 2015 13:28
+This is pdfTeX, Version 3.1415926-2.5-1.40.14 (MiKTeX 2.9) (preloaded format=pdflatex 2014.4.3)  27 OCT 2015 13:39
 entering extended mode
 **C:/Users/albertca/github/Julia_ParInf/TeXFiles/Manuscript_Albert_Ulzega_Stoop
 .tex
@@ -331,19 +331,12 @@ LaTeX Warning: `h' float specifier changed to `ht'.
 [1
 
 {C:/Users/albertca/AppData/Local/MiKTeX/2.9/pdftex/config/pdftex.map}]
-[2 <C:/Users/albertca/github/Julia_ParInf/TeXFiles/neuron.pdf>] [3]
-Missing character: There is no â in font cmr10!
-Missing character: There is no € in font cmr10!
-Missing character: There is no ˜ in font cmr10!
-Missing character: There is no â in font cmr10!
-Missing character: There is no € in font cmr10!
-Missing character: There is no ™ in font cmr10!
- [4]
+[2 <C:/Users/albertca/github/Julia_ParInf/TeXFiles/neuron.pdf>] [3] [4]
 [5] [6] <FigPolymer2.pdf, id=63, 482.28984pt x 327.14923pt>
 File: FigPolymer2.pdf Graphic file (type pdf)
 
 <use FigPolymer2.pdf>
-Package pdftex.def Info: FigPolymer2.pdf used on input line 413.
+Package pdftex.def Info: FigPolymer2.pdf used on input line 415.
 (pdftex.def)             Requested size: 309.85626pt x 210.18347pt.
  [7 <C:/Users/albertca/github/Julia_ParInf/TeXFiles/FigPolymer2.pdf>] [8]
 Missing character: There is no â in font cmr8!
@@ -358,45 +351,49 @@ Missing character: There is no ¦ in font cmr8!
 Missing character: There is no â in font cmr8!
 Missing character: There is no € in font cmr8!
 Missing character: There is no ¦ in font cmr8!
- <Fig2.pdf, id=148, 1059.96pt x 650.43pt>
+ [9] <Fig2.pdf, id=151, 1059.96pt x 650.43pt>
 File: Fig2.pdf Graphic file (type pdf)
  <use Fig2.pdf>
-Package pdftex.def Info: Fig2.pdf used on input line 619.
+Package pdftex.def Info: Fig2.pdf used on input line 626.
 (pdftex.def)             Requested size: 309.85626pt x 190.13835pt.
 
-<Fig3.pdf, id=149, 1063.975pt x 658.46pt>
+<Fig3.pdf, id=152, 1063.975pt x 658.46pt>
 File: Fig3.pdf Graphic file (type pdf)
  <use Fig3.pdf>
-Package pdftex.def Info: Fig3.pdf used on input line 631.
+Package pdftex.def Info: Fig3.pdf used on input line 638.
 (pdftex.def)             Requested size: 309.85626pt x 191.75229pt.
- [9]
-<Fig4.pdf, id=154, 999.83737pt x 626.40323pt>
+
+<Fig4.pdf, id=153, 999.83737pt x 626.40323pt>
 File: Fig4.pdf Graphic file (type pdf)
  <use Fig4.pdf>
-Package pdftex.def Info: Fig4.pdf used on input line 643.
+Package pdftex.def Info: Fig4.pdf used on input line 649.
 (pdftex.def)             Requested size: 309.85626pt x 194.12564pt.
 
-<Fig5.pdf, id=155, 980.11269pt x 624.80325pt>
+
+pdfTeX warning: pdflatex.exe (file C:/Users/albertca/github/Julia_ParInf/TeXFil
+es/Fig5.pdf): PDF inclusion: found PDF version <1.6>, but at most version <1.5>
+ allowed
+<Fig5.pdf, id=154, 908.63464pt x 566.98825pt>
 File: Fig5.pdf Graphic file (type pdf)
  <use Fig5.pdf>
-Package pdftex.def Info: Fig5.pdf used on input line 650.
-(pdftex.def)             Requested size: 309.85626pt x 197.52908pt.
+Package pdftex.def Info: Fig5.pdf used on input line 656.
+(pdftex.def)             Requested size: 309.85626pt x 193.34445pt.
 
-<Fig6.pdf, id=156, 1013.23544pt x 656.41936pt>
+<Fig6.pdf, id=155, 1013.23544pt x 656.41936pt>
 File: Fig6.pdf Graphic file (type pdf)
  <use Fig6.pdf>
-Package pdftex.def Info: Fig6.pdf used on input line 665.
+Package pdftex.def Info: Fig6.pdf used on input line 671.
 (pdftex.def)             Requested size: 309.85626pt x 200.73346pt.
-
-<Fig77.pdf, id=157, 2138.19824pt x 665.55247pt>
+ [10 <C:/Users/albertca/github/Julia_ParInf/TeXFiles/Fig2.pdf>]
+<Fig77.pdf, id=177, 2138.19824pt x 665.55247pt>
 File: Fig77.pdf Graphic file (type pdf)
  <use Fig77.pdf>
-Package pdftex.def Info: Fig77.pdf used on input line 674.
+Package pdftex.def Info: Fig77.pdf used on input line 680.
 (pdftex.def)             Requested size: 442.65375pt x 137.77966pt.
- [10 <C:/Users/albertca/github/Julia_ParInf/TeXFiles/Fig2.pdf>] [11 <C:/Users/a
-lbertca/github/Julia_ParInf/TeXFiles/Fig3.pdf> <C:/Users/albertca/github/Julia_
-ParInf/TeXFiles/Fig4.pdf>] [12 <C:/Users/albertca/github/Julia_ParInf/TeXFiles/
-Fig5.pdf> <C:/Users/albertca/github/Julia_ParInf/TeXFiles/Fig6.pdf>]
+ [11 <C:/Users/albertca/github/Julia_ParInf/TeXFiles/Fig3.pdf> <C:/Users/albert
+ca/github/Julia_ParInf/TeXFiles/Fig4.pdf>] [12 <C:/Users/albertca/github/Julia_
+ParInf/TeXFiles/Fig5.pdf> <C:/Users/albertca/github/Julia_ParInf/TeXFiles/Fig6.
+pdf>]
 (C:\Users\albertca\github\Julia_ParInf\TeXFiles\Manuscript_Albert_Ulzega_Stoop.
 bbl [13 <C:/Users/albertca/github/Julia_ParInf/TeXFiles/Fig77.pdf>] [14]
 Missing character: There is no â in font cmr10!
@@ -406,14 +403,14 @@ Missing character: There is no â in font cmr10!
 Missing character: There is no € in font cmr10!
 Missing character: There is no ” in font cmr10!
 )
-[15]
+[15] [16]
 (C:\Users\albertca\github\Julia_ParInf\TeXFiles\Manuscript_Albert_Ulzega_Stoop.
 aux) ) 
 Here is how much of TeX's memory you used:
- 4997 strings out of 493921
- 62353 string characters out of 3144868
- 169167 words of memory out of 3000000
- 8189 multiletter control sequences out of 15000+200000
+ 5001 strings out of 493921
+ 62416 string characters out of 3144868
+ 167197 words of memory out of 3000000
+ 8193 multiletter control sequences out of 15000+200000
  15959 words of font info for 64 fonts, out of 3000000 for 9000
  841 hyphenation exceptions out of 8191
  30i,13n,26p,3288b,294s stack positions out of 5000i,500n,10000p,200000b,50000s
@@ -435,10 +432,10 @@ eX 2.9/fonts/type1/public/amsfonts/cm/cmr9.pfb><C:/Program Files (x86)/MiKTeX 2
 nts/type1/public/amsfonts/cm/cmsy8.pfb><C:/Program Files (x86)/MiKTeX 2.9/fonts
 /type1/public/amsfonts/cm/cmti10.pfb><C:/Program Files (x86)/MiKTeX 2.9/fonts/t
 ype1/public/amsfonts/symbols/msbm10.pfb>
-Output written on Manuscript_Albert_Ulzega_Stoop.pdf (15 pages, 4096679 bytes).
+Output written on Manuscript_Albert_Ulzega_Stoop.pdf (16 pages, 3183583 bytes).
 
 PDF statistics:
- 431 PDF objects out of 1000 (max. 8388607)
+ 379 PDF objects out of 1000 (max. 8388607)
  0 named destinations out of 1000 (max. 500000)
  41 words of extra memory for PDF output out of 10000 (max. 10000000)
 
